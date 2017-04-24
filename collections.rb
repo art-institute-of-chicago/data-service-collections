@@ -1,11 +1,11 @@
 require 'grape'
+require 'rsolr'
 require './conf.rb'
 
 module Collections
   class API < Grape::API
     version 'v1'
     format :json
-    prefix :api
 
     def solr
       @solr
@@ -19,18 +19,17 @@ module Collections
       @solr = RSolr.connect :url => COLLECTIONS_URL
     end
 
-    resource :statuses do
+    resource :artworks do
       desc 'Return an artwork.'
       params do
         requires :id, type: Integer, desc: 'Artwork ID.'
       end
       route_param :id do
         get do
-          response = @solr.get 'select', params: { fq: 'hasModel:Work',
-                                                   q: 'citiUid:' + params[:id],
-                                                   rows: 1,
-                                                   wt: :ruby }
-          json response['response']['docs'][0]
+          @solr.get 'select', params: { fq: 'hasModel:Work',
+                                        q: 'citiUid:' + params[:id].to_s,
+                                        rows: 1,
+                                        wt: :ruby }
         end
       end
     end
