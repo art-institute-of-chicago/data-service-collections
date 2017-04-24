@@ -1,3 +1,2 @@
-require "collections"
-
+require './collections.rb'
 run Collections::API

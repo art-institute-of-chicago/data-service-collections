@@ -1,4 +1,5 @@
-require 'conf.rb'
+require 'grape'
+require './conf.rb'
 
 module Collections
   class API < Grape::API
