@@ -7,14 +7,6 @@ module Collections
     version 'v1'
     format :json
 
-    def solr
-      @solr
-    end
-
-    def solr=(str)
-      @solr = str
-    end
-  
     before do
       @solr = RSolr.connect :url => COLLECTIONS_URL
     end
