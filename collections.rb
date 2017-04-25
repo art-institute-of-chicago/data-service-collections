@@ -32,6 +32,16 @@ module Collections
             wt: :ruby
           }
 
+          # Abort if no results
+          if input["response"]["numFound"] < 1
+            error!({
+              error: 'Artwork not found',
+              detail: 'Artwork does not exist in LPM Solr. Ensure you are passing the CITI ID.'
+            }, 404)
+          end
+
+          # Jumping to the results for brevity... we only care about the first one.
+          # If more than one result was returned for this route, something went wrong.
           data = input["response"]["docs"][0]
 
           # Uncomment this to see all available fields
