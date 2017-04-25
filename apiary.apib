@@ -1,0 +1,23 @@
+FORMAT: 1A
+
+# Collections Data Service
+
+A simple API allowing clients to retrieve collections data from the Art Institute of Chicago.
+
+# Group Artworks
+
+Endpoints to retrieve artwork data
+
+## Artwork [/v1/artworks/{artwork_id}]
++ Parameters
+    + artwork_id: `111628` (number) - ID of the Artwork
+
+### View an Artwork detail [GET]
+
++ Response 200 (application/json)
+{
+  "data": {
+    "id": "111628",
+    "title": "Nighthawks"
+  }
+}
