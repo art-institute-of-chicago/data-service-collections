@@ -45,6 +45,19 @@ Endpoints to retrieve artwork data
 
 
 
+## Artwork [/v1/artworks/{artwork_ids}]
+
+### View an Artwork detail [GET]
+
++ Parameters
+    + artwork_ids: `111628,27992` (string) - IDs of the Artwork
+
++ Response 200 (application/json)
+    + Attributes
+        + data (array[Artwork])
+
+
+
 ## Artwork [/v1/artworks]
 
 ### View all Artworks [GET]
