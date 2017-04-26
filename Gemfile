@@ -2,7 +2,9 @@
 source "https://rubygems.org"
 
 gem "grape"
-gem "cucumber"
 gem "rsolr"
 gem "dredd_hooks"
-gem "shotgun"
+
+group :test, :development do
+  gem "shotgun"
+end

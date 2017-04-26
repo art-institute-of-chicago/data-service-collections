@@ -10,16 +10,45 @@ Endpoints to retrieve artwork data
 
 ## Artwork [/v1/artworks/{artwork_id}]
 
+### View an Artwork detail [GET]
+
 + Parameters
     + artwork_id: `111628` (number) - ID of the Artwork
 
-### View an Artwork detail [GET]
-
 + Response 200 (application/json)
+    + Attributes
+        + data (Artwork)
 
-        {
-            "data": {
-                "id": "111628",
-                "title": "Nighthawks"
-            }
-        }
+### Artwork not found [GET]
+
++ Parameters
+    + artwork_id: `234234298734298374` (number) - ID of the Artwork
+
++ Response 404 (application/json)
+    + Attributes (Error)
+      
+### Bad Artwork ID [GET]
+
++ Parameters
+    + artwork_id: `sdfsdf` (number) - ID of the Artwork
+
++ Response 400 (application/json)
+    + Attributes (Error)
+      
+### Can't POST [POST]
+
++ Parameters
+    + artwork_id: `111628` (number) - ID of the Artwork
+
++ Response 405 (application/json)
+    + Attributes (Error)
+
+## Data Structures
+
+### Artwork
++ id: 111628 (number, required)
++ title: "Nighthawks" (string)
+
+### Error
++ error (string, required)
++ detail (string)
