@@ -8,10 +8,12 @@ npm install
 # Running
 
 ```
-rackup
+shotgun
 ```
 
-Then hit `http://localhost:9292/v1/artworks/111628`
+Then hit `http://localhost:9393/v1/artworks/111628`
+
+Alternatively, you can use `rackup` and hit port `9292`
 
 
 # Testing
