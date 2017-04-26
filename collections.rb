@@ -8,6 +8,23 @@ require './conf.rb'
 #   http://localhost:9292/v1/artworks/60622 (missing history fields)
 
 module Collections
+
+  module LakeUnwrapper
+    def get( key, unwrap = true, int = false)
+
+      return nil if !self.key?(key)
+
+      out = self[key]
+
+      out = out[0] if unwrap
+
+      out = out.to_i if int
+
+      return out
+
+    end
+  end
+
   class API < Grape::API
     version 'v1'
     format :json
@@ -17,6 +34,7 @@ module Collections
     end
 
     resource :artworks do
+
       desc 'Return an artwork.'
       params do
         requires :id, type: Integer, desc: 'Artwork ID.'
@@ -45,38 +63,24 @@ module Collections
           data = input["response"]["docs"][0]
 
           # Uncomment this to see all available fields
-          # We are aiming to use the LPM fields only, for forwards compatibility
-          # Everything below the `id` field is drawn from CITI's Web Solr instance
           # return data
-
-          def data.get( key, unwrap = true, int = false)
-
-            if !self.key?(key)
-              return nil
-            end
-
-            out = self[key]
-
-            if unwrap
-              out = out[0]
-            end
-
-            if int
-              out = out.to_i
-            end
-
-            return out
-
-          end
 
           {
             "data": API.transform(data)
           }
+
         end
       end
     end
 
     def self.transform(data)
+
+    	# This allows data to use the get method
+    	data.extend LakeUnwrapper
+
+      # We are aiming to use the LPM fields only, for forwards compatibility
+      # Everything below the `id` field is drawn from CITI's Web Solr instance
+
       {
         "id": data.get("citiUid", true, true),
         "title": data.get("title"),
@@ -125,6 +129,7 @@ module Collections
         "modified_at": data.get("lastModified"),
         "modified_by": data.get("lastModifiedBy"),
       }
+
     end
   end
 end
