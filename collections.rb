@@ -84,6 +84,56 @@ module Collections
         end
       end
 
+      desc 'Return all artworks, paginated, descending timestamp.'
+      params do
+        optional :page, type: Integer, default: 1
+        optional :per_page, type: Integer, default: 12
+      end
+      get do
+
+          # TODO: Accept params
+          # Retrieve `start` and `rows` from params
+          # Assume start=0 and rows=12 if absent
+
+          # https://github.com/rsolr/rsolr
+          input = @solr.get 'select', params: {
+            fq: 'hasModel:Work',
+            sort: 'timestamp desc',
+            rows: 12,
+            wt: :ruby,
+          }
+
+          # Isolate the artworks list
+          data = input["response"]["docs"]
+
+          # Apply our transformation to each artwork
+          data = data.map { |datum| API.transform(datum) }
+
+          # Some pagination calculation...
+          # http://ruby-doc.org/core-2.0.0/Hash.html
+          results = {
+            count: input["response"]["numFound"],
+            limit: input["responseHeader"]["params"]["rows"].to_i,
+            offset: input["response"]["start"],
+          }
+
+          pages = {
+            total: (results[:count].to_f / results[:limit].to_f).floor + 1,
+            current: (results[:offset].to_f / results[:limit].to_f).floor + 1,
+            # TODO: next_page
+            # TODO: prev_page
+          }
+
+          {
+            "pagination": {
+              "results": results,
+              "pages": pages
+            },
+            "data": data
+          }
+
+      end
+
       desc 'Return an artwork.'
       params do
         requires :id, type: Integer, desc: 'Artwork ID.'
@@ -123,7 +173,6 @@ module Collections
     end
 
     def self.transform(datas)
-
       if datas.kind_of?(Array)
         ret = []
         datas.each do |data|
