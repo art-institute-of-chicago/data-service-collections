@@ -14,23 +14,10 @@ GEM
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
     concurrent-ruby (1.0.5)
-    cucumber (2.4.0)
-      builder (>= 2.1.2)
-      cucumber-core (~> 1.5.0)
-      cucumber-wire (~> 0.0.1)
-      diff-lcs (>= 1.1.3)
-      gherkin (~> 4.0)
-      multi_json (>= 1.7.5, < 2.0)
-      multi_test (>= 0.1.2)
-    cucumber-core (1.5.0)
-      gherkin (~> 4.0)
-    cucumber-wire (0.0.1)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
-    diff-lcs (1.3)
     dredd_hooks (0.1.2)
     equalizer (0.0.11)
-    gherkin (4.1.1)
     grape (0.19.2)
       activesupport
       builder
@@ -46,7 +33,6 @@ GEM
     ice_nine (0.11.2)
     minitest (5.10.1)
     multi_json (1.12.1)
-    multi_test (0.1.2)
     multi_xml (0.6.0)
     mustermann (1.0.0)
     mustermann-grape (1.0.0)
@@ -71,7 +57,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  cucumber
   dredd_hooks
   grape
   rsolr

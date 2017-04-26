@@ -43,11 +43,27 @@ Endpoints to retrieve artwork data
 + Response 405 (application/json)
     + Attributes (Error)
 
+
+
 ## Data Structures
 
 ### Artwork
-+ id: 111628 (number, required)
-+ title: "Nighthawks" (string)
++ id (number, required)
++ title (string)
++ ids (object)
++ titles (object)
++ dates (object)
++ creator (object)
++ department (object)
++ dimensions (string)
++ medium (object)
++ inscriptions (array[string])
++ credit_line (string)
++ history (object)
++ created_at (string)
++ created_by (string)
++ modified_at (string)
++ modified_by (string)
 
 ### Error
 + error (string, required)
