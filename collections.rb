@@ -70,57 +70,61 @@ module Collections
           end
 
           {
-            "data": {
-              "id": data.get("citiUid", true, true),
-              "title": data.get("title"),
-              "ids": {
-                "citi": data.get("citiUid", true, true),
-                "main": data.get("mainRefNumber"),
-                "lake": {
-                  "hid": data.get("uid"),
-                  "guid": data.get("id", false),
-                  "batch": data.get("batchUid"),
-                  "uri": data.get("uri", false),
-                },
-              },
-              "titles": {
-                "raw": data.get("title"),
-                "display": data.get("prefLabel"),
-              },
-              "dates": {
-                "start": data.get("earliestYear", true, true),
-                "end": data.get("latestYear", true, true),
-                "display": data.get("dateDisplay"),
-              },
-              "creator": {
-                "id": data.get("artist_uid"),
-                "raw": data.get("artist"),
-                "display": data.get("creatorDisplay"),
-              },
-              "department": {
-                "id": data.get("department_uid"),
-                "display": data.get("department"),
-              },
-              "dimensions": data.get("dimensionsDisplay"),
-              "medium": {
-                "raw": data.get("medium"),
-                "display": data.get("mediumDisplay"),
-              },
-              "inscriptions": data.get("title", false),
-              "credit_line": data.get("creditLine"),
-              "history": {
-                "publications": data.get("publicationHistory"),
-                "exhibitions": data.get("exhibitionHistory"),
-                "provenance": data.get("provenanceText"),
-              },
-              "created_at": data.get("created"),
-              "created_by": data.get("createdBy"),
-              "modified_at": data.get("lastModified"),
-              "modified_by": data.get("lastModifiedBy"),
-            }
+            "data": API.transform(data)
           }
         end
       end
+    end
+
+    def self.transform(data)
+      {
+        "id": data.get("citiUid", true, true),
+        "title": data.get("title"),
+        "ids": {
+          "citi": data.get("citiUid", true, true),
+          "main": data.get("mainRefNumber"),
+          "lake": {
+            "hid": data.get("uid"),
+            "guid": data.get("id", false),
+            "batch": data.get("batchUid"),
+            "uri": data.get("uri", false),
+          },
+        },
+        "titles": {
+          "raw": data.get("title"),
+          "display": data.get("prefLabel"),
+        },
+        "dates": {
+          "start": data.get("earliestYear", true, true),
+          "end": data.get("latestYear", true, true),
+          "display": data.get("dateDisplay"),
+        },
+        "creator": {
+          "id": data.get("artist_uid"),
+          "raw": data.get("artist"),
+          "display": data.get("creatorDisplay"),
+        },
+        "department": {
+          "id": data.get("department_uid"),
+          "display": data.get("department"),
+        },
+        "dimensions": data.get("dimensionsDisplay"),
+        "medium": {
+          "raw": data.get("medium"),
+          "display": data.get("mediumDisplay"),
+        },
+        "inscriptions": data.get("title", false),
+        "credit_line": data.get("creditLine"),
+        "history": {
+          "publications": data.get("publicationHistory"),
+          "exhibitions": data.get("exhibitionHistory"),
+          "provenance": data.get("provenanceText"),
+        },
+        "created_at": data.get("created"),
+        "created_by": data.get("createdBy"),
+        "modified_at": data.get("lastModified"),
+        "modified_by": data.get("lastModifiedBy"),
+      }
     end
   end
 end
