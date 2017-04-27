@@ -117,7 +117,7 @@ module Collections
             q: '*:*',
             sort: 'timestamp desc',
             start: (params.fetch(:page, 1) - 1) * params.fetch(:per_page, 12),
-            rows: 12,
+            rows: params.fetch(:per_page, 12),
             wt: :ruby,
           }
           input = input.with_indifferent_access
