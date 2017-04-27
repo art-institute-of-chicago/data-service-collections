@@ -25,10 +25,23 @@ module Collections
     end
   end
 
+  module ErrorFormatter
+    def self.call(message, backtrace, options, env)
+      {
+        # TODO: At some point we can add an :id representing the unique instance of an error
+        # and a :code represneting our own convention of identifying errors
+        :status => env[Grape::Env::API_ENDPOINT].status,
+        :error => (message.is_a? String) ? message : message[:error],
+        :detail => (message.is_a? String) ? nil : message[:detail],
+      }.to_json
+    end
+  end
+    
   class API < Grape::API
     version 'v1'
     format :json
-
+    error_formatter :json, Collections::ErrorFormatter
+    
     before do
       @solr = RSolr.connect :url => COLLECTIONS_URL
     end
@@ -137,6 +150,11 @@ module Collections
             "data": data
           }
 
+      end
+
+      # Throw a 404 for all undefined endpoints
+      route :any, '*path' do
+        error! # or something else
       end
     end
 
