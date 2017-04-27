@@ -34,52 +34,38 @@ module Collections
     end
 
     resource :artworks do
-      desc 'Return a few artworks.'
+      desc 'Return an artwork'
       params do
-        requires :ids, type: String, desc: 'Artwork IDs'
+        requires :id, type: Integer, desc: 'Artwork ID'
       end
-      route_param :ids do
+      route_param :id do
         get do
-          
-          if '[0-9,]+'.match(params[:ids].to_s)
-            error!({
-              error: 'Malformed Artwork IDs',
-              detail: 'IDs must be a single number ID, or a list of IDs separated by commas.'
-            }, 400)
-          end
-
-          solr_q = ''
-          params[:ids].split(',').each do |id|
-            if solr_q != ''
-              solr_q.concat(' OR ')
-            end
-            solr_q.concat(id)
-          end
-          solr_q = 'citiUid:('.concat(solr_q).concat(')')
+          solr_q = 'citiUid:'.concat(params[:id].to_s)
         
           # https://github.com/rsolr/rsolr
           input = @solr.get 'select', params: {
-            fq: 'hasModel:Work AND '.concat(solr_q),
-            q: '*:*',
-            rows: 1000,
+            fq: 'hasModel:Work',
+            q: solr_q,
+            rows: 1,
             wt: :ruby
           }
-        
+          input = input.with_indifferent_access
+          
           # Abort if no results
-          if input["response"]["numFound"] < 1
+          if input[:response][:numFound] < 1
             error!({
               error: 'Artwork not found',
               detail: 'Artwork does not exist in LPM Solr. Ensure you are passing the CITI ID.'
             }, 404)
           end
 
-          datas = input["response"]["docs"]
+          data = input[:response][:docs][0]
 
           # Uncomment this to see all available fields
           # return datas
 
           {
-            "data": API.transform(datas)
+            "data" => API.transform(data)
           }
         end
       end
@@ -88,23 +74,42 @@ module Collections
       params do
         optional :page, type: Integer, default: 1
         optional :per_page, type: Integer, default: 12
+        optional :ids, type: String
       end
       get do
-
           # TODO: Accept params
           # Retrieve `start` and `rows` from params
           # Assume start=0 and rows=12 if absent
 
-          # https://github.com/rsolr/rsolr
+        solr_fq = ''
+        if params[:ids]
+          if !params[:ids].match('[0-9,]+')
+            error!({
+              error: 'Malformed Artwork IDs',
+              detail: 'IDs must be a single number ID, or a list of IDs separated by commas.'
+            }, 400)
+          else
+            params[:ids].split(',').each do |id|
+              solr_fq.concat(' OR ') if solr_fq != ''
+              solr_fq.concat(id)
+            end
+            solr_fq = ' AND citiUid:('.concat(solr_fq).concat(')')
+          end
+        end
+        solr_fq = 'hasModel:Work'.concat(solr_fq)
+
+        # https://github.com/rsolr/rsolr
           input = @solr.get 'select', params: {
-            fq: 'hasModel:Work',
+            fq: solr_fq,
+            q: '*:*',
             sort: 'timestamp desc',
             rows: 12,
             wt: :ruby,
           }
+          input = input.with_indifferent_access
 
           # Isolate the artworks list
-          data = input["response"]["docs"]
+          data = input[:response][:docs]
 
           # Apply our transformation to each artwork
           data = data.map { |datum| API.transform(datum) }
@@ -112,9 +117,9 @@ module Collections
           # Some pagination calculation...
           # http://ruby-doc.org/core-2.0.0/Hash.html
           results = {
-            count: input["response"]["numFound"],
-            limit: input["responseHeader"]["params"]["rows"].to_i,
-            offset: input["response"]["start"],
+            count: input[:response][:numFound],
+            limit: input[:responseHeader][:params][:rows].to_i,
+            offset: input[:response][:start],
           }
 
           pages = {
@@ -132,43 +137,6 @@ module Collections
             "data": data
           }
 
-      end
-
-      desc 'Return an artwork.'
-      params do
-        requires :id, type: Integer, desc: 'Artwork ID.'
-      end
-      route_param :id do
-        get do
-
-          # https://github.com/rsolr/rsolr
-          input = @solr.get 'select', params: {
-            fq: 'hasModel:Work',
-            q: 'citiUid:' + params[:id].to_s,
-            rows: 1,
-            wt: :ruby
-          }
-
-          # Abort if no results
-          if input["response"]["numFound"] < 1
-            error!({
-              error: 'Artwork not found',
-              detail: 'Artwork does not exist in LPM Solr. Ensure you are passing the CITI ID.'
-            }, 404)
-          end
-
-          # Jumping to the results for brevity... we only care about the first one.
-          # If more than one result was returned for this route, something went wrong.
-          data = input["response"]["docs"][0]
-
-          # Uncomment this to see all available fields
-          # return data
-
-          {
-            "data": API.transform(data)
-          }
-
-        end
       end
     end
 
