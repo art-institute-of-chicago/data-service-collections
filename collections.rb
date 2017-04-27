@@ -116,6 +116,7 @@ module Collections
             fq: solr_fq,
             q: '*:*',
             sort: 'timestamp desc',
+            start: (params.fetch(:page, 1) - 1) * params.fetch(:per_page, 12),
             rows: 12,
             wt: :ruby,
           }
@@ -127,25 +128,41 @@ module Collections
           # Apply our transformation to each artwork
           data = data.map { |datum| API.transform(datum) }
 
-          # Some pagination calculation...
+
           # http://ruby-doc.org/core-2.0.0/Hash.html
           results = {
-            count: input[:response][:numFound],
+            count: input[:response][:docs].length,
+            total: input[:response][:numFound],
             limit: input[:responseHeader][:params][:rows].to_i,
             offset: input[:response][:start],
           }
 
           pages = {
-            total: (results[:count].to_f / results[:limit].to_f).floor + 1,
-            current: (results[:offset].to_f / results[:limit].to_f).floor + 1,
-            # TODO: next_page
-            # TODO: prev_page
+            total: (results[:total] / results[:limit].to_f).floor + 1,
+            current: (results[:offset] / results[:limit].to_f).floor + 1,
+          }
+
+          # Get base string for pagination
+          path = env['PATH_INFO']
+          host = env['REQUEST_URI'].split( path ).first
+          base = host + path + '?'
+
+          can_prev = params.fetch(:page, 1) - 1 > 0
+          can_next = params.fetch(:page, 1) + 1 < pages[:total]
+
+          links = {
+            # self: env['REQUEST_URI'],
+            # first: base + { :page => 1, :per_page => params[:per_page]}.to_query,
+            prev: can_prev ? base + { :page => (params[:page] || 1) - 1, :per_page => params[:per_page] }.to_query : nil,
+            next: can_next ? base + { :page => (params[:page] || 1) + 1, :per_page => params[:per_page] }.to_query : nil,
+            # last:  base + { :page => pages['total'], :per_page => params[:per_page] }.to_query,
           }
 
           {
             "pagination": {
               "results": results,
-              "pages": pages
+              "pages": pages,
+              "links": links,
             },
             "data": data
           }
