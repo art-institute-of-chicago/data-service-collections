@@ -34,13 +34,19 @@ module Collections
             :data => artwork
           }
         end
+        route :any do
+          error!({
+            error: 'Method not allowed',
+            detail: 'You may only GET an artwork. No other method is allowed.'
+          }, 405)
+        end
       end
 
       desc 'Return all artworks, paginated, descending timestamp.'
       params do
         optional :page, type: Integer, default: 1
         optional :per_page, type: Integer, default: 12
-        optional :ids, type: String
+        optional :ids, type: String, default: '', regexp: /[0-9,]+/
       end
       get do
           # TODO: Accept params
@@ -49,22 +55,16 @@ module Collections
 
         solr_fq = ''
         if params[:ids]
-          if !params[:ids].match('[0-9,]+')
-            error!({
-              error: 'Malformed Artwork IDs',
-              detail: 'IDs must be a single number ID, or a list of IDs separated by commas.'
-            }, 400)
-          else
-            params[:ids].split(',').each do |id|
-              solr_fq.concat(' OR ') if solr_fq != ''
-              solr_fq.concat(id)
-            end
-            solr_fq = ' AND citiUid:('.concat(solr_fq).concat(')')
+          params[:ids].split(',').each do |id|
+            solr_fq.concat(' OR ') if solr_fq != ''
+            solr_fq.concat(id)
           end
+          solr_fq = ' AND citiUid:('.concat(solr_fq).concat(')')
         end
         solr_fq = 'hasModel:Work'.concat(solr_fq)
 
         # https://github.com/rsolr/rsolr
+        input = @@solr.get 'select', params: {
             fq: solr_fq,
             q: '*:*',
             sort: 'timestamp desc',
@@ -118,15 +118,21 @@ module Collections
             },
             "data": data
           }
-        input = @@solr.get 'select', params: {
 
       end
-
-      # Throw a 404 for all undefined endpoints
-      route :any, '*path' do
-        error! # or something else
+      route :any do
+        error!({
+          error: 'Method not allowed',
+          detail: 'You may only GET an artwork. No other method is allowed.'
+        }, 405)
       end
     end
-
+    # Throw a 404 for all undefined endpoints
+    route :any, '*path' do
+      error!({
+        error: 'Endpoint not found',
+        detail: 'The endpoint you\'re requesting cannot by found'
+      }, 404)
+    end
   end
 end
