@@ -1,77 +1,10 @@
 # Model class for Artworks
-class Artwork
-  @@solr = RSolr.connect url: COLLECTIONS_URL
+class Artwork < BaseModel
 
-  def self.find(id)
-    solr_q = 'citiUid:'.concat(id.to_s)
+  @@fq = 'hasModel:Work'
 
-    # https://github.com/rsolr/rsolr
-    input = @@solr.get 'select', params: {
-      fq: 'hasModel:Work',
-      q: solr_q,
-      rows: 1,
-      wt: :ruby
-    }
-    input = input.with_indifferent_access
 
-    data = input[:response][:docs][0]
-
-    # Uncomment this to see all available fields
-    # return data
-
-    _transform(data)
-  end
-
-  def self.find_all(ids, page = 1, per_page = 12)
-    solr_fq = ''
-    if ids
-      if !ids.match('[0-9,]+')
-        error!({
-          error: 'Malformed Artwork IDs',
-          detail: 'IDs must be a single number ID, or a list of IDs separated by commas.'
-        }, 400)
-      else
-        ids.split(',').each do |id|
-          solr_fq.concat(' OR ') if solr_fq != ''
-          solr_fq.concat(id)
-        end
-        solr_fq = ' AND citiUid:('.concat(solr_fq).concat(')')
-      end
-    end
-    solr_fq = 'hasModel:Work'.concat(solr_fq)
-
-    # https://github.com/rsolr/rsolr
-    input = @solr.get 'select', params: {
-      fq: solr_fq,
-      q: '*:*',
-      sort: 'timestamp desc',
-      start: (page - 1) * per_page,
-      rows: per_page,
-      wt: :ruby
-    }
-    input = input.with_indifferent_access
-
-    # Isolate the artworks list
-    data = input[:response][:docs]
-
-    # Apply our transformation to each artwork
-    data.map { |datum| _transform(datum) }
-  end
-
-  def self._transform(datas)
-    if datas.is_a?(Array)
-      ret = []
-      datas.each do |data|
-        ret.push(_transform_one(data))
-      end
-      return ret
-    end
-    _transform_one(datas)
-  end
-
-  def self._transform_one(data)
-    # This allows data to use the get method
-    data.extend LakeUnwrapper
+  def self.transform( data )
 
     # We are aiming to use the LPM fields only, for forwards compatibility
     # Everything below the `id` field is drawn from CITI's Web Solr instance

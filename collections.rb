@@ -30,9 +30,8 @@ module Collections
             detail: 'Artwork does not exist in LPM Solr. Ensure you are passing the CITI ID.'
           }, 404) if (!artwork)
 
-          {
-            :data => artwork
-          }
+          return artwork
+
         end
       end
 
@@ -44,49 +43,15 @@ module Collections
       end
       get do
 
-        # TODO: Accept params
-        # Retrieve `start` and `rows` from params
-        # Assume start=0 and rows=12 if absent
+        Artwork.paginate(
+          env,
+          params.fetch(:page, 1),
+          params.fetch(:per_page, 12),
+        )
 
-        artworks = Artwork.find_all(params[:ids], params.fetch(:page, 1), params.fetch(:per_page, 12))
-
-        # http://ruby-doc.org/core-2.0.0/Hash.html
-        results = {
-          count: input[:response][:docs].length,
-          total: input[:response][:numFound],
-          limit: input[:responseHeader][:params][:rows].to_i,
-          offset: input[:response][:start],
-        }
-
-        pages = {
-          total: (results[:total] / results[:limit].to_f).floor + 1,
-          current: (results[:offset] / results[:limit].to_f).floor + 1,
-        }
-
-        # Get base string for pagination
-        path = env['PATH_INFO']
-        host = env['REQUEST_URI'].split( path ).first
-        base = host + path + '?'
-
-        can_prev = params.fetch(:page, 1) - 1 > 0
-        can_next = params.fetch(:page, 1) + 1 < pages[:total]
-
-        links = {
-          # self: env['REQUEST_URI'],
-          # first: base + { :page => 1, :per_page => params[:per_page]}.to_query,
-          prev: can_prev ? base + { :page => (params[:page] || 1) - 1, :per_page => params[:per_page] }.to_query : nil,
-          next: can_next ? base + { :page => (params[:page] || 1) + 1, :per_page => params[:per_page] }.to_query : nil,
-          # last:  base + { :page => pages['total'], :per_page => params[:per_page] }.to_query,
-        }
-
-        {
-          "pagination": {
-            "results": results,
-            "pages": pages,
-            "links": links,
-          },
-          "data": data
-        }
+        Artwork.find_all(
+          params.fetch(:ids, ''),
+        )
 
       end
 
@@ -98,3 +63,4 @@ module Collections
 
   end
 end
+
