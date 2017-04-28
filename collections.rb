@@ -45,7 +45,7 @@ module Collections
       params do
         optional :page, type: Integer, default: 1
         optional :per_page, type: Integer, default: 12
-        optional :ids, type: String, default: '', regexp: /[0-9,]+/
+        optional :ids, type: String, default: '', regexp: /[0-9,]*/
       end
       get do
 
