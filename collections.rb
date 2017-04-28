@@ -1,6 +1,4 @@
-require 'grape'
-require 'rsolr'
-require './conf.rb'
+require_relative 'config/app.rb'
 
 # Sample calls:
 #   http://localhost:9292/v1/artworks/111628
@@ -8,44 +6,11 @@ require './conf.rb'
 #   http://localhost:9292/v1/artworks/60622 (missing history fields)
 
 module Collections
-
-  module LakeUnwrapper
-    def get( key, unwrap = true, int = false)
-
-      return nil if !self.key?(key)
-
-      out = self[key]
-
-      out = out[0] if unwrap
-
-      out = out.to_i if int
-
-      return out
-
-    end
-  end
-
-  module ErrorFormatter
-    def self.call(message, backtrace, options, env)
-      {
-        # TODO: At some point we can add an :id representing the unique instance of an error
-        # and a :code represneting our own convention of identifying errors
-        :status => env[Grape::Env::API_ENDPOINT].status,
-        :error => (message.is_a? String) ? message : message[:error],
-        :detail => (message.is_a? String) ? nil : message[:detail],
-      }.to_json
-    end
-  end
-    
   class API < Grape::API
     version 'v1'
     format :json
-    error_formatter :json, Collections::ErrorFormatter
+    error_formatter :json, ErrorFormatter
     
-    before do
-      @solr = RSolr.connect :url => COLLECTIONS_URL
-    end
-
     resource :artworks do
       desc 'Return an artwork'
       params do
@@ -53,32 +18,17 @@ module Collections
       end
       route_param :id do
         get do
-          solr_q = 'citiUid:'.concat(params[:id].to_s)
-        
-          # https://github.com/rsolr/rsolr
-          input = @solr.get 'select', params: {
-            fq: 'hasModel:Work',
-            q: solr_q,
-            rows: 1,
-            wt: :ruby
-          }
-          input = input.with_indifferent_access
+
+          artwork = Artwork.find(params[:id])
           
           # Abort if no results
-          if input[:response][:numFound] < 1
-            error!({
-              error: 'Artwork not found',
-              detail: 'Artwork does not exist in LPM Solr. Ensure you are passing the CITI ID.'
-            }, 404)
-          end
-
-          data = input[:response][:docs][0]
-
-          # Uncomment this to see all available fields
-          # return datas
-
+          error!({
+            error: 'Artwork not found',
+            detail: 'Artwork does not exist in LPM Solr. Ensure you are passing the CITI ID.'
+          }, 404) if (!artwork)
+            
           {
-            "data" => API.transform(data)
+            :data => artwork
           }
         end
       end
@@ -175,72 +125,5 @@ module Collections
       end
     end
 
-    def self.transform(datas)
-      if datas.kind_of?(Array)
-        ret = []
-        datas.each do |data|
-          ret.push(self._transform(data))
-        end
-        return ret
-      end
-      self._transform(datas)
-    end
-
-    def self._transform(data)
-      # This allows data to use the get method
-      data.extend LakeUnwrapper
-
-      # We are aiming to use the LPM fields only, for forwards compatibility
-      # Everything below the `id` field is drawn from CITI's Web Solr instance
-
-      {
-        "id": data.get("citiUid", true, true),
-        "title": data.get("title"),
-        "ids": {
-          "citi": data.get("citiUid", true, true),
-          "main": data.get("mainRefNumber"),
-          "lake": {
-            "hid": data.get("uid"),
-            "guid": data.get("id", false),
-            "batch": data.get("batchUid"),
-            "uri": data.get("uri", false),
-          },
-        },
-        "titles": {
-          "raw": data.get("title"),
-          "display": data.get("prefLabel"),
-        },
-        "dates": {
-          "start": data.get("earliestYear", true, true),
-          "end": data.get("latestYear", true, true),
-          "display": data.get("dateDisplay"),
-        },
-        "creator": {
-          "id": data.get("artist_uid"),
-          "raw": data.get("artist"),
-          "display": data.get("creatorDisplay"),
-        },
-        "department": {
-          "id": data.get("department_uid"),
-          "display": data.get("department"),
-        },
-        "dimensions": data.get("dimensionsDisplay"),
-        "medium": {
-          "raw": data.get("medium"),
-          "display": data.get("mediumDisplay"),
-        },
-        "inscriptions": data.get("title", false),
-        "credit_line": data.get("creditLine"),
-        "history": {
-          "publications": data.get("publicationHistory"),
-          "exhibitions": data.get("exhibitionHistory"),
-          "provenance": data.get("provenanceText"),
-        },
-        "created_at": data.get("created"),
-        "created_by": data.get("createdBy"),
-        "modified_at": data.get("lastModified"),
-        "modified_by": data.get("lastModifiedBy"),
-      }
-    end
   end
 end
