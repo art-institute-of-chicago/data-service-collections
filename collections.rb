@@ -33,13 +33,19 @@ module Collections
           return artwork
 
         end
+        route :any do
+          error!({
+            error: 'Method not allowed',
+            detail: 'You may only GET an artwork. No other method is allowed.'
+          }, 405)
+        end
       end
 
       desc 'Return all artworks, paginated, descending timestamp.'
       params do
         optional :page, type: Integer, default: 1
         optional :per_page, type: Integer, default: 12
-        optional :ids, type: String
+        optional :ids, type: String, default: '', regexp: /[0-9,]+/
       end
       get do
 
@@ -54,13 +60,20 @@ module Collections
         )
 
       end
-
-      # Throw a 404 for all undefined endpoints
-      route :any, '*path' do
-        error! # or something else
+      route :any do
+        error!({
+          error: 'Method not allowed',
+          detail: 'You may only GET an artwork. No other method is allowed.'
+        }, 405)
       end
     end
-
+    # Throw a 404 for all undefined endpoints
+    route :any, '*path' do
+      error!({
+        error: 'Endpoint not found',
+        detail: 'The endpoint you\'re requesting cannot by found'
+      }, 404)
+    end
   end
 end
 
