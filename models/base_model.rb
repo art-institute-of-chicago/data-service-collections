@@ -1,22 +1,24 @@
 class BaseModel
 
   # https://github.com/rsolr/rsolr
-  @@solr = RSolr.connect url: COLLECTIONS_URL
-  @@fq = ''
+  cattr_accessor :fq, :solr, :page, :per_page, :env
 
-  @@page = 1
-  @@per_page = 12
-
-  @@env = {
-    'PATH_INFO' => '/',
-    'REQUEST_URI' => 'http://localhost:9393/',
-  }
+  def initialize
+    self.fq = ''
+    self.solr = RSolr.connect url: COLLECTIONS_URL
+    self.page = 1
+    self.per_page = 12
+    self.env = {
+      'PATH_INFO' => '/',
+      'REQUEST_URI' => 'http://localhost:9393/',
+    }
+  end
 
   # Ruby's select returns one result
-  def self.select( q, rows )
+  def select( q, rows )
 
-    input = @@solr.get('select', params: {
-      fq: @@fq,
+    input = self.solr.get('select', params: {
+      fq: self.fq,
       q: q,
       rows: 1,
       wt: :ruby
@@ -34,14 +36,14 @@ class BaseModel
 
 
   # Ruby's collect returns all results
-  def self.collect( fq = '' )
+  def collect( fq = '' )
 
-    input = @@solr.get('select', params: {
-      fq: @@fq.concat( fq.to_s ),
+    input = self.solr.get('select', params: {
+      fq: self.fq.concat( fq.to_s ),
       q: '*:*',
       sort: 'timestamp desc',
-      start: (@@page - 1) * @@per_page,
-      rows: @@per_page,
+      start: (self.page - 1) * self.per_page,
+      rows: self.per_page,
       wt: :ruby
     }).with_indifferent_access
 
@@ -53,12 +55,12 @@ class BaseModel
   end
 
 
-  def self.find( id )
+  def find( id )
     self.select( "citiUid:#{id}", 1 )
   end
 
 
-  def self.find_all( ids='', page=nil, per_page=nil )
+  def find_all( ids='', page=nil, per_page=nil )
 
     if( ids.length > 0 )
       ids = ids.split(',').join(' OR ')
@@ -75,14 +77,14 @@ class BaseModel
 
 
   # This should be called before any Solr query
-  def self.paginate( env, page, per_page )
-    @@env = env
-    @@page = page
-    @@per_page = per_page
+  def paginate( env, page, per_page )
+    self.env = env
+    self.page = page
+    self.per_page = per_page
   end
 
 
-  def self.pagination( input )
+  def pagination( input )
 
     # http://ruby-doc.org/core-2.0.0/Hash.html
     results = {
@@ -98,18 +100,18 @@ class BaseModel
     }
 
     # Get base string for pagination
-    path = @@env['PATH_INFO']
-    host = @@env['REQUEST_URI'].split( path ).first
+    path = self.env['PATH_INFO']
+    host = self.env['REQUEST_URI'].split( path ).first
     base = host + path + '?'
 
-    can_prev = @@page - 1 > 0
-    can_next = @@page + 1 < pages[:total]
+    can_prev = self.page - 1 > 0
+    can_next = self.page + 1 < pages[:total]
 
     links = {
       # self: env['REQUEST_URI'],
       # first: base + { :page => 1, :per_page => params[:per_page]}.to_query,
-      prev: can_prev ? base + { :page => @@page - 1, :per_page => @@per_page }.to_query : nil,
-      next: can_next ? base + { :page => @@page + 1, :per_page => @@per_page }.to_query : nil,
+      prev: can_prev ? base + { :page => self.page - 1, :per_page => self.per_page }.to_query : nil,
+      next: can_next ? base + { :page => self.page + 1, :per_page => self.per_page }.to_query : nil,
       # last:  base + { :page => pages['total'], :per_page => params[:per_page] }.to_query,
     }
 
@@ -122,7 +124,7 @@ class BaseModel
   end
 
   # Transform array or object - don't override this!
-  def self.transform!( data )
+  def transform!( data )
 
     if data.is_a?(Array)
       return data.map { |datum| _transform( datum ) }
@@ -134,7 +136,7 @@ class BaseModel
   end
 
   # Private helper function, disregard
-  def self._transform( datum )
+  def _transform( datum )
 
     # This allows data to use the get method
     datum.extend LakeUnwrapper
@@ -146,11 +148,8 @@ class BaseModel
   # Override this in subclass!
   def self.transform( datum )
 
-
-
     datum
 
   end
-
 
 end

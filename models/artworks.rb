@@ -1,10 +1,12 @@
 # Model class for Artworks
 class Artwork < BaseModel
 
-  @@fq = 'hasModel:Work'
+  def initialize
+    super
+    self.fq = 'hasModel:Work'
+  end
 
-
-  def self.transform( data )
+  def transform( data )
 
     # We are aiming to use the LPM fields only, for forwards compatibility
     # Everything below the `id` field is drawn from CITI's Web Solr instance
@@ -17,7 +19,7 @@ class Artwork < BaseModel
     ret[:ids][:citi] = data.get(:citiUid, true, true)
     ret[:ids][:main] = data.get(:mainRefNumber)
     ret[:ids][:lake] = {}
-    ret[:ids][:lake][:hid] = data.get(:uid)
+    ret[:ids][:lake][:uid] = data.get(:uid)
     ret[:ids][:lake][:guid] = data.get(:id)
     ret[:ids][:lake][:uri] = data.get(:uri)
 

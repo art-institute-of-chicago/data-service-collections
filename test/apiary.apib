@@ -73,6 +73,81 @@ Endpoints to retrieve artwork data
 
 
 
+
+
+
+
+
+
+# Group Artists
+
+Endpoints to retrieve artist data
+
+## Artist [/v1/artists/{artist_id}]
+
+### View an Artist detail [GET]
+
++ Parameters
+    + artwork_id: `27823` (number) - ID of the Artist
+
++ Response 200 (application/json)
+    + Attributes
+        + data (Artist)
+
+### Artist not found [GET]
+
++ Parameters
+    + artist_id: `234234298734298374` (number) - ID of the Artist
+
++ Response 404 (application/json)
+    + Attributes (Error)
+      
+### Bad Artist ID [GET]
+
++ Parameters
+    + artist_id: `sdfsdf` (number) - ID of the Artist
+
++ Response 400 (application/json)
+    + Attributes (Error)
+      
+### Can't POST [POST]
+
++ Parameters
+    + artist_id: `27823` (number) - ID of the Artist
+
++ Response 405 (application/json)
+    + Attributes (Error)
+
+
+
+## Artwork [/v1/artists/?ids={artist_ids}]
+
+### View an Artist detail [GET]
+
++ Parameters
+    + artist_ids: `27823,9287` (string) - IDs of the Artist
+
++ Response 200 (application/json)
+    + Attributes
+        + data (array[Artist])
+
+
+
+## Artwork [/v1/artists]
+
+### View all Artists [GET]
+
++ Response 200 (application/json)
+    + Attributes
+        + data (array[Artist])
+      
+### Can't POST [POST]
+
++ Response 405 (application/json)
+    + Attributes (Error)
+
+
+
 ## Data Structures
 
 ### Artwork
@@ -88,6 +163,16 @@ Endpoints to retrieve artwork data
 + inscriptions (array[string])
 + credit_line (string)
 + history (object)
++ created_at (string)
++ created_by (string)
++ modified_at (string)
++ modified_by (string)
+
+### Artist
++ id (number, required)
++ title (string)
++ ids (object)
++ titles (object)
 + created_at (string)
 + created_by (string)
 + modified_at (string)

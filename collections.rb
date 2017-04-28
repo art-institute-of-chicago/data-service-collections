@@ -22,7 +22,7 @@ module Collections
       route_param :id do
         get do
 
-          artwork = Artwork.find(params[:id])
+          artwork = Artwork.new.find(params[:id])
 
           # Abort if no results
           error!({
@@ -49,13 +49,15 @@ module Collections
       end
       get do
 
-        Artwork.paginate(
+        model = Artwork.new
+        
+        model.paginate(
           env,
           params.fetch(:page, 1),
           params.fetch(:per_page, 12),
         )
 
-        Artwork.find_all(
+        model.find_all(
           params.fetch(:ids, ''),
         )
 
@@ -67,6 +69,64 @@ module Collections
         }, 405)
       end
     end
+
+    resource :artists do
+
+      desc 'Return an artist'
+      params do
+        requires :id, type: Integer, desc: 'Artist ID'
+      end
+      route_param :id do
+        get do
+
+          artist = Artist.new.find(params[:id])
+
+          # Abort if no results
+          error!({
+            error: 'Artist not found',
+            detail: 'Artist does not exist in LPM Solr. Ensure you are passing the CITI ID.'
+          }, 404) if (!artist)
+
+          return artist
+
+        end
+        route :any do
+          error!({
+            error: 'Method not allowed',
+            detail: 'You may only GET an artist. No other method is allowed.'
+          }, 405)
+        end
+      end
+
+      desc 'Return all artists, paginated, descending timestamp.'
+      params do
+        optional :page, type: Integer, default: 1
+        optional :per_page, type: Integer, default: 12
+        optional :ids, type: String, default: '', regexp: /[0-9,]*/
+      end
+      get do
+
+        model = Artist.new
+
+        model.paginate(
+          env,
+          params.fetch(:page, 1),
+          params.fetch(:per_page, 12)
+        )
+
+        model.find_all(
+          params.fetch(:ids, '')
+        )
+
+      end
+      route :any do
+        error!({
+          error: 'Method not allowed',
+          detail: 'You may only GET an artist. No other method is allowed.'
+        }, 405)
+      end
+    end
+
     # Throw a 404 for all undefined endpoints
     route :any, '*path' do
       error!({
