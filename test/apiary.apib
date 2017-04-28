@@ -44,7 +44,6 @@ Endpoints to retrieve artwork data
     + Attributes (Error)
 
 
-
 ## Artwork [/v1/artworks/?ids={artwork_ids}]
 
 ### View an Artwork detail [GET]
@@ -55,7 +54,6 @@ Endpoints to retrieve artwork data
 + Response 200 (application/json)
     + Attributes
         + data (array[Artwork])
-
 
 
 ## Artwork [/v1/artworks]
@@ -119,7 +117,6 @@ Endpoints to retrieve artist data
     + Attributes (Error)
 
 
-
 ## Artwork [/v1/artists/?ids={artist_ids}]
 
 ### View an Artist detail [GET]
@@ -130,7 +127,6 @@ Endpoints to retrieve artist data
 + Response 200 (application/json)
     + Attributes
         + data (array[Artist])
-
 
 
 ## Artwork [/v1/artists]
@@ -145,6 +141,77 @@ Endpoints to retrieve artist data
 
 + Response 405 (application/json)
     + Attributes (Error)
+
+
+
+
+
+# Group Galleries
+
+Endpoints to retrieve gallery data
+
+## Gallery [/v1/galleries/{gallery_id}]
+
+### View an Gallery detail [GET]
+
++ Parameters
+    + gallery_id: `2147483604` (number) - ID of the Gallery
+
++ Response 200 (application/json)
+    + Attributes
+        + data (Gallery)
+
+### Gallery not found [GET]
+
++ Parameters
+    + gallery_id: `234234298734298374` (number) - ID of the Gallery
+
++ Response 404 (application/json)
+    + Attributes (Error)
+      
+### Bad Gallery ID [GET]
+
++ Parameters
+    + gallery_id: `sdfsdf` (number) - ID of the Gallery
+
++ Response 400 (application/json)
+    + Attributes (Error)
+      
+### Can't POST [POST]
+
++ Parameters
+    + gallery_id: `27823` (number) - ID of the Gallery
+
++ Response 405 (application/json)
+    + Attributes (Error)
+
+
+## Artwork [/v1/galleries/?ids={gallery_ids}]
+
+### View an Gallery detail [GET]
+
++ Parameters
+    + gallery_ids: `2147483604,2147477833` (string) - IDs of the Galleries
+
++ Response 200 (application/json)
+    + Attributes
+        + data (array[Gallery])
+        
+
+## Gallery [/v1/galleries]
+
+### View all Galleries [GET]
+
++ Response 200 (application/json)
+    + Attributes
+        + data (array[Galleries])
+      
+### Can't POST [POST]
+
++ Response 405 (application/json)
+    + Attributes (Error)
+
+
 
 
 
@@ -169,6 +236,16 @@ Endpoints to retrieve artist data
 + modified_by (string)
 
 ### Artist
++ id (number, required)
++ title (string)
++ ids (object)
++ titles (object)
++ created_at (string)
++ created_by (string)
++ modified_at (string)
++ modified_by (string)
+
+### Gallery
 + id (number, required)
 + title (string)
 + ids (object)
