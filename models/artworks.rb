@@ -20,8 +20,8 @@ class Artwork < BaseModel
     ret[:ids][:main] = data.get(:mainRefNumber)
     ret[:ids][:lake] = {}
     ret[:ids][:lake][:uid] = data.get(:uid)
-    ret[:ids][:lake][:guid] = data.get(:id)
-    ret[:ids][:lake][:uri] = data.get(:uri)
+    ret[:ids][:lake][:guid] = data.get(:id, false)
+    ret[:ids][:lake][:uri] = data.get(:uri, false)
 
     ret[:titles] = {}
     ret[:titles][:raw] = data.get(:title)
