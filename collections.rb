@@ -10,8 +10,11 @@ module Collections
     version 'v1'
     format :json
     error_formatter :json, ErrorFormatter
-    
+
+    @@solr = RSolr.connect url: COLLECTIONS_URL
+
     resource :artworks do
+
       desc 'Return an artwork'
       params do
         requires :id, type: Integer, desc: 'Artwork ID'
@@ -62,7 +65,6 @@ module Collections
         solr_fq = 'hasModel:Work'.concat(solr_fq)
 
         # https://github.com/rsolr/rsolr
-          input = @solr.get 'select', params: {
             fq: solr_fq,
             q: '*:*',
             sort: 'timestamp desc',
@@ -116,6 +118,7 @@ module Collections
             },
             "data": data
           }
+        input = @@solr.get 'select', params: {
 
       end
 
