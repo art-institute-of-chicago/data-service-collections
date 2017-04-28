@@ -17,9 +17,45 @@ class Artwork
     data = input[:response][:docs][0]
 
     # Uncomment this to see all available fields
-    # return datas
+    # return data
 
     _transform(data)
+  end
+
+  def self.find_all(ids, page = 1, per_page = 12)
+    solr_fq = ''
+    if ids
+      if !ids.match('[0-9,]+')
+        error!({
+          error: 'Malformed Artwork IDs',
+          detail: 'IDs must be a single number ID, or a list of IDs separated by commas.'
+        }, 400)
+      else
+        ids.split(',').each do |id|
+          solr_fq.concat(' OR ') if solr_fq != ''
+          solr_fq.concat(id)
+        end
+        solr_fq = ' AND citiUid:('.concat(solr_fq).concat(')')
+      end
+    end
+    solr_fq = 'hasModel:Work'.concat(solr_fq)
+
+    # https://github.com/rsolr/rsolr
+    input = @solr.get 'select', params: {
+      fq: solr_fq,
+      q: '*:*',
+      sort: 'timestamp desc',
+      start: (page - 1) * per_page,
+      rows: per_page,
+      wt: :ruby
+    }
+    input = input.with_indifferent_access
+
+    # Isolate the artworks list
+    data = input[:response][:docs]
+
+    # Apply our transformation to each artwork
+    data.map { |datum| _transform(datum) }
   end
 
   def self._transform(datas)
