@@ -127,6 +127,65 @@ module Collections
       end
     end
 
+
+    resource :galleries do
+
+      desc 'Return a gallery'
+      params do
+        requires :id, type: Integer, desc: 'Gallery ID'
+      end
+      route_param :id do
+        get do
+
+          gallery = Gallery.new.find(params[:id])
+
+          # Abort if no results
+          error!({
+            error: 'Gallery not found',
+            detail: 'Gallery does not exist in LPM Solr. Ensure you are passing the CITI ID.'
+          }, 404) if (!gallery)
+
+          return gallery
+
+        end
+        route :any do
+          error!({
+            error: 'Method not allowed',
+            detail: 'You may only GET a gallery. No other method is allowed.'
+          }, 405)
+        end
+      end
+
+      desc 'Return all galleries, paginated, descending timestamp.'
+      params do
+        optional :page, type: Integer, default: 1
+        optional :per_page, type: Integer, default: 12
+        optional :ids, type: String, default: '', regexp: /[0-9,]*/
+      end
+      get do
+
+        model = Gallery.new
+
+        model.paginate(
+          env,
+          params.fetch(:page, 1),
+          params.fetch(:per_page, 12)
+        )
+
+        model.find_all(
+          params.fetch(:ids, '')
+        )
+
+      end
+      route :any do
+        error!({
+          error: 'Method not allowed',
+          detail: 'You may only GET a gallery. No other method is allowed.'
+        }, 405)
+      end
+    end
+
+
     # Throw a 404 for all undefined endpoints
     route :any, '*path' do
       error!({
