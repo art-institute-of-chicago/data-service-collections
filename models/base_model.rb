@@ -14,6 +14,7 @@ class BaseModel
     }
   end
 
+
   # Ruby's select returns one result
   def select( q, rows )
 
@@ -146,7 +147,7 @@ class BaseModel
 
 
   # Override this in subclass!
-  def self.transform( datum )
+  def transform( datum )
 
     datum
 

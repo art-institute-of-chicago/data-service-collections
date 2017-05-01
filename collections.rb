@@ -11,8 +11,6 @@ module Collections
     format :json
     error_formatter :json, ErrorFormatter
 
-    @@solr = RSolr.connect url: COLLECTIONS_URL
-
     resource :artworks do
 
       desc 'Return an artwork'
@@ -50,7 +48,7 @@ module Collections
       get do
 
         model = Artwork.new
-        
+
         model.paginate(
           env,
           params.fetch(:page, 1),
