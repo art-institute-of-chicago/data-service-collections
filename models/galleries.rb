@@ -26,7 +26,8 @@ class Gallery < BaseModel
     ret[:titles][:raw] = data.get(:title)
     ret[:titles][:display] = data.get(:prefLabel)
 
-    ret[:closed] = data.get(:isClosed).downcase == "true" ? true : false
+    # TODO: Abstract boolean into lake_unwrapper.rb
+    ret[:closed] = data.get(:isClosed) != nil && data.get(:isClosed).downcase == "true" ? true : false
     ret[:number] = data.get(:galleryNumber, true, true)
     ret[:category] = data.get(:publishCategory)
 
