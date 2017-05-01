@@ -9,6 +9,7 @@ module Collections
   class API < Grape::API
     version 'v1'
     format :json
+    content_type :json, 'application/json; charset=utf-8'
     error_formatter :json, ErrorFormatter
 
     resource :artworks do

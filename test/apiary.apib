@@ -15,7 +15,7 @@ Endpoints to retrieve artwork data
 + Parameters
     + artwork_id: `111628` (number) - ID of the Artwork
 
-+ Response 200 (application/json)
++ Response 200 (application/json; charset=utf-8)
     + Attributes
         + data (Artwork)
 
@@ -24,7 +24,7 @@ Endpoints to retrieve artwork data
 + Parameters
     + artwork_id: `234234298734298374` (number) - ID of the Artwork
 
-+ Response 404 (application/json)
++ Response 404 (application/json; charset=utf-8)
     + Attributes (Error)
 
 ### Bad Artwork ID [GET]
@@ -32,7 +32,7 @@ Endpoints to retrieve artwork data
 + Parameters
     + artwork_id: `sdfsdf` (number) - ID of the Artwork
 
-+ Response 400 (application/json)
++ Response 400 (application/json; charset=utf-8)
     + Attributes (Error)
 
 ### Can't POST [POST]
@@ -40,7 +40,7 @@ Endpoints to retrieve artwork data
 + Parameters
     + artwork_id: `111628` (number) - ID of the Artwork
 
-+ Response 405 (application/json)
++ Response 405 (application/json; charset=utf-8)
     + Attributes (Error)
 
 
@@ -51,7 +51,7 @@ Endpoints to retrieve artwork data
 + Parameters
     + artwork_ids: `111628,79307` (string) - IDs of the Artwork
 
-+ Response 200 (application/json)
++ Response 200 (application/json; charset=utf-8)
     + Attributes
         + pagination (Pagination)
         + data (array[Artwork])
@@ -61,14 +61,14 @@ Endpoints to retrieve artwork data
 
 ### View all Artworks [GET]
 
-+ Response 200 (application/json)
++ Response 200 (application/json; charset=utf-8)
     + Attributes
         + pagination (Pagination)
         + data (array[Artwork])
 
 ### Can't POST [POST]
 
-+ Response 405 (application/json)
++ Response 405 (application/json; charset=utf-8)
     + Attributes (Error)
 
 
@@ -90,7 +90,7 @@ Endpoints to retrieve artist data
 + Parameters
     + artwork_id: `27823` (number) - ID of the Artist
 
-+ Response 200 (application/json)
++ Response 200 (application/json; charset=utf-8)
     + Attributes
         + data (Artist)
 
@@ -99,7 +99,7 @@ Endpoints to retrieve artist data
 + Parameters
     + artist_id: `234234298734298374` (number) - ID of the Artist
 
-+ Response 404 (application/json)
++ Response 404 (application/json; charset=utf-8)
     + Attributes (Error)
 
 ### Bad Artist ID [GET]
@@ -107,7 +107,7 @@ Endpoints to retrieve artist data
 + Parameters
     + artist_id: `sdfsdf` (number) - ID of the Artist
 
-+ Response 400 (application/json)
++ Response 400 (application/json; charset=utf-8)
     + Attributes (Error)
 
 ### Can't POST [POST]
@@ -115,7 +115,7 @@ Endpoints to retrieve artist data
 + Parameters
     + artist_id: `27823` (number) - ID of the Artist
 
-+ Response 405 (application/json)
++ Response 405 (application/json; charset=utf-8)
     + Attributes (Error)
 
 
@@ -126,7 +126,7 @@ Endpoints to retrieve artist data
 + Parameters
     + artist_ids: `27823,9287` (string) - IDs of the Artist
 
-+ Response 200 (application/json)
++ Response 200 (application/json; charset=utf-8)
     + Attributes
         + pagination (Pagination)
         + data (array[Artist])
@@ -136,14 +136,14 @@ Endpoints to retrieve artist data
 
 ### View all Artists [GET]
 
-+ Response 200 (application/json)
++ Response 200 (application/json; charset=utf-8)
     + Attributes
         + pagination (Pagination)
         + data (array[Artist])
-      
+
 ### Can't POST [POST]
 
-+ Response 405 (application/json)
++ Response 405 (application/json; charset=utf-8)
     + Attributes (Error)
 
 
@@ -161,7 +161,7 @@ Endpoints to retrieve gallery data
 + Parameters
     + gallery_id: `2147483604` (number) - ID of the Gallery
 
-+ Response 200 (application/json)
++ Response 200 (application/json; charset=utf-8)
     + Attributes
         + data (Gallery)
 
@@ -170,7 +170,7 @@ Endpoints to retrieve gallery data
 + Parameters
     + gallery_id: `234234298734298374` (number) - ID of the Gallery
 
-+ Response 404 (application/json)
++ Response 404 (application/json; charset=utf-8)
     + Attributes (Error)
 
 ### Bad Gallery ID [GET]
@@ -178,7 +178,7 @@ Endpoints to retrieve gallery data
 + Parameters
     + gallery_id: `sdfsdf` (number) - ID of the Gallery
 
-+ Response 400 (application/json)
++ Response 400 (application/json; charset=utf-8)
     + Attributes (Error)
 
 ### Can't POST [POST]
@@ -186,7 +186,7 @@ Endpoints to retrieve gallery data
 + Parameters
     + gallery_id: `27823` (number) - ID of the Gallery
 
-+ Response 405 (application/json)
++ Response 405 (application/json; charset=utf-8)
     + Attributes (Error)
 
 
@@ -197,7 +197,7 @@ Endpoints to retrieve gallery data
 + Parameters
     + gallery_ids: `2147483604,2147477833` (string) - IDs of the Galleries
 
-+ Response 200 (application/json)
++ Response 200 (application/json; charset=utf-8)
     + Attributes
         + pagination (Pagination)
         + data (array[Gallery])
@@ -207,14 +207,14 @@ Endpoints to retrieve gallery data
 
 ### View all Galleries [GET]
 
-+ Response 200 (application/json)
++ Response 200 (application/json; charset=utf-8)
     + Attributes
         + pagination (Pagination)
         + data (array[Gallery])
 
 ### Can't POST [POST]
 
-+ Response 405 (application/json)
++ Response 405 (application/json; charset=utf-8)
     + Attributes (Error)
 
 
