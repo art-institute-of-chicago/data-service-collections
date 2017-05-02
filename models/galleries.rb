@@ -43,6 +43,7 @@ class Gallery < BaseModel
 
     ret[:closed] = isClosed( data.get(:isClosed) )
     ret[:number] = data.get(:galleryNumber, true, true)
+    ret[:floor] = data.get(:galleryFloor, true, true) # one result w/ 0
     ret[:category] = data.get(:publishCategory)
 
     ret[:created_at] = data.get(:created)
