@@ -6,6 +6,21 @@ class Gallery < BaseModel
     self.fq = 'hasModel:Place'
   end
 
+  # TODO: Abstract boolean into lake_unwrapper.rb (?)
+  # isClosed contains some irregularities that prevent it from abstraction
+  def isClosed( data )
+
+    # default to expectations...
+    return true if data == "True"
+    return false
+
+    # other responses, for reference:
+    return false if data == nil
+    return false if data == "False"
+    return false if data == "<NOT Closed>"
+
+  end
+
   def transform( data )
 
     # We are aiming to use the LPM fields only, for forwards compatibility
@@ -26,8 +41,7 @@ class Gallery < BaseModel
     ret[:titles][:raw] = data.get(:title)
     ret[:titles][:display] = data.get(:prefLabel)
 
-    # TODO: Abstract boolean into lake_unwrapper.rb
-    ret[:closed] = data.get(:isClosed) != nil && data.get(:isClosed).downcase == "true" ? true : false
+    ret[:closed] = isClosed( data.get(:isClosed) )
     ret[:number] = data.get(:galleryNumber, true, true)
     ret[:category] = data.get(:publishCategory)
 
