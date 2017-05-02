@@ -47,7 +47,7 @@ class Artwork < BaseModel
     ret[:medium][:raw] = data.get(:medium)
     ret[:medium][:display] = data.get(:mediumDisplay)
 
-    ret[:inscriptions] = data.get(:title, false)
+    ret[:inscriptions] = data.get(:inscriptions)
     ret[:credit_line] = data.get(:creditLine)
 
     ret[:history] = {}
