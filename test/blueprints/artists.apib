@@ -1,0 +1,88 @@
+# Group Artists
+
+Endpoints to retrieve artist data.
+
+
+
+
+## Artist [/v1/artists/{id}]
+
+Endpoints dealing with a single artist.
+
+
+### Retrieve an Artist [GET]
+
+We are certain this artist exists and is published to the web.
+
++ Parameters
+    + id: `27823` (number)
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes
+        + data (Artist)
+
+
+### Error: Artist Not Found [GET]
+
++ Parameters
+    + id: `9223372036854775807` (number)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Error)
+
+
+### Error: Invalid Artist ID [GET]
+
++ Parameters
+    + id: `foobar` (number)
+
++ Response 400 (application/json; charset=utf-8)
+    + Attributes (Error)
+
+
+### Error: Cannot Update Artist [POST]
+
++ Parameters
+    + id: `27823` (number)
+
++ Response 405 (application/json; charset=utf-8)
+    + Attributes (Error)
+
+
+
+
+## Multiple Artists [/v1/artists/?ids={ids}]
+
+Endpoints dealing with multiple artists.
+
+
+### Retrieve two Artists [GET]
+
++ Parameters
+    + ids: `27823,9287` (string)
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes
+        + pagination (Pagination)
+        + data (array[Artist])
+
+
+
+
+## All Artists [/v1/artists]
+
+Provides pagination. Only supports GET.
+
+
+### List all Artists [GET]
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes
+        + pagination (Pagination)
+        + data (array[Artist])
+
+
+### Error: Cannot Add Artists [POST]
+
++ Response 405 (application/json; charset=utf-8)
+    + Attributes (Error)

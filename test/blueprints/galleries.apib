@@ -1,0 +1,88 @@
+# Group Galleries
+
+Endpoints to retrieve gallery data.
+
+
+
+
+## Gallery [/v1/galleries/{id}]
+
+Endpoints dealing with a single gallery.
+
+
+### Retrieve an Gallery [GET]
+
+We are certain this gallery exists and is published to the web.
+
++ Parameters
+    + id: `2147483604` (number)
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes
+        + data (Gallery)
+
+
+### Error: Gallery Not Found [GET]
+
++ Parameters
+    + id: `9223372036854775807` (number)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Error)
+
+
+### Error: Invalid Gallery ID [GET]
+
++ Parameters
+    + id: `foobar` (number)
+
++ Response 400 (application/json; charset=utf-8)
+    + Attributes (Error)
+
+
+### Error: Cannot Update Gallery [POST]
+
++ Parameters
+    + id: `2147483604` (number)
+
++ Response 405 (application/json; charset=utf-8)
+    + Attributes (Error)
+
+
+
+
+## Multiple Galleries [/v1/galleries/?ids={ids}]
+
+Endpoints dealing with multiple galleries.
+
+
+### Retrieve two Galleries [GET]
+
++ Parameters
+    + ids: `2147483604,2147477833` (string)
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes
+        + pagination (Pagination)
+        + data (array[Gallery])
+
+
+
+
+## All Galleries [/v1/galleries]
+
+Provides pagination. Only supports GET.
+
+
+### List all Galleries [GET]
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes
+        + pagination (Pagination)
+        + data (array[Gallery])
+
+
+### Error: Cannot Add Galleries [POST]
+
++ Response 405 (application/json; charset=utf-8)
+    + Attributes (Error)

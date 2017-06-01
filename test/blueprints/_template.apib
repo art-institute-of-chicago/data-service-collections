@@ -1,0 +1,88 @@
+# Group Entities
+
+Endpoints to retrieve entity data.
+
+
+
+
+## Entity [/v1/entities/{id}]
+
+Endpoints dealing with a single entity.
+
+
+### Retrieve an Entity [GET]
+
+We are certain this entity exists and is published to the web.
+
++ Parameters
+    + id: `id[0]` (number)
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes
+        + data (Entity)
+
+
+### Error: Entity Not Found [GET]
+
++ Parameters
+    + id: `9223372036854775807` (number)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Error)
+
+
+### Error: Invalid Entity ID [GET]
+
++ Parameters
+    + id: `foobar` (number)
+
++ Response 400 (application/json; charset=utf-8)
+    + Attributes (Error)
+
+
+### Error: Cannot Update Entity [POST]
+
++ Parameters
+    + id: `id[0]` (number)
+
++ Response 405 (application/json; charset=utf-8)
+    + Attributes (Error)
+
+
+
+
+## Multiple Entities [/v1/entities/?ids={ids}]
+
+Endpoints dealing with multiple entities.
+
+
+### Retrieve two Entities [GET]
+
++ Parameters
+    + ids: `id[0],id[1]` (string)
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes
+        + pagination (Pagination)
+        + data (array[Entity])
+
+
+
+
+## All Entities [/v1/entities]
+
+Provides pagination. Only supports GET.
+
+
+### List all Entities [GET]
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes
+        + pagination (Pagination)
+        + data (array[Entity])
+
+
+### Error: Cannot Add Entities [POST]
+
++ Response 405 (application/json; charset=utf-8)
+    + Attributes (Error)
