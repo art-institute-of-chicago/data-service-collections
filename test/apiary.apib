@@ -1,4 +1,5 @@
 FORMAT: 1A
+HOST: http://127.0.0.1:9393
 
 # Collections Data Service
 
@@ -24,35 +25,36 @@ Endpoints dealing with a single artist.
 
 ### Retrieve an Artist [GET]
 
-We are certain this artist exists and is published to the web.
-
 + Parameters
     + id: `27823` (number)
 
 + Response 200 (application/json; charset=utf-8)
+
     + Attributes
         + data (Artist)
 
++ Request Non-existent artist
 
-### Error: Artist Not Found [GET]
-
-+ Parameters
-    + id: `9223372036854775807` (number)
+    + Parameters
+        + id: `9223372036854775807` (number)
 
 + Response 404 (application/json; charset=utf-8)
     + Attributes (Error)
 
 
-### Error: Invalid Artist ID [GET]
++ Request Invalid identifier
 
-+ Parameters
-    + id: `foobar` (number)
+    + Parameters
+        + id: `foobar` (number)
 
 + Response 400 (application/json; charset=utf-8)
     + Attributes (Error)
 
 
-### Error: Cannot Update Artist [POST]
+
+### Update an Artist [POST]
+
+Updating artists is forbidden.
 
 + Parameters
     + id: `27823` (number)
@@ -68,7 +70,7 @@ We are certain this artist exists and is published to the web.
 Endpoints dealing with multiple artists.
 
 
-### Retrieve two Artists [GET]
+### Retrieve 2 Artists [GET]
 
 + Parameters
     + ids: `27823,9287` (string)
@@ -94,7 +96,9 @@ Provides pagination. Only supports GET.
         + data (array[Artist])
 
 
-### Error: Cannot Add Artists [POST]
+### Add Artists [POST]
+
+Adding artists is forbidden.
 
 + Response 405 (application/json; charset=utf-8)
     + Attributes (Error)
@@ -119,35 +123,36 @@ Endpoints dealing with a single artwork.
 
 ### Retrieve an Artwork [GET]
 
-We are certain this artwork exists and is published to the web.
-
 + Parameters
     + id: `111628` (number)
 
 + Response 200 (application/json; charset=utf-8)
+
     + Attributes
         + data (Artwork)
 
++ Request Non-existent artwork
 
-### Error: Artwork Not Found [GET]
-
-+ Parameters
-    + id: `9223372036854775807` (number)
+    + Parameters
+        + id: `9223372036854775807` (number)
 
 + Response 404 (application/json; charset=utf-8)
     + Attributes (Error)
 
 
-### Error: Invalid Artwork ID [GET]
++ Request Invalid identifier
 
-+ Parameters
-    + id: `foobar` (number)
+    + Parameters
+        + id: `foobar` (number)
 
 + Response 400 (application/json; charset=utf-8)
     + Attributes (Error)
 
 
-### Error: Cannot Update Artwork [POST]
+
+### Update an Artwork [POST]
+
+Updating artworks is forbidden.
 
 + Parameters
     + id: `111628` (number)
@@ -163,7 +168,7 @@ We are certain this artwork exists and is published to the web.
 Endpoints dealing with multiple artworks.
 
 
-### Retrieve two Artworks [GET]
+### Retrieve 2 Artworks [GET]
 
 + Parameters
     + ids: `111628,79307` (string)
@@ -189,7 +194,9 @@ Provides pagination. Only supports GET.
         + data (array[Artwork])
 
 
-### Error: Cannot Add Artworks [POST]
+### Add Artworks [POST]
+
+Adding artworks is forbidden.
 
 + Response 405 (application/json; charset=utf-8)
     + Attributes (Error)
@@ -214,35 +221,36 @@ Endpoints dealing with a single gallery.
 
 ### Retrieve an Gallery [GET]
 
-We are certain this gallery exists and is published to the web.
-
 + Parameters
     + id: `2147483604` (number)
 
 + Response 200 (application/json; charset=utf-8)
+
     + Attributes
         + data (Gallery)
 
++ Request Non-existent gallery
 
-### Error: Gallery Not Found [GET]
-
-+ Parameters
-    + id: `9223372036854775807` (number)
+    + Parameters
+        + id: `9223372036854775807` (number)
 
 + Response 404 (application/json; charset=utf-8)
     + Attributes (Error)
 
 
-### Error: Invalid Gallery ID [GET]
++ Request Invalid identifier
 
-+ Parameters
-    + id: `foobar` (number)
+    + Parameters
+        + id: `foobar` (number)
 
 + Response 400 (application/json; charset=utf-8)
     + Attributes (Error)
 
 
-### Error: Cannot Update Gallery [POST]
+
+### Update an Gallery [POST]
+
+Updating galleries is forbidden.
 
 + Parameters
     + id: `2147483604` (number)
@@ -258,7 +266,7 @@ We are certain this gallery exists and is published to the web.
 Endpoints dealing with multiple galleries.
 
 
-### Retrieve two Galleries [GET]
+### Retrieve 2 Galleries [GET]
 
 + Parameters
     + ids: `2147483604,2147477833` (string)
@@ -284,7 +292,9 @@ Provides pagination. Only supports GET.
         + data (array[Gallery])
 
 
-### Error: Cannot Add Galleries [POST]
+### Add Galleries [POST]
+
+Adding galleries is forbidden.
 
 + Response 405 (application/json; charset=utf-8)
     + Attributes (Error)

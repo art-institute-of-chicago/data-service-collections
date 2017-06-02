@@ -12,35 +12,36 @@ Endpoints dealing with a single artwork.
 
 ### Retrieve an Artwork [GET]
 
-We are certain this artwork exists and is published to the web.
-
 + Parameters
     + id: `111628` (number)
 
 + Response 200 (application/json; charset=utf-8)
+
     + Attributes
         + data (Artwork)
 
++ Request Non-existent artwork
 
-### Error: Artwork Not Found [GET]
-
-+ Parameters
-    + id: `9223372036854775807` (number)
+    + Parameters
+        + id: `9223372036854775807` (number)
 
 + Response 404 (application/json; charset=utf-8)
     + Attributes (Error)
 
 
-### Error: Invalid Artwork ID [GET]
++ Request Invalid identifier
 
-+ Parameters
-    + id: `foobar` (number)
+    + Parameters
+        + id: `foobar` (number)
 
 + Response 400 (application/json; charset=utf-8)
     + Attributes (Error)
 
 
-### Error: Cannot Update Artwork [POST]
+
+### Update an Artwork [POST]
+
+Updating artworks is forbidden.
 
 + Parameters
     + id: `111628` (number)
@@ -56,7 +57,7 @@ We are certain this artwork exists and is published to the web.
 Endpoints dealing with multiple artworks.
 
 
-### Retrieve two Artworks [GET]
+### Retrieve 2 Artworks [GET]
 
 + Parameters
     + ids: `111628,79307` (string)
@@ -82,7 +83,9 @@ Provides pagination. Only supports GET.
         + data (array[Artwork])
 
 
-### Error: Cannot Add Artworks [POST]
+### Add Artworks [POST]
+
+Adding artworks is forbidden.
 
 + Response 405 (application/json; charset=utf-8)
     + Attributes (Error)

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd "$( dirname "${BASH_SOURCE[0]}" )"
+
 # This script takes blueprints/_template.apib, and generates *.apibs
 # for each model. Then, it concatenates all blueprints/*.apib into
 # apiary.apib, for use in Dredd, etc.
