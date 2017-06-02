@@ -1,0 +1,91 @@
+# Group Entities
+
+Endpoints to retrieve entity data.
+
+
+
+
+## Entity [/v1/entities/{id}]
+
+Endpoints dealing with a single entity.
+
+
+### Retrieve an Entity [GET]
+
++ Parameters
+    + id: `id[0]` (number)
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + data (Entity)
+
++ Request Non-existent entity
+
+    + Parameters
+        + id: `9223372036854775807` (number)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Error)
+
+
++ Request Invalid identifier
+
+    + Parameters
+        + id: `foobar` (number)
+
++ Response 400 (application/json; charset=utf-8)
+    + Attributes (Error)
+
+
+
+### Update an Entity [POST]
+
+Updating entities is forbidden.
+
++ Parameters
+    + id: `id[0]` (number)
+
++ Response 405 (application/json; charset=utf-8)
+    + Attributes (Error)
+
+
+
+
+## Multiple Entities [/v1/entities/?ids={ids}]
+
+Endpoints dealing with multiple entities.
+
+
+### Retrieve 2 Entities [GET]
+
++ Parameters
+    + ids: `id[0],id[1]` (string)
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes
+        + pagination (Pagination)
+        + data (array[Entity])
+
+
+
+
+## All Entities [/v1/entities]
+
+Provides pagination. Only supports GET.
+
+
+### List all Entities [GET]
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes
+        + pagination (Pagination)
+        + data (array[Entity])
+
+
+### Add Entities [POST]
+
+Adding entities is forbidden.
+
++ Response 405 (application/json; charset=utf-8)
+    + Attributes (Error)

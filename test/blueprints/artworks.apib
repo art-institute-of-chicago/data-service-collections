@@ -1,0 +1,91 @@
+# Group Artworks
+
+Endpoints to retrieve artwork data.
+
+
+
+
+## Artwork [/v1/artworks/{id}]
+
+Endpoints dealing with a single artwork.
+
+
+### Retrieve an Artwork [GET]
+
++ Parameters
+    + id: `111628` (number)
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + data (Artwork)
+
++ Request Non-existent artwork
+
+    + Parameters
+        + id: `9223372036854775807` (number)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Error)
+
+
++ Request Invalid identifier
+
+    + Parameters
+        + id: `foobar` (number)
+
++ Response 400 (application/json; charset=utf-8)
+    + Attributes (Error)
+
+
+
+### Update an Artwork [POST]
+
+Updating artworks is forbidden.
+
++ Parameters
+    + id: `111628` (number)
+
++ Response 405 (application/json; charset=utf-8)
+    + Attributes (Error)
+
+
+
+
+## Multiple Artworks [/v1/artworks/?ids={ids}]
+
+Endpoints dealing with multiple artworks.
+
+
+### Retrieve 2 Artworks [GET]
+
++ Parameters
+    + ids: `111628,79307` (string)
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes
+        + pagination (Pagination)
+        + data (array[Artwork])
+
+
+
+
+## All Artworks [/v1/artworks]
+
+Provides pagination. Only supports GET.
+
+
+### List all Artworks [GET]
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes
+        + pagination (Pagination)
+        + data (array[Artwork])
+
+
+### Add Artworks [POST]
+
+Adding artworks is forbidden.
+
++ Response 405 (application/json; charset=utf-8)
+    + Attributes (Error)

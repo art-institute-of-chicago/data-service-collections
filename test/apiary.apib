@@ -1,77 +1,9 @@
 FORMAT: 1A
+HOST: http://127.0.0.1:9393
 
 # Collections Data Service
 
 A simple API allowing clients to retrieve collections data from the Art Institute of Chicago.
-
-# Group Artworks
-
-Endpoints to retrieve artwork data
-
-## Artwork [/v1/artworks/{artwork_id}]
-
-### View an Artwork detail [GET]
-
-+ Parameters
-    + artwork_id: `111628` (number) - ID of the Artwork
-
-+ Response 200 (application/json; charset=utf-8)
-    + Attributes
-        + data (Artwork)
-
-### Artwork not found [GET]
-
-+ Parameters
-    + artwork_id: `234234298734298374` (number) - ID of the Artwork
-
-+ Response 404 (application/json; charset=utf-8)
-    + Attributes (Error)
-
-### Bad Artwork ID [GET]
-
-+ Parameters
-    + artwork_id: `sdfsdf` (number) - ID of the Artwork
-
-+ Response 400 (application/json; charset=utf-8)
-    + Attributes (Error)
-
-### Can't POST [POST]
-
-+ Parameters
-    + artwork_id: `111628` (number) - ID of the Artwork
-
-+ Response 405 (application/json; charset=utf-8)
-    + Attributes (Error)
-
-
-## Artwork [/v1/artworks/?ids={artwork_ids}]
-
-### View an Artwork detail [GET]
-
-+ Parameters
-    + artwork_ids: `111628,79307` (string) - IDs of the Artwork
-
-+ Response 200 (application/json; charset=utf-8)
-    + Attributes
-        + pagination (Pagination)
-        + data (array[Artwork])
-
-
-## Artwork [/v1/artworks]
-
-### View all Artworks [GET]
-
-+ Response 200 (application/json; charset=utf-8)
-    + Attributes
-        + pagination (Pagination)
-        + data (array[Artwork])
-
-### Can't POST [POST]
-
-+ Response 405 (application/json; charset=utf-8)
-    + Attributes (Error)
-
-
 
 
 
@@ -81,50 +13,67 @@ Endpoints to retrieve artwork data
 
 # Group Artists
 
-Endpoints to retrieve artist data
+Endpoints to retrieve artist data.
 
-## Artist [/v1/artists/{artist_id}]
 
-### View an Artist detail [GET]
+
+
+## Artist [/v1/artists/{id}]
+
+Endpoints dealing with a single artist.
+
+
+### Retrieve an Artist [GET]
 
 + Parameters
-    + artwork_id: `27823` (number) - ID of the Artist
+    + id: `27823` (number)
 
 + Response 200 (application/json; charset=utf-8)
+
     + Attributes
         + data (Artist)
 
-### Artist not found [GET]
++ Request Non-existent artist
 
-+ Parameters
-    + artist_id: `234234298734298374` (number) - ID of the Artist
+    + Parameters
+        + id: `9223372036854775807` (number)
 
 + Response 404 (application/json; charset=utf-8)
     + Attributes (Error)
 
-### Bad Artist ID [GET]
 
-+ Parameters
-    + artist_id: `sdfsdf` (number) - ID of the Artist
++ Request Invalid identifier
+
+    + Parameters
+        + id: `foobar` (number)
 
 + Response 400 (application/json; charset=utf-8)
     + Attributes (Error)
 
-### Can't POST [POST]
+
+
+### Update an Artist [POST]
+
+Updating artists is forbidden.
 
 + Parameters
-    + artist_id: `27823` (number) - ID of the Artist
+    + id: `27823` (number)
 
 + Response 405 (application/json; charset=utf-8)
     + Attributes (Error)
 
 
-## Artwork [/v1/artists/?ids={artist_ids}]
 
-### View an Artist detail [GET]
+
+## Multiple Artists [/v1/artists/?ids={ids}]
+
+Endpoints dealing with multiple artists.
+
+
+### Retrieve 2 Artists [GET]
 
 + Parameters
-    + artist_ids: `27823,9287` (string) - IDs of the Artist
+    + ids: `27823,9287` (string)
 
 + Response 200 (application/json; charset=utf-8)
     + Attributes
@@ -132,19 +81,127 @@ Endpoints to retrieve artist data
         + data (array[Artist])
 
 
-## Artwork [/v1/artists]
 
-### View all Artists [GET]
+
+## All Artists [/v1/artists]
+
+Provides pagination. Only supports GET.
+
+
+### List all Artists [GET]
 
 + Response 200 (application/json; charset=utf-8)
     + Attributes
         + pagination (Pagination)
         + data (array[Artist])
 
-### Can't POST [POST]
+
+### Add Artists [POST]
+
+Adding artists is forbidden.
 
 + Response 405 (application/json; charset=utf-8)
     + Attributes (Error)
+
+
+
+
+
+
+
+# Group Artworks
+
+Endpoints to retrieve artwork data.
+
+
+
+
+## Artwork [/v1/artworks/{id}]
+
+Endpoints dealing with a single artwork.
+
+
+### Retrieve an Artwork [GET]
+
++ Parameters
+    + id: `111628` (number)
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + data (Artwork)
+
++ Request Non-existent artwork
+
+    + Parameters
+        + id: `9223372036854775807` (number)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Error)
+
+
++ Request Invalid identifier
+
+    + Parameters
+        + id: `foobar` (number)
+
++ Response 400 (application/json; charset=utf-8)
+    + Attributes (Error)
+
+
+
+### Update an Artwork [POST]
+
+Updating artworks is forbidden.
+
++ Parameters
+    + id: `111628` (number)
+
++ Response 405 (application/json; charset=utf-8)
+    + Attributes (Error)
+
+
+
+
+## Multiple Artworks [/v1/artworks/?ids={ids}]
+
+Endpoints dealing with multiple artworks.
+
+
+### Retrieve 2 Artworks [GET]
+
++ Parameters
+    + ids: `111628,79307` (string)
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes
+        + pagination (Pagination)
+        + data (array[Artwork])
+
+
+
+
+## All Artworks [/v1/artworks]
+
+Provides pagination. Only supports GET.
+
+
+### List all Artworks [GET]
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes
+        + pagination (Pagination)
+        + data (array[Artwork])
+
+
+### Add Artworks [POST]
+
+Adding artworks is forbidden.
+
++ Response 405 (application/json; charset=utf-8)
+    + Attributes (Error)
+
+
 
 
 
@@ -152,50 +209,67 @@ Endpoints to retrieve artist data
 
 # Group Galleries
 
-Endpoints to retrieve gallery data
+Endpoints to retrieve gallery data.
 
-## Gallery [/v1/galleries/{gallery_id}]
 
-### View an Gallery detail [GET]
+
+
+## Gallery [/v1/galleries/{id}]
+
+Endpoints dealing with a single gallery.
+
+
+### Retrieve an Gallery [GET]
 
 + Parameters
-    + gallery_id: `2147483604` (number) - ID of the Gallery
+    + id: `2147483604` (number)
 
 + Response 200 (application/json; charset=utf-8)
+
     + Attributes
         + data (Gallery)
 
-### Gallery not found [GET]
++ Request Non-existent gallery
 
-+ Parameters
-    + gallery_id: `234234298734298374` (number) - ID of the Gallery
+    + Parameters
+        + id: `9223372036854775807` (number)
 
 + Response 404 (application/json; charset=utf-8)
     + Attributes (Error)
 
-### Bad Gallery ID [GET]
 
-+ Parameters
-    + gallery_id: `sdfsdf` (number) - ID of the Gallery
++ Request Invalid identifier
+
+    + Parameters
+        + id: `foobar` (number)
 
 + Response 400 (application/json; charset=utf-8)
     + Attributes (Error)
 
-### Can't POST [POST]
+
+
+### Update an Gallery [POST]
+
+Updating galleries is forbidden.
 
 + Parameters
-    + gallery_id: `27823` (number) - ID of the Gallery
+    + id: `2147483604` (number)
 
 + Response 405 (application/json; charset=utf-8)
     + Attributes (Error)
 
 
-## Artwork [/v1/galleries/?ids={gallery_ids}]
 
-### View an Gallery detail [GET]
+
+## Multiple Galleries [/v1/galleries/?ids={ids}]
+
+Endpoints dealing with multiple galleries.
+
+
+### Retrieve 2 Galleries [GET]
 
 + Parameters
-    + gallery_ids: `2147483604,2147477833` (string) - IDs of the Galleries
+    + ids: `2147483604,2147477833` (string)
 
 + Response 200 (application/json; charset=utf-8)
     + Attributes
@@ -203,19 +277,29 @@ Endpoints to retrieve gallery data
         + data (array[Gallery])
 
 
-## Gallery [/v1/galleries]
 
-### View all Galleries [GET]
+
+## All Galleries [/v1/galleries]
+
+Provides pagination. Only supports GET.
+
+
+### List all Galleries [GET]
 
 + Response 200 (application/json; charset=utf-8)
     + Attributes
         + pagination (Pagination)
         + data (array[Gallery])
 
-### Can't POST [POST]
+
+### Add Galleries [POST]
+
+Adding galleries is forbidden.
 
 + Response 405 (application/json; charset=utf-8)
     + Attributes (Error)
+
+
 
 
 
