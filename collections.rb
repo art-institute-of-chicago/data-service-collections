@@ -12,186 +12,98 @@ module Collections
     content_type :json, 'application/json; charset=utf-8'
     error_formatter :json, ErrorFormatter
 
-    resource :artworks do
 
-      desc 'Return an artwork'
-      params do
-        requires :id, type: Integer, desc: 'Artwork ID'
-      end
-      route_param :id do
+    # These routes will be applied to all models
+    def self.addResource( model )
+
+      r = Hash.new;
+
+      r[:model]         = model
+      r[:entity]        = model.name
+      r[:entities]      = model.name.pluralize
+      r[:route]         = model.name.pluralize.downcase.to_sym
+
+      resource r[:route] do
+
+        desc "Return an #{r[:entity]}"
+        params do
+          requires :id, type: Integer, desc: 'CITI ID'
+        end
+        route_param :id do
+          get do
+
+            entity = r[:model].new.find( params[:id] )
+
+            puts entity
+
+            # Abort if no results
+            error!({
+              error: "#{r[:entity]} not found",
+              detail: "#{r[:entity]} does not exist in LPM Solr. Ensure you are passing the CITI ID."
+            }, 404) if (!entity)
+
+            return entity
+
+          end
+          route :any do
+            error!({
+              error: "Method not allowed",
+              detail: "You may only GET #{r[:entities]}. No other method is allowed."
+            }, 405)
+          end
+        end
+
+        desc "Return all #{r[:entities]}, paginated, descending timestamp."
+        params do
+          optional :page, type: Integer, default: 1
+          optional :per_page, type: Integer, default: 12
+          optional :ids, type: String, default: '', regexp: /[0-9,]*/
+        end
         get do
 
-          artwork = Artwork.new.find(params[:id])
+          model = r[:model].new
 
-          # Abort if no results
-          error!({
-            error: 'Artwork not found',
-            detail: 'Artwork does not exist in LPM Solr. Ensure you are passing the CITI ID.'
-          }, 404) if (!artwork)
+          model.paginate(
+            env,
+            params.fetch(:page, 1),
+            params.fetch(:per_page, 12),
+          )
 
-          return artwork
+          model.find_all(
+            params.fetch(:ids, ''),
+          )
 
         end
         route :any do
           error!({
-            error: 'Method not allowed',
-            detail: 'You may only GET an artwork. No other method is allowed.'
+            error: "Method not allowed",
+            detail: "You may only GET #{r[:entities]}. No other method is allowed."
           }, 405)
         end
-      end
-
-      desc 'Return all artworks, paginated, descending timestamp.'
-      params do
-        optional :page, type: Integer, default: 1
-        optional :per_page, type: Integer, default: 12
-        optional :ids, type: String, default: '', regexp: /[0-9,]*/
-      end
-      get do
-
-        model = Artwork.new
-
-        model.paginate(
-          env,
-          params.fetch(:page, 1),
-          params.fetch(:per_page, 12),
-        )
-
-        model.find_all(
-          params.fetch(:ids, ''),
-        )
 
       end
-      route :any do
-        error!({
-          error: 'Method not allowed',
-          detail: 'You may only GET an artwork. No other method is allowed.'
-        }, 405)
-      end
-    end
 
-    resource :artists do
-
-      desc 'Return an artist'
-      params do
-        requires :id, type: Integer, desc: 'Artist ID'
-      end
-      route_param :id do
-        get do
-
-          artist = Artist.new.find(params[:id])
-
-          # Abort if no results
-          error!({
-            error: 'Artist not found',
-            detail: 'Artist does not exist in LPM Solr. Ensure you are passing the CITI ID.'
-          }, 404) if (!artist)
-
-          return artist
-
-        end
-        route :any do
-          error!({
-            error: 'Method not allowed',
-            detail: 'You may only GET an artist. No other method is allowed.'
-          }, 405)
-        end
-      end
-
-      desc 'Return all artists, paginated, descending timestamp.'
-      params do
-        optional :page, type: Integer, default: 1
-        optional :per_page, type: Integer, default: 12
-        optional :ids, type: String, default: '', regexp: /[0-9,]*/
-      end
-      get do
-
-        model = Artist.new
-
-        model.paginate(
-          env,
-          params.fetch(:page, 1),
-          params.fetch(:per_page, 12)
-        )
-
-        model.find_all(
-          params.fetch(:ids, '')
-        )
-
-      end
-      route :any do
-        error!({
-          error: 'Method not allowed',
-          detail: 'You may only GET an artist. No other method is allowed.'
-        }, 405)
-      end
     end
 
 
-    resource :galleries do
+    self.addResource( Artwork )
 
-      desc 'Return a gallery'
-      params do
-        requires :id, type: Integer, desc: 'Gallery ID'
-      end
-      route_param :id do
-        get do
 
-          gallery = Gallery.new.find(params[:id])
+    self.addResource( Artist  )
 
-          # Abort if no results
-          error!({
-            error: 'Gallery not found',
-            detail: 'Gallery does not exist in LPM Solr. Ensure you are passing the CITI ID.'
-          }, 404) if (!gallery)
 
-          return gallery
-
-        end
-        route :any do
-          error!({
-            error: 'Method not allowed',
-            detail: 'You may only GET a gallery. No other method is allowed.'
-          }, 405)
-        end
-      end
-
-      desc 'Return all galleries, paginated, descending timestamp.'
-      params do
-        optional :page, type: Integer, default: 1
-        optional :per_page, type: Integer, default: 12
-        optional :ids, type: String, default: '', regexp: /[0-9,]*/
-      end
-      get do
-
-        model = Gallery.new
-
-        model.paginate(
-          env,
-          params.fetch(:page, 1),
-          params.fetch(:per_page, 12)
-        )
-
-        model.find_all(
-          params.fetch(:ids, '')
-        )
-
-      end
-      route :any do
-        error!({
-          error: 'Method not allowed',
-          detail: 'You may only GET a gallery. No other method is allowed.'
-        }, 405)
-      end
-    end
+    self.addResource( Gallery )
 
 
     # Throw a 404 for all undefined endpoints
     route :any, '*path' do
       error!({
         error: 'Endpoint not found',
-        detail: 'The endpoint you\'re requesting cannot by found'
+        detail: 'The endpoint you are requesting cannot be found'
       }, 404)
     end
+
+
   end
 end
 
