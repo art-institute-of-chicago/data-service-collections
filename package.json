@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
       "test": "echo \"Error: no test specified\" && exit 1",
-      "dredd": "cd test; dredd || true"
+      "dredd": "cd test; ./generate.sh; dredd; ./cleanup.sh || true"
   },
   "repository": {
     "type": "git",

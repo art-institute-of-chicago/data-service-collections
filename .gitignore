@@ -1,3 +1,7 @@
 node_modules
 conf.yaml
 npm-debug.log
+
+# Ignore all blueprints, except templates
+*.apib
+!test/blueprints/_*.apib
