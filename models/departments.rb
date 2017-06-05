@@ -6,21 +6,6 @@ class Department < BaseModel
     self.fq = 'hasModel:Department'
   end
 
-  # TODO: Abstract boolean into lake_unwrapper.rb (?)
-  # isClosed contains some irregularities that prevent it from abstraction
-  def isClosed( data )
-
-    # default to expectations...
-    return true if data == "True"
-    return false
-
-    # other responses, for reference:
-    return false if data == nil
-    return false if data == "False"
-    return false if data == "<NOT Closed>"
-
-  end
-
   def transform( data )
 
     # We are aiming to use the LPM fields only, for forwards compatibility
