@@ -95,6 +95,9 @@ module Collections
     self.addResource( Gallery )
 
 
+    self.addResource( Department )
+
+
     # Throw a 404 for all undefined endpoints
     route :any, '*path' do
       error!({

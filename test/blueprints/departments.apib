@@ -1,0 +1,91 @@
+# Group Departments
+
+Endpoints to retrieve department data.
+
+
+
+
+## Department [/v1/departments/{id}]
+
+Endpoints dealing with a single department.
+
+
+### Retrieve an Department [GET]
+
++ Parameters
+    + id: `86` (number)
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + data (Department)
+
++ Request Non-existent department
+
+    + Parameters
+        + id: `9223372036854775807` (number)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Error)
+
+
++ Request Invalid identifier
+
+    + Parameters
+        + id: `foobar` (number)
+
++ Response 400 (application/json; charset=utf-8)
+    + Attributes (Error)
+
+
+
+### Update an Department [POST]
+
+Updating departments is forbidden.
+
++ Parameters
+    + id: `86` (number)
+
++ Response 405 (application/json; charset=utf-8)
+    + Attributes (Error)
+
+
+
+
+## Multiple Departments [/v1/departments/?ids={ids}]
+
+Endpoints dealing with multiple departments.
+
+
+### Retrieve 2 Departments [GET]
+
++ Parameters
+    + ids: `86,941` (string)
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes
+        + pagination (Pagination)
+        + data (array[Department])
+
+
+
+
+## All Departments [/v1/departments]
+
+Provides pagination. Only supports GET.
+
+
+### List all Departments [GET]
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes
+        + pagination (Pagination)
+        + data (array[Department])
+
+
+### Add Departments [POST]
+
+Adding departments is forbidden.
+
++ Response 405 (application/json; charset=utf-8)
+    + Attributes (Error)

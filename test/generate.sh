@@ -30,6 +30,7 @@ MODELS=(
 	"artwork,     artworks,     111628,      79307     "
 	"artist,      artists,      27823,       9287      "
 	"gallery,     galleries,    2147483604,  2147477833"
+	"department,  departments,  86,          941       "
 )
 
 DESTINATION="apiary.apib";
