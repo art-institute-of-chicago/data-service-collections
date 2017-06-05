@@ -26,6 +26,10 @@ class Artist < BaseModel
     ret[:titles][:raw] = data.get(:title)
     ret[:titles][:display] = data.get(:prefLabel)
 
+    ret[:dates] = {}
+    ret[:dates][:birth] = data.get(:birthDate)
+    ret[:dates][:death] = data.get(:deathDate)
+
     ret[:created_at] = data.get(:created)
     ret[:created_by] = data.get(:createdBy)
     ret[:modified_at] = data.get(:lastModified)
