@@ -1,10 +1,25 @@
 ## Data Structures
 
-### Artwork
+### Common
 + id (number, required)
-+ title (string)
-+ ids (object)
-+ titles (object)
++ title (required)
++ titles (object, required)
+  + raw (required)
++ created_at (required)
++ created_by (required)
++ modified_at (required)
++ modified_by (required)
+
+### Identifiers
++ citi (number, required)
++ lake (object, required)
+  + uid (required)
+  + guid (required)
+  + uri (required)
+
+### Artwork
++ Include Common
++ ids (Identifiers, required)
 + dates (object)
 + creator (object)
 + department (object)
@@ -13,47 +28,24 @@
 + inscriptions (string)
 + credit_line (string)
 + history (object)
-+ created_at (string)
-+ created_by (string)
-+ modified_at (string)
-+ modified_by (string)
 
 ### Artist
-+ id (number, required)
-+ title (string)
-+ ids (object)
-+ titles (object)
++ Include Common
++ ids (Identifiers, required)
 + dates (object)
   + birth (required)
   + death (required)
-+ created_at (string)
-+ created_by (string)
-+ modified_at (string)
-+ modified_by (string)
 
 ### Gallery
-+ id (number, required)
-+ title (string)
-+ ids (object)
-+ titles (object)
-+ closed (boolean)
-+ number (number)
-+ floor (number)
-+ created_at (string)
-+ created_by (string)
-+ modified_at (string)
-+ modified_by (string)
++ Include Common
++ ids (Identifiers, required)
++ closed (boolean, required)
++ number (number, required)
++ floor (number, required)
 
 ### Department
-+ id (number, required)
-+ title (string)
++ Include Common
 + ids (object)
-+ titles (object)
-+ created_at (string)
-+ created_by (string)
-+ modified_at (string)
-+ modified_by (string)
-
 
 ### Error
 + status (number)
