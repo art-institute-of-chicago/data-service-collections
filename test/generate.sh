@@ -27,10 +27,11 @@ cd "$( dirname "${BASH_SOURCE[0]}" )"
 # FIELDS: singular, plural, two valid IDs
 
 MODELS=(
-	"artwork,     artworks,     111628,      79307     "
-	"artist,      artists,      40610,       9287      "
-	"gallery,     galleries,    2147483604,  2147477833"
-	"department,  departments,  86,          941       "
+	"artwork,       artworks,       111628,         79307     "
+	"artist,        artists,        40610,          9287      "
+	"gallery,       galleries,      2147483604,     2147477833"
+	"department,    departments,    86,             941       "
+	"agenttype,     agenttypes,     26,             20        "
 )
 
 DESTINATION="apiary.apib";

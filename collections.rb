@@ -101,6 +101,9 @@ module Collections
     self.addResource( Theme )
 
 
+    self.addResource( AgentType )
+
+
     # Throw a 404 for all undefined endpoints
     route :any, '*path' do
       error!({
