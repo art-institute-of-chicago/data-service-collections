@@ -102,6 +102,9 @@ module Collections
     self.addResource( AgentType )
 
 
+    self.addResource( Curriculum )
+
+
     # Throw a 404 for all undefined endpoints
     route :any, '*path' do
       error!({

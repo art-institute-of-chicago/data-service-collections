@@ -32,6 +32,7 @@ MODELS=(
 	"gallery,       galleries,      2147483604,     2147477833"
 	"department,    departments,    86,             941       "
 	"agenttype,     agenttypes,     26,             20        "
+	"curriculum,    curriculums,    4,              3         "
 )
 
 DESTINATION="apiary.apib";
