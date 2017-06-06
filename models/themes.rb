@@ -3,8 +3,7 @@ class Theme < BaseModel
 
   def initialize
     super
-    # TODO: Remove the OR once pubCatType:3 is fixed
-    self.fq = 'hasModel:PublishCategory AND (pubCatType:3 OR citiUid:142)'
+    self.fq = 'hasModel:PublishCategory AND pubCatType:3'
   end
 
   def transform( data, ret )
