@@ -33,6 +33,7 @@ MODELS=(
 	"department,    departments,    86,             941       "
 	"agenttype,     agenttypes,     26,             20        "
 	"curriculum,    curriculums,    4,              3         "
+	"gradelevel,    gradelevels,    1,              2         "
 )
 
 DESTINATION="apiary.apib";

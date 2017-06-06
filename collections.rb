@@ -105,6 +105,9 @@ module Collections
     self.addResource( Curriculum )
 
 
+    self.addResource( GradeLevel )
+
+
     # Throw a 404 for all undefined endpoints
     route :any, '*path' do
       error!({
