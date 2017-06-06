@@ -1,4 +1,3 @@
-# Model class for Galleries
 class Gallery < BaseModel
 
   def initialize

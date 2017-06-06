@@ -1,4 +1,3 @@
-# Model class for Departments
 class Department < BaseModel
 
   def initialize

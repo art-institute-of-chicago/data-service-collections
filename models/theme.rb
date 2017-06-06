@@ -1,4 +1,3 @@
-# Model class for Themes
 class Theme < BaseModel
 
   def initialize

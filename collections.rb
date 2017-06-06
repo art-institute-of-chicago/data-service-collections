@@ -34,8 +34,6 @@ module Collections
 
             entity = r[:model].new.find( params[:id] )
 
-            puts entity
-
             # Abort if no results
             error!({
               error: "#{r[:entity]} not found",

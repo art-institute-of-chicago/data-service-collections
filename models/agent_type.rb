@@ -1,4 +1,3 @@
-# Model class for Departments
 class AgentType < BaseModel
 
   def initialize

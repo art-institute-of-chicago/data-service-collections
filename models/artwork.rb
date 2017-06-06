@@ -1,4 +1,3 @@
-# Model class for Artworks
 class Artwork < BaseModel
 
   def initialize
