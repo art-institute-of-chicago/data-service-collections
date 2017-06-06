@@ -31,6 +31,7 @@ MODELS=(
 	"artist,        artists,        40610,          9287      "
 	"gallery,       galleries,      2147483604,     2147477833"
 	"department,    departments,    86,             941       "
+	"theme,         themes,         153,            111       "
 	"agenttype,     agenttypes,     26,             20        "
 	"curriculum,    curriculums,    4,              3         "
 	"gradelevel,    gradelevels,    1,              2         "
