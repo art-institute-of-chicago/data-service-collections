@@ -137,19 +137,48 @@ class BaseModel
   end
 
   # Private helper function, disregard
-  def _transform( datum )
+  def _transform( data )
+
+    # We are aiming to use the LPM fields only, for forwards compatibility
+    # Everything below the `id` field is drawn from CITI's Web Solr instance
 
     # This allows data to use the get method
-    datum.extend LakeUnwrapper
-    self.transform( datum )
+    data.extend LakeUnwrapper
+
+    # Defining this here allows us to set some common fields
+    ret = {}
+
+    ret[:id] = data.get(:citiUid, true, true)
+    ret[:title] = data.get(:title)
+
+    ret[:ids] = {}
+    ret[:ids][:citi] = data.get(:citiUid, true, true)
+    ret[:ids][:lake] = {}
+    ret[:ids][:lake][:uid] = data.get(:uid)
+    ret[:ids][:lake][:guid] = data.get(:id, false)
+    ret[:ids][:lake][:uri] = data.get(:uri, false)
+
+    ret[:titles] = {}
+    ret[:titles][:raw] = data.get(:title)
+    ret[:titles][:display] = data.get(:prefLabel)
+
+    self.transform( data, ret )
+
+    ret[:created_at] = data.get(:created)
+    ret[:created_by] = data.get(:createdBy)
+    ret[:modified_at] = data.get(:lastModified)
+    ret[:modified_by] = data.get(:lastModifiedBy)
+
+    ret
 
   end
 
 
   # Override this in subclass!
-  def transform( datum )
+  # Operates on a single datum
+  def transform( data, ret )
 
-    datum
+    data
 
   end
 
