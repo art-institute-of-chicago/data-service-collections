@@ -3,8 +3,10 @@
 ### Common
 + id (number, required)
 + title (required)
++ ids (Identifiers, required)
 + titles (object, required)
   + raw (required)
+  + display (required)
 + created_at (required)
 + created_by (required)
 + modified_at (required)
@@ -19,7 +21,6 @@
 
 ### Artwork
 + Include Common
-+ ids (Identifiers, required)
 + dates (object)
 + creator (object)
 + department (object)
@@ -31,34 +32,28 @@
 
 ### Artist
 + Include Common
-+ ids (Identifiers, required)
 + dates (object)
   + birth (required)
   + death (required)
 
 ### Gallery
 + Include Common
-+ ids (Identifiers, required)
 + closed (boolean, required)
 + number (number, required)
 + floor (number, required)
 
 ### Department
 + Include Common
-+ ids (object)
 
 <!-- TODO: Fix capitalization in generation -->
 ### Agenttype
 + Include Common
-+ ids (object)
 
 ### Curriculum
 + Include Common
-+ ids (object)
 
 ### Gradelevel
 + Include Common
-+ ids (object)
 
 ### Error
 + status (number)
