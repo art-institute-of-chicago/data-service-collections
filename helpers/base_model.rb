@@ -31,6 +31,7 @@ class BaseModel
 
     {
       "data": self.transform!( input[:response][:docs][0] ),
+      "query": input.request[:uri].to_s.sub('wt=ruby', 'wt=json'),
     }
 
   end
@@ -51,6 +52,7 @@ class BaseModel
     {
       "pagination": self.pagination( input ),
       "data": self.transform!( input[:response][:docs] ),
+      "query": input.request[:uri].to_s.sub('wt=ruby', 'wt=json'),
     }
 
   end
