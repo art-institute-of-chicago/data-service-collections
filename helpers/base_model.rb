@@ -167,9 +167,7 @@ class BaseModel
     self.transform( data, ret )
 
     ret[:created_at] = data.get(:created)
-    ret[:created_by] = data.get(:createdBy)
     ret[:modified_at] = data.get(:lastModified)
-    ret[:modified_by] = data.get(:lastModifiedBy)
     ret[:indexed_at] = data.get(:timestamp, false)
 
     ret
