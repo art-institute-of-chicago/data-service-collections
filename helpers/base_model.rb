@@ -150,19 +150,10 @@ class BaseModel
     # Defining this here allows us to set some common fields
     ret = {}
 
-    ret[:id] = data.get(:citiUid, true, true)
+    ret[:id] = Integer( data.get(:citiUid) )
     ret[:title] = data.get(:title)
-
-    ret[:ids] = {}
-    ret[:ids][:citi] = data.get(:citiUid, true, true)
-    ret[:ids][:lake] = {}
-    ret[:ids][:lake][:uid] = data.get(:uid)
-    ret[:ids][:lake][:guid] = data.get(:id, false)
-    ret[:ids][:lake][:uri] = data.get(:uri, false)
-
-    ret[:titles] = {}
-    ret[:titles][:raw] = data.get(:title)
-    ret[:titles][:display] = data.get(:prefLabel)
+    ret[:lake_guid] = data.get(:id, false)
+    ret[:lake_uri] = data.get(:uri, false)
 
     self.transform( data, ret )
 

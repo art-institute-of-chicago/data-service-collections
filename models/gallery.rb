@@ -27,9 +27,9 @@ class Gallery < BaseModel
   def transform( data, ret )
 
     ret[:closed] = isClosed( data.get(:isClosed) )
-    ret[:number] = data.get(:galleryNumber, true, true)
-    ret[:floor] = data.get(:galleryFloor, true, true) # one result w/ 0
-    ret[:category] = data.get(:publishCategory)
+    ret[:number] = Integer( data.get(:galleryNumber) )
+    ret[:floor] = Integer( data.get(:galleryFloor) ) # two results w/ 0
+    ret[:category] = data.get(:publishCategory) # TODO: Change to ids
 
     ret
 

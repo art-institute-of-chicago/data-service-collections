@@ -10,7 +10,7 @@ class Theme < BaseModel
     ret[:description] = data.get(:description)
 
     ret[:is_in_nav] = data.get(:isInNav) == "True" ? true : false;
-    ret[:sort] = data.get(:sort, true, true)
+    ret[:sort] = Integer( data.get(:sort) )
 
     ret
 

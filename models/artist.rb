@@ -7,9 +7,8 @@ class Artist < BaseModel
 
   def transform( data, ret )
 
-    ret[:dates] = {}
-    ret[:dates][:birth] = data.get(:birthDate)
-    ret[:dates][:death] = data.get(:deathDate)
+    ret[:date_birth] = data.get(:birthDate)
+    ret[:date_death] = data.get(:deathDate)
 
     ret
 

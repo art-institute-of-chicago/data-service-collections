@@ -7,35 +7,28 @@ class Artwork < BaseModel
 
   def transform( data, ret )
 
-    ret[:ids][:main] = data.get(:mainRefNumber) # unusual for this model
+    ret[:main_id] = data.get(:mainRefNumber) # unusual for this model
 
-    ret[:dates] = {}
-    ret[:dates][:start] = data.get(:earliestYear, true, true)
-    ret[:dates][:end] = data.get(:latestYear, true, true)
-    ret[:dates][:display] = data.get(:dateDisplay)
+    ret[:date_display] = data.get(:dateDisplay)
+    ret[:date_start] = Integer( data.get(:earliestYear) )
+    ret[:date_end] = Integer( data.get(:latestYear) )
 
-    ret[:creator] = {}
-    ret[:creator][:id] = data.get(:artist_uid)
-    ret[:creator][:raw] = data.get(:artist)
-    ret[:creator][:display] = data.get(:creatorDisplay)
+    ret[:creator_id] = CitiId( data.get(:artist_uid) )
+    ret[:creator_display] = data.get(:creatorDisplay)
 
-    ret[:department] = {}
-    ret[:department][:id] = data.get(:department_uid)
-    ret[:department][:display] = data.get(:department)
+    ret[:department_id] = CitiId( data.get(:department_uid) )
 
     ret[:dimensions] = data.get(:dimensionsDisplay)
 
-    ret[:medium] = {}
-    ret[:medium][:raw] = data.get(:medium)
-    ret[:medium][:display] = data.get(:mediumDisplay)
+    ret[:medium] = data.get(:mediumDisplay)
 
-    ret[:inscriptions] = data.get(:inscriptions)
     ret[:credit_line] = data.get(:creditLine)
 
-    ret[:history] = {}
-    ret[:history][:publications] = data.get(:publicationHistory)
-    ret[:history][:exhibitions] = data.get(:exhibitionHistory)
-    ret[:history][:provenance] = data.get(:provenanceText)
+    ret[:inscriptions] = data.get(:inscriptions)
+
+    ret[:publications] = data.get(:publicationHistory)
+    ret[:exhibitions] = data.get(:exhibitionHistory)
+    ret[:provenance] = data.get(:provenanceText)
 
     ret
 
