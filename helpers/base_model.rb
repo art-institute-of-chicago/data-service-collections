@@ -179,7 +179,7 @@ class BaseModel
   # Operates on a single datum
   def transform( data, ret )
 
-    data
+    ret
 
   end
 
