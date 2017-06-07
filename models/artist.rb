@@ -7,8 +7,8 @@ class Artist < BaseModel
 
   def transform( data, ret )
 
-    ret[:date_birth] = data.get(:birthDate)
-    ret[:date_death] = data.get(:deathDate)
+    ret[:date_birth] = data.get(:birthDate) ? Integer( Date.parse( data.get(:birthDate) ).strftime('%Y') ) : nil
+    ret[:date_death] = data.get(:deathDate) ? Integer( Date.parse( data.get(:deathDate) ).strftime('%Y') ) : nil
 
     ret
 
