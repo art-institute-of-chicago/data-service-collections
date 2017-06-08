@@ -29,7 +29,12 @@ class Gallery < BaseModel
     ret[:closed] = isClosed( data.get(:isClosed) )
     ret[:number] = Integer( data.get(:galleryNumber) )
     ret[:floor] = Integer( data.get(:galleryFloor) ) # two results w/ 0
-    ret[:category] = data.get(:publishCategory) # TODO: Change to ids
+
+    ret[:latitude] = data.get(:latitude, false)
+    ret[:longitude] = data.get(:longitude, false)
+
+    # I don't want to pass names. Waiting until we get GUIDs.
+    # ret[:category] = data.get(:publishCategory)
 
     ret
 
