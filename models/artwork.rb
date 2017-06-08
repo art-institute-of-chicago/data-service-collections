@@ -10,13 +10,19 @@ class Artwork < BaseModel
     ret[:main_id] = data.get(:mainRefNumber) # unusual for this model
 
     ret[:date_display] = data.get(:dateDisplay)
-    ret[:date_start] = Integer( data.get(:earliestYear) )
-    ret[:date_end] = Integer( data.get(:latestYear) )
+    ret[:date_start] = Integer( data.get(:earliestYear) ) rescue nil
+    ret[:date_end] = Integer( data.get(:latestYear) ) rescue nil
 
-    ret[:creator_id] = CitiId( data.get(:artist_uid) )
+    ret[:creator_id] = Lake2Citi( data.get(:artist_uid) )
     ret[:creator_display] = data.get(:creatorDisplay)
 
-    ret[:department_id] = CitiId( data.get(:department_uid) )
+    ret[:image_guid] = Uri2Guid( data.get(:hasPreferredRepresentation_uri) )
+
+    # TODO: Get coordinates from mobile app CMS
+    # https://lakesolridxweb.artic.edu/solr/lpm/select?wt=json&rows=0&facet.limit=-1&facet.field=galleryLocation
+    ret[:location] = data.get(:galleryLocation)
+
+    ret[:department_id] = Lake2Citi( data.get(:department_uid) )
 
     ret[:dimensions] = data.get(:dimensionsDisplay)
 
@@ -24,11 +30,18 @@ class Artwork < BaseModel
 
     ret[:credit_line] = data.get(:creditLine)
 
+    ret[:copyright] = data.get(:copyrightNotice, false)
+
     ret[:inscriptions] = data.get(:inscriptions)
 
     ret[:publications] = data.get(:publicationHistory)
     ret[:exhibitions] = data.get(:exhibitionHistory)
     ret[:provenance] = data.get(:provenanceText)
+
+    ret[:category_guids] = Uri2Guid( data.get(:publishCategory, false) )
+
+    ret[:document_guids] = Uri2Guid( data.get(:hasDocument_uri, false) )
+
 
     ret
 
