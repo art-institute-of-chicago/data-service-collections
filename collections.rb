@@ -96,7 +96,7 @@ module Collections
     self.addResource( Department )
 
 
-    self.addResource( Theme )
+    self.addResource( Category )
 
 
     self.addResource( AgentType )
