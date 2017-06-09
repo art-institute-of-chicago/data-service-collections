@@ -27,7 +27,10 @@ class Gallery < BaseModel
   def transform( data, ret )
 
     ret[:closed] = isClosed( data.get(:isClosed) )
-    ret[:number] = Integer( data.get(:galleryNumber) )
+
+    # Some galleryNumbers are NOT numbers, e.g. 297A
+    ret[:number] = data.get(:galleryNumber)
+
     ret[:floor] = Integer( data.get(:galleryFloor) ) # two results w/ 0
 
     ret[:latitude] = data.get(:latitude, false)
