@@ -3,6 +3,7 @@ class Gallery < BaseModel
   def initialize
     super
     self.fq = 'hasModel:Place'
+    self.fq << ' AND locationType_uri:"AIC Gallery"'
   end
 
   # TODO: Abstract boolean into lake_unwrapper.rb (?)
