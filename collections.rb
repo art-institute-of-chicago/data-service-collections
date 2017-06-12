@@ -108,6 +108,18 @@ module Collections
     self.addResource( GradeLevel )
 
 
+    self.addResource( Sound )
+
+
+    self.addResource( Video )
+
+
+    self.addResource( Text )
+
+
+    self.addResource( Link )
+
+
     # Throw a 404 for all undefined endpoints
     route :any, '*path' do
       error!({
