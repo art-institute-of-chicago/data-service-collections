@@ -59,15 +59,52 @@ class BaseModel
 
 
   def find( id )
-    self.select( "citiUid:#{id}", 1 )
+
+    if id.include? '-'
+      self.select( "id:#{id}", 1 )
+    else
+      self.select( "citiUid:#{id}", 1 )
+    end
+
   end
 
 
   def find_all( ids='', page=nil, per_page=nil )
 
+    fq = ''
+
     if( ids.length > 0 )
-      ids = ids.split(',').join(' OR ')
-      fq = " AND citiUid:(#{ids})"
+
+      ids = ids.split(',')
+
+      citi_ids = []
+      lake_ids = []
+
+      ids.each { |id|
+
+        if id.include? '-'
+          lake_ids.push( id )
+        else
+          citi_ids.push( id )
+        end
+
+      }
+
+      citi_ids = citi_ids.join(' OR ')
+      lake_ids = lake_ids.join(' OR ')
+
+      fq << " AND ("
+
+      if citi_ids.length > 0
+        fq << " citiUid:(#{citi_ids})"
+      end
+
+      if lake_ids.length > 0
+        fq << " id:(#{lake_ids})"
+      end
+
+      fq << " )"
+
     end
 
     if( !page.nil? && !per_page.nil? )

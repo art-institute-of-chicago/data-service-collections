@@ -27,7 +27,10 @@ module Collections
 
         desc "Return an #{r[:entity]}"
         params do
-          requires :id, type: Integer, desc: 'CITI ID'
+          requires :id, desc: 'CITI ID or LAKE GUID', regexp: /^
+            # match integer or guid
+            (?:[0-9]+|[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12})
+          $/x
         end
         route_param :id do
           get do
@@ -37,7 +40,7 @@ module Collections
             # Abort if no results
             error!({
               error: "#{r[:entity]} not found",
-              detail: "#{r[:entity]} does not exist in LPM Solr. Ensure you are passing the CITI ID."
+              detail: "#{r[:entity]} does not exist in LPM Solr. Ensure you are passing the CITI ID or LAKE GUID."
             }, 404) if (!entity)
 
             return entity
@@ -55,7 +58,11 @@ module Collections
         params do
           optional :page, type: Integer, default: 1
           optional :per_page, type: Integer, default: 12
-          optional :ids, type: String, default: '', regexp: /[0-9,]*/
+          optional :ids, type: String, default: '', regexp: /^(?:
+            # match comma-separated integers or guids, disallow comma after last item
+            (?:(?:[0-9]+|[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}),*)+
+            (?:[0-9]+|[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12})
+          )*$/x
         end
         get do
 
