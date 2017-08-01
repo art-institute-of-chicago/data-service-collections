@@ -39,6 +39,13 @@ class ResourceModel < BaseModel
 
   def transform( data, ret )
 
+    # We want the id field to be the LAKE GUID, not the CITI ID
+
+    ret[:id] = ret[:lake_guid]
+
+    ret.delete(:lake_guid)
+
+
     # In addition to the BaseModel API fields, all interpretive resources share the following fields:
 
     ret[:description] = getDescription( data )
