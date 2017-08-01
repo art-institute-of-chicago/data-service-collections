@@ -32,7 +32,9 @@ class Gallery < BaseModel
     # Some galleryNumbers are NOT numbers, e.g. 297A
     ret[:number] = data.get(:galleryNumber)
 
-    ret[:floor] = Integer( data.get(:galleryFloor) ) # two results w/ 0
+    # Some galleryFloors are NOT numbers, e.g. LL
+    # https://lakesolridxweb.artic.edu/solr/lpm_prod/select?wt=json&facet.field=galleryFloor&facet.limit=-1&rows=0
+    ret[:floor] = data.get(:galleryFloor)
 
     ret[:latitude] = data.get(:latitude, false)
     ret[:longitude] = data.get(:longitude, false)
