@@ -38,7 +38,8 @@ class Artwork < BaseModel
     ret[:exhibitions] = data.get(:exhibitionHistory)
     ret[:provenance] = data.get(:provenanceText)
 
-    ret[:category_guids] = Uri2Guid( data.get(:publishCategory, false) )
+    # TODO: Change this to publishCategory_citiUid once that's available
+    ret[:category_ids] = data.get(:published_category_i, false)
 
     ret[:document_guids] = Uri2Guid( data.get(:hasDocument_uri, false) )
 
