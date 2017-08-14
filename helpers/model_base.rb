@@ -1,17 +1,14 @@
 class BaseModel
 
   # https://github.com/rsolr/rsolr
-  cattr_accessor :fq, :solr, :page, :per_page, :env
+  cattr_accessor :fq, :solr, :page, :per_page, :url
 
   def initialize
     self.fq = ''
     self.solr = RSolr.connect url: COLLECTIONS_URL
     self.page = 1
     self.per_page = 12
-    self.env = {
-      'PATH_INFO' => '/',
-      'REQUEST_URI' => 'http://localhost:9393/',
-    }
+    self.url = 'http://localhost:9393/'
   end
 
 
@@ -117,8 +114,8 @@ class BaseModel
 
 
   # This should be called before any Solr query
-  def paginate( env, page, per_page )
-    self.env = env
+  def paginate( url, page, per_page )
+    self.url = url
     self.page = page
     self.per_page = per_page
   end
@@ -140,15 +137,14 @@ class BaseModel
     }
 
     # Get base string for pagination
-    path = self.env['PATH_INFO']
-    host = self.env['REQUEST_URI'].split( path ).first
-    base = host + path + '?'
+    base = self.url
+    base = base.gsub(/\?.*/, '') + '?'
 
     can_prev = self.page - 1 > 0
     can_next = self.page + 1 < pages[:total]
 
     links = {
-      # self: env['REQUEST_URI'],
+      # self: self.url,
       # first: base + { :page => 1, :per_page => params[:per_page]}.to_query,
       prev: can_prev ? base + { :page => self.page - 1, :per_page => self.per_page }.to_query : nil,
       next: can_next ? base + { :page => self.page + 1, :per_page => self.per_page }.to_query : nil,

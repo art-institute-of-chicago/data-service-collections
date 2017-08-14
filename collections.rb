@@ -12,7 +12,6 @@ module Collections
     content_type :json, 'application/json; charset=utf-8'
     error_formatter :json, ErrorFormatter
 
-
     # These routes will be applied to all models
     def self.addResource( model )
 
@@ -69,7 +68,7 @@ module Collections
           model = r[:model].new
 
           model.paginate(
-            env,
+            request.url,
             params.fetch(:page, 1),
             params.fetch(:per_page, 12),
           )
