@@ -2,6 +2,11 @@ node_modules
 conf.yaml
 npm-debug.log
 
+# Ignore Passenger + Bundler deployment-related stuff
+vendor
+.bundle
+
+# Handy folder for keeping notes
 tmp
 
 # Ignore all blueprints, except templates
