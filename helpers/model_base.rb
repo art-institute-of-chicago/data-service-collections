@@ -140,8 +140,9 @@ class BaseModel
     base = self.url
     base = base.gsub(/\?.*/, '') + '?'
 
+    # Pages are 1-indexed
     can_prev = self.page - 1 > 0
-    can_next = self.page + 1 < pages[:total]
+    can_next = self.page + 1 <= pages[:total]
 
     links = {
       # self: self.url,
