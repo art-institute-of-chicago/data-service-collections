@@ -132,7 +132,7 @@ class BaseModel
     }
 
     pages = {
-      total: (results[:total] / results[:limit].to_f).floor + 1,
+      total: (results[:total] / results[:limit].to_f).ceil,
       current: (results[:offset] / results[:limit].to_f).floor + 1,
     }
 
