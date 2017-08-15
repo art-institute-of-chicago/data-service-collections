@@ -184,9 +184,10 @@ class BaseModel
     # Defining this here allows us to set some common fields
     ret = {}
 
-    # Not all resources will have a citiUid
+    # Not all resources will have a citiUid, but it is cannonical for most entities
     ret[:id] = Integer( data.get(:citiUid) ) rescue nil
     ret[:title] = data.get(:title)
+    ret[:citi_id] = Integer( data.get(:citiUid) ) rescue nil
     ret[:lake_guid] = data.get(:id, false)
     ret[:lake_uri] = data.get(:uri, false)
 

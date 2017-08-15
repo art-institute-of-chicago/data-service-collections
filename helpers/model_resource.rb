@@ -39,11 +39,11 @@ class ResourceModel < BaseModel
 
   def transform( data, ret )
 
-    # We want the id field to be the LAKE GUID, not the CITI ID
-
+    # For assets, we want the cannonical id to be the LAKE GUID, not the CITI ID
     ret[:id] = ret[:lake_guid]
 
-    ret.delete(:lake_guid)
+    # Keep the lake_guid field too, for clarity
+    # ret.delete(:lake_guid)
 
 
     # In addition to the BaseModel API fields, all interpretive resources share the following fields:
