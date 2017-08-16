@@ -35,6 +35,8 @@ MODELS=(
 	"agent-type,    agent-types,    26,             20        "
 	"curriculum,    curriculums,    4,              3         "
 	"grade-level,   grade-levels,   1,              2         "
+
+	"image, images, 39d43108-e690-2705-67e2-a16dc28b8c7f, c418c213-c246-1883-cd09-ca8496c69c9a"
 )
 
 DESTINATION="apiary.apib";
