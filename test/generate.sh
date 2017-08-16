@@ -32,9 +32,9 @@ MODELS=(
 	"gallery,       galleries,      2147483604,     2147477833"
 	"department,    departments,    86,             941       "
 	"category,      categories,     153,            111       "
-	"agenttype,     agenttypes,     26,             20        "
+	"agent-type,    agent-types,    26,             20        "
 	"curriculum,    curriculums,    4,              3         "
-	"gradelevel,    gradelevels,    1,              2         "
+	"grade-level,   grade-levels,   1,              2         "
 )
 
 DESTINATION="apiary.apib";
@@ -42,8 +42,14 @@ DESTINATION="apiary.apib";
 # We need this to automatically capitalize model names
 # https://stackoverflow.com/a/12487465/1943591
 # https://stackoverflow.com/a/6212408/1943591
+# https://stackoverflow.com/a/1541178/1943591
 function capitalize {
-	IN="$1"; echo "$(tr '[:lower:]' '[:upper:]' <<< ${IN:0:1})${IN:1}"
+
+	# This first solution only capitalized the first word, not all
+	# IN="$1"; echo "$(tr '[:lower:]' '[:upper:]' <<< ${IN:0:1})${IN:1}"
+
+	awk '{for(i=1;i<=NF;i++){ $i=toupper(substr($i,1,1)) substr($i,2) }}1' <<< "$1"
+
 }
 
 # We'll be modifying copies of the template string
@@ -59,9 +65,13 @@ do
 	# Start building the test file
 	OUT="$TEMPLATE"
 
+	# Substitute hyphens with spaces
+	ENTITY=$(tr -s '-' ' ' <<< "${MODEL[0]}")
+	ENTITIES=$(tr -s '-' ' ' <<< "${MODEL[1]}")
+
 	# Prime capitals
-	ENTITY=$(capitalize "${MODEL[0]}")
-	ENTITIES=$(capitalize "${MODEL[1]}")
+	ENTITY=$(capitalize "${ENTITY}")
+	ENTITIES=$(capitalize "${ENTITIES}")
 
 	# Replace lowercase entity names
 	OUT="${OUT//entity/${MODEL[0]}}"

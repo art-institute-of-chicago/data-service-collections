@@ -20,7 +20,7 @@ module Collections
       r[:model]         = model
       r[:entity]        = model.name
       r[:entities]      = model.name.pluralize
-      r[:route]         = model.name.pluralize.downcase.to_sym
+      r[:route]         = model.name.pluralize.underscore.dasherize.to_sym
 
       resource r[:route] do
 
