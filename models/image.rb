@@ -1,6 +1,7 @@
 # AFAICT, Images do not contain Interpretive Resource fields
-# If so, it's pointless to extend ResourceModel
-class Image < BaseModel
+# If so, it would be pointless to extend ResourceModel... but
+# (1) the data aggregator core expects it, and (2) this might change again
+class Image < ResourceModel
 
   def initialize
     super
