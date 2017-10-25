@@ -1,4 +1,4 @@
-class Artist < BaseModel
+class Agent < BaseModel
 
   def initialize
     super

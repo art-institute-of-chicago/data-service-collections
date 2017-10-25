@@ -93,7 +93,7 @@ module Collections
     self.addResource( Artwork )
 
 
-    self.addResource( Artist  )
+    self.addResource( Agent )
 
 
     self.addResource( Gallery )
