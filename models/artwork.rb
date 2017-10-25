@@ -22,6 +22,8 @@ class Artwork < BaseModel
     # https://lakesolridxweb.artic.edu/solr/lpm/select?wt=json&rows=0&facet.limit=-1&facet.field=galleryLocation
     ret[:location] = data.get(:galleryLocation)
 
+    ret[:description] = data.get(:description)
+
     ret[:department_id] = Lake2Citi( data.get(:department_uid) )
 
     ret[:dimensions] = data.get(:dimensionsDisplay)
