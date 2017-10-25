@@ -99,6 +99,9 @@ module Collections
     self.addResource( Gallery )
 
 
+    self.addResource( Exhibition )
+
+
     self.addResource( Department )
 
 
@@ -112,6 +115,9 @@ module Collections
 
 
     self.addResource( GradeLevel )
+
+
+    self.addResource( ObjectType )
 
 
     self.addResource( Sound )
