@@ -1,7 +1,7 @@
 class BaseModel
 
   # https://github.com/rsolr/rsolr
-  cattr_accessor :fq, :solr, :page, :per_page, :url
+  cattr_accessor :fq, :solr, :page, :per_page, :url, :extra_params
 
   def initialize
     self.fq = ''
@@ -9,6 +9,7 @@ class BaseModel
     self.page = 1
     self.per_page = 12
     self.url = 'http://localhost:9393/'
+    self.extra_params = {}
   end
 
 
@@ -20,7 +21,7 @@ class BaseModel
       q: q,
       rows: 1,
       wt: :ruby
-    }).with_indifferent_access
+    }.merge(self.extra_params)).with_indifferent_access
 
     if input[:response][:numFound] < 1
       return false
@@ -37,14 +38,7 @@ class BaseModel
   # Ruby's collect returns all results
   def collect( fq = '' )
 
-    input = self.solr.get('select', params: {
-      fq: self.fq.concat( fq.to_s ),
-      q: '*:*',
-      sort: 'timestamp desc',
-      start: (self.page - 1) * self.per_page,
-      rows: self.per_page,
-      wt: :ruby
-    }).with_indifferent_access
+    input = self.collect_get_query( fq )
 
     {
       "pagination": self.pagination( input ),
@@ -54,6 +48,18 @@ class BaseModel
 
   end
 
+  def collect_get_query( fq = '' )
+
+    self.solr.get('select', params: {
+      fq: self.fq.concat( fq.to_s ),
+      q: '*:*',
+      sort: 'timestamp desc',
+      start: (self.page - 1) * self.per_page,
+      rows: self.per_page,
+      wt: :ruby
+    }.merge(self.extra_params)).with_indifferent_access
+
+  end
 
   def find( id )
 

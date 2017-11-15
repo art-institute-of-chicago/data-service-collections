@@ -96,6 +96,9 @@ module Collections
     self.addResource( Agent )
 
 
+    self.addResource( Artist )
+
+
     self.addResource( Gallery )
 
 
