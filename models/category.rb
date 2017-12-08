@@ -31,7 +31,7 @@ class Category < BaseModel
     # sort is relative to siblings on same level, not global
     # recommend sort by `sort`, then by `title`
     # this mirrors citi's sorting
-    ret[:sort] = Integer( data.get(:sort) )
+    ret[:sort] = Integer( data.get(:sort) ) rescue nil
 
     ret[:type] = Integer( data.get(:pubCatType) )
 
