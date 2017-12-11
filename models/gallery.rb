@@ -3,7 +3,8 @@ class Gallery < BaseModel
   def initialize
     super
     self.fq = 'hasModel:Place'
-    self.fq << ' AND locationType:"AIC Gallery"'
+    # Only 46 of 287 Galleries in Solr have the below condition:
+    # self.fq << ' AND locationType:"AIC Gallery"'
   end
 
   # TODO: Abstract boolean into lake_unwrapper.rb (?)
