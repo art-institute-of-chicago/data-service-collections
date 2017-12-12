@@ -3,6 +3,10 @@ class Gallery < BaseModel
   def initialize
     super
     self.fq = 'hasModel:Place'
+    # Using galleryNumber excludes 20 places, such as Terzo Piano, Modern Wing Entrance, etc.
+    # https://lakesolridxweb.artic.edu/solr/lpm_prod/select?wt=json&q=hasModel%3APlace+AND+galleryFloor%3A%5B*+TO+*%5D%20AND%20-galleryNumber:[*%20TO%20*]
+    # self.fq << ' AND galleryNumber:[* TO *]'
+    self.fq << ' AND galleryFloor:[* TO *]'
     # Only 46 of 287 Galleries in Solr have the below condition:
     # self.fq << ' AND locationType:"AIC Gallery"'
   end
