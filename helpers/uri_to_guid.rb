@@ -14,6 +14,10 @@ end
 # Helper function, don't use directly
 def _Uri2Guid(value)
 
+  if value == nil
+    return nil
+  end
+
   begin
     out = value.split('/')
     out[-1]
