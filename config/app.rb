@@ -10,6 +10,7 @@ require_relative '../helpers/error_formatter.rb'
 require_relative '../helpers/lake_unwrapper.rb'
 require_relative '../helpers/lake_to_citi_id.rb'
 require_relative '../helpers/uri_to_guid.rb'
+require_relative '../helpers/str_to_int.rb'
 require_relative '../helpers/model_base.rb'
 require_relative '../helpers/model_resource.rb'
 
