@@ -89,53 +89,33 @@ module Collections
 
     end
 
-
     self.addResource( Artwork )
-
-
     self.addResource( Agent )
-
-
     self.addResource( Artist )
-
-
     self.addResource( Gallery )
-
-
     self.addResource( Exhibition )
-
-
     self.addResource( Department )
-
-
     self.addResource( Category )
-
-
     self.addResource( AgentType )
-
-
     self.addResource( Curriculum )
-
-
     self.addResource( GradeLevel )
-
-
     self.addResource( ObjectType )
 
-
+    # Assets
     self.addResource( Sound )
-
-
     self.addResource( Video )
-
-
     self.addResource( Text )
-
-
     self.addResource( Link )
-
-
     self.addResource( Image )
+
+    # Artwork-to-Foobar pivot models
+    self.addResource( ArtworkAgent )
+    self.addResource( ArtworkCatalog )
+    self.addResource( ArtworkCopyrightRepresentative )
+    self.addResource( ArtworkDate )
+    self.addResource( ArtworkPlace )
+    self.addResource( ArtworkTerm )
+    self.addResource( ArtworkTitle )
 
 
     # Throw a 404 for all undefined endpoints

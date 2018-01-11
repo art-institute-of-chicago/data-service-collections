@@ -10,8 +10,8 @@ class Artwork < BaseModel
     ret[:main_id] = data.get(:mainRefNumber) # unusual for this model
 
     ret[:date_display] = data.get(:dateDisplay)
-    ret[:date_start] = Integer( data.get(:earliestYear) ) rescue nil
-    ret[:date_end] = Integer( data.get(:latestYear) ) rescue nil
+    ret[:date_start] = Integer( data.get(:earliestYear) ) rescue nil # can be derived from dates?
+    ret[:date_end] = Integer( data.get(:latestYear) ) rescue nil # can be derived from dates?
 
     ret[:creator_id] = Lake2Citi( data.get(:artist_uid) )
     ret[:creator_display] = data.get(:creatorDisplay)
@@ -41,9 +41,55 @@ class Artwork < BaseModel
     ret[:provenance] = data.get(:provenanceText)
 
     # TODO: Change this to publishCategory_citiUid once that's available
+    # TODO: It's available! publishCategory and publishCategoryUid
     ret[:category_ids] = data.get(:published_category_i, false)
 
-    ret[:document_guids] = Uri2Guid( data.get(:hasDocument_uri, false) )
+    # TODO: Add this to Exhibitions as well
+    # hasDocument_uid, hasDocument_uri, hasDocument
+    ret[:document_ids] = Lake2Citi( data.get(:hasDocument_uid, false) )
+
+    # All the `:artwork_*_ids` fields below point at "pivot" objects
+    # We need to import these pivot objects, then use them to relate artworks to the "actual" linked object
+    # Most of these "pivot" objects have extra fields elaborating on the relationship
+
+    # objectAgent, objectAgent_uri, objectAgent_uid
+    # citiUid, agent_uid, isPreferred
+    ret[:artwork_agent_ids] = str2int( data.get(:objectAgent_uid, false) )
+
+    # objectCatalogRaisonne, objectCatalogRaisonne_uri, objectCatalogRaisonne_uid
+    ret[:artwork_catalog_ids] = str2int( data.get(:objectCatalogRaisonne_uid, false) )
+
+    # objectCopyrightRepresentatives, objectCopyrightRepresentatives_uris, objectCopyrightRepresentatives_uids
+    ret[:artwork_copyright_representative_ids] = str2int( data.get(:objectCopyrightRepresentatives_uids, false) )
+
+    # objectDate, objectDate_uri, objectDate_uid
+    # earliestDate, latestDate, isPreferred, qualifierText
+    ret[:artwork_date_ids] = str2int( data.get(:objectDate_uid, false) )
+
+    # objectPlace, objectPlace_uri, objectPlace_uid
+    ret[:artwork_place_ids] = str2int( data.get(:objectPlace_uid, false) )
+
+    # objectTerms, objectTerms_uris, objectTerms_uids
+    ret[:artwork_term_ids] = str2int( data.get(:objectTerms_uids, false) )
+
+    # TODO: Preferred title is not always first! Filter it out downstream?
+    # objectTitle, objectTitle_uri, objectTitle_uid
+    # citiUid, prefLabel, isPreferred, timestamp
+    ret[:artwork_title_ids] = str2int( data.get(:objectTitle_uid, false) )
+
+    # TODO: All of the fields below still need to be considered
+
+    # collectionStatus
+
+    # objectCommittee - an array of strings
+
+    # objectTypes
+
+    # constituentPart_uid, constituentPart_uri, constituentPart
+    ret[:part_ids] = str2int( data.get(:constituentPart_uid, false) )
+
+    # compositeWhole_uid, compositeWhole_uri, compositeWhole
+    ret[:set_ids] = str2int( data.get(:compositeWhole_uid, false) )
 
 
     ret

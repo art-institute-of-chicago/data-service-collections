@@ -96,7 +96,7 @@ class BaseModel
       citi_ids = citi_ids.join(' OR ')
       lake_ids = lake_ids.join(' OR ')
 
-      fq << " AND ("
+      fq << "("
 
       if citi_ids.length > 0
         fq << " citiUid:(#{citi_ids})"
