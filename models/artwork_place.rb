@@ -10,7 +10,7 @@ class ArtworkPlace < BaseModel
     # Works have the following fields:
     # objectPlace, objectPlace_uri, objectPlace_uid
 
-    ret[:is_preferred] =  data.get(:isPreferred, false) === "true" # isPreferred": "true"
+    ret[:is_preferred] = data.get(:isPreferred, false) === "true" # isPreferred": "true"
 
     # TODO: There's no prefLabel. Use locationName instead?
     # If we could import places, we could use this model as a simple pivot,
@@ -18,6 +18,8 @@ class ArtworkPlace < BaseModel
 
     # TODO: Import place qualifiers. ObjectPlace has the following fields in LPM Solr:
     # qualifier_uid, qualifier_uri, qualifierText
+
+    ret[:place_qualifier_id] = Lake2Citi( data.get(:qualifier_uid) )
 
     ret
 

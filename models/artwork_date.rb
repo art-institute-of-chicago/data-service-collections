@@ -16,7 +16,9 @@ class ArtworkDate < BaseModel
     ret[:is_preferred] =  data.get(:isPreferred, false) === "true" # isPreferred": "true"
 
     # TODO: Import date qualifiers. ObjectDate has the following fields in LPM Solr:
-    # qualifierText, qualifier_uid, qualifier_uri
+    # qualifier_uid, qualifier_uri, qualifierText
+
+    ret[:date_qualifier_id] = Lake2Citi( data.get(:qualifier_uid) )
 
     ret
 
