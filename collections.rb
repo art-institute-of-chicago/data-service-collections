@@ -120,6 +120,8 @@ module Collections
     self.addResource( ArtworkDateQualifier )
     self.addResource( ArtworkPlaceQualifier )
 
+    self.addResource( Catalog )
+
     # Throw a 404 for all undefined endpoints
     route :any, '*path' do
       error!({
