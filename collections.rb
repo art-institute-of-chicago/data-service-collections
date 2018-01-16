@@ -121,6 +121,7 @@ module Collections
     self.addResource( ArtworkPlaceQualifier )
 
     self.addResource( Catalog )
+    self.addResource( Term )
 
     # Throw a 404 for all undefined endpoints
     route :any, '*path' do
