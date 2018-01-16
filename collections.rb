@@ -123,6 +123,10 @@ module Collections
     self.addResource( Catalog )
     self.addResource( Term )
 
+    # Exhibition-to-Foobar pivot models
+    self.addResource( ExhibitionPlace )
+    self.addResource( ExhibitionArtwork )
+
     # Throw a 404 for all undefined endpoints
     route :any, '*path' do
       error!({
