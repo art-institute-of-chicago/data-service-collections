@@ -21,6 +21,8 @@ class ArtworkTerm < BaseModel
     # TODO: Term type is available via a link, but there's no fields in LPM Solr to connect them
     # termType_uid, termType_uri, termType
 
+    # Waiting on Redmine #2407 to resolve this
+
     ret
 
   end

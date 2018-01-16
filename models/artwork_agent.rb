@@ -10,14 +10,15 @@ class ArtworkAgent < BaseModel
     # Works have the following fields:
     # objectAgent, objectAgent_uri, objectAgent_uid
 
-    ret[:is_preferred] =  data.get(:isPreferred, false) === "true" # isPreferred": "true"
+    ret[:is_preferred] = data.get(:isPreferred, false) === "true" # isPreferred": "true"
 
     # TODO: Import Agent link. LPM Solr has the following fields:
     # agent_uid, agent_uri, agentName
 
-    ret[:agent_id] =  data.get(:agent_uid, false)
+    ret[:agent_id] = Lake2Citi( data.get(:agent_uid) )
 
     # TODO: Import roles once they become available
+    # Waiting on Redmine #2371 to resolve this issue
 
     ret
 
