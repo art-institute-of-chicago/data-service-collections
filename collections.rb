@@ -114,7 +114,6 @@ module Collections
     self.addResource( ArtworkDate )
     self.addResource( ArtworkPlace )
     self.addResource( ArtworkTerm )
-    self.addResource( ArtworkTitle )
 
     self.addResource( ArtworkDateQualifier )
     self.addResource( ArtworkPlaceQualifier )

@@ -72,10 +72,8 @@ class Artwork < BaseModel
     # objectTerms, objectTerms_uris, objectTerms_uids
     ret[:artwork_term_ids] = str2int( data.get(:objectTerms_uids, false) )
 
-    # TODO: Preferred title is not always first! Filter it out downstream?
-    # objectTitle, objectTitle_uri, objectTitle_uid
-    # citiUid, prefLabel, isPreferred, timestamp
-    ret[:artwork_title_ids] = str2int( data.get(:objectTitle_uid, false) )
+    # TODO: Watch Redmine ticket #2423
+    ret[:alt_titles] = data.get(:altLabel, false)
 
     # TODO: All of the fields below still need to be considered
 
