@@ -59,8 +59,8 @@ class Artwork < BaseModel
     # objectCatalogRaisonne, objectCatalogRaisonne_uri, objectCatalogRaisonne_uid
     ret[:artwork_catalog_ids] = str2int( data.get(:objectCatalogRaisonne_uid, false) )
 
-    # objectCopyrightRepresentatives, objectCopyrightRepresentatives_uris, objectCopyrightRepresentatives_uids
-    ret[:artwork_copyright_representative_ids] = str2int( data.get(:objectCopyrightRepresentatives_uids, false) )
+    # TODO: Watch Redmine ticket #2424
+    ret[:copyright_representative_ids] = str2int( data.get(:objectCopyrightRepresentatives_uids, false) )
 
     # objectDate, objectDate_uri, objectDate_uid
     # earliestDate, latestDate, isPreferred, qualifierText

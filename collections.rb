@@ -111,7 +111,6 @@ module Collections
     # Artwork-to-Foobar pivot models
     self.addResource( ArtworkAgent )
     self.addResource( ArtworkCatalog )
-    self.addResource( ArtworkCopyrightRepresentative )
     self.addResource( ArtworkDate )
     self.addResource( ArtworkPlace )
     self.addResource( ArtworkTerm )
