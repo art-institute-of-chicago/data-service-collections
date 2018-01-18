@@ -5,6 +5,7 @@ module LakeUnwrapper
     return nil unless key?(key)
     out = self[key]
     out = out[0] if unwrap
+    out = nil if out.empty?
     out
   end
 end
