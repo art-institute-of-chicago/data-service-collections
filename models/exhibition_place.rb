@@ -19,13 +19,6 @@ class ExhibitionPlace < BaseModel
     ret[:place] = data.get(:locationName, false)
     ret[:agent] = data.get(:agentName, false)
 
-    # TODO: There's no prefLabel. Use locationName instead?
-    # If we could import places, we could use this model as a simple pivot,
-    # but LPM Solr doesn't provide such fields currently.
-
-    # TODO: Import place qualifiers. ObjectPlace has the following fields in LPM Solr:
-    # qualifier_uid, qualifier_uri, qualifierText
-
     ret
 
   end
