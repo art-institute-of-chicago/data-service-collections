@@ -18,6 +18,8 @@ class Exhibition < BaseModel
 
     ret[:gallery] = data.get(:galleryLocation)
 
+    ret[:image_guid] = Uri2Guid( data.get(:hasPreferredRepresentation_uri) )
+
     ret[:aic_start_date] = Time.parse(data.get(:aicStartDate, false)).utc.iso8601
     ret[:aic_end_date] = Time.parse(data.get(:aicEndDate, false)).utc.iso8601
 
