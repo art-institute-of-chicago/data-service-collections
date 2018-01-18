@@ -52,25 +52,27 @@ class Artwork < BaseModel
     # We need to import these pivot objects, then use them to relate artworks to the "actual" linked object
     # Most of these "pivot" objects have extra fields elaborating on the relationship
 
+    # TODO: Watch Redmine ticket #2371
     # objectAgent, objectAgent_uri, objectAgent_uid
-    # citiUid, agent_uid, isPreferred
-    ret[:artwork_agent_ids] = str2int( data.get(:objectAgent_uid, false) )
+    # ret[:artwork_agent_ids] = str2int( data.get(:objectAgent_uid, false) )
 
+    # TODO: Watch Redmine ticket #2406
     # objectCatalogRaisonne, objectCatalogRaisonne_uri, objectCatalogRaisonne_uid
-    ret[:artwork_catalog_ids] = str2int( data.get(:objectCatalogRaisonne_uid, false) )
+    # ret[:artwork_catalog_ids] = str2int( data.get(:objectCatalogRaisonne_uid, false) )
 
     # TODO: Watch Redmine ticket #2424
-    ret[:copyright_representative_ids] = str2int( data.get(:objectCopyrightRepresentatives_uids, false) )
+    # ret[:copyright_representative_ids] = str2int( data.get(:objectCopyrightRepresentatives_uids, false) )
 
     # objectDate, objectDate_uri, objectDate_uid
-    # earliestDate, latestDate, isPreferred, qualifierText
     ret[:artwork_date_ids] = str2int( data.get(:objectDate_uid, false) )
 
+    # TODO: Watch Redmine ticket #2425
     # objectPlace, objectPlace_uri, objectPlace_uid
-    ret[:artwork_place_ids] = str2int( data.get(:objectPlace_uid, false) )
+    # ret[:artwork_place_ids] = str2int( data.get(:objectPlace_uid, false) )
 
+    # TODO: Watch Redmine ticket #2407
     # objectTerms, objectTerms_uris, objectTerms_uids
-    ret[:artwork_term_ids] = str2int( data.get(:objectTerms_uids, false) )
+    # ret[:artwork_term_ids] = str2int( data.get(:objectTerms_uids, false) )
 
     # TODO: Watch Redmine ticket #2423
     ret[:alt_titles] = data.get(:altLabel, false)

@@ -21,6 +21,8 @@ class ArtworkPlace < BaseModel
 
     ret[:place_qualifier_id] = Lake2Citi( data.get(:qualifier_uid) )
 
+    # Waiting on Redmine #2425 to resolve this
+
     ret
 
   end
