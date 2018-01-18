@@ -83,12 +83,13 @@ class Artwork < BaseModel
 
     # objectTypes
 
+    # This produces an Artwork's CITI UID
     # constituentPart_uid, constituentPart_uri, constituentPart
-    ret[:part_ids] = str2int( data.get(:constituentPart_uid, false) )
+    ret[:part_ids] = Lake2Citi( data.get(:constituentPart_uid, false) )
 
+    # This produces an Artwork's CITI UID
     # compositeWhole_uid, compositeWhole_uri, compositeWhole
-    ret[:set_ids] = str2int( data.get(:compositeWhole_uid, false) )
-
+    ret[:set_ids] = Lake2Citi( data.get(:compositeWhole_uid, false) )
 
     ret
 
