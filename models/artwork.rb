@@ -84,6 +84,7 @@ class Artwork < BaseModel
 
     # collectionStatus
 
+    # TODO: Watch Redmine ticket #2431
     # objectTypes
 
     # This produces an Artwork's CITI UID
