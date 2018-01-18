@@ -199,6 +199,9 @@ class BaseModel
 
     self.transform( data, ret )
 
+    ret[:citi_created_at] = data.get(:citiCreateDate)
+    ret[:citi_modified_at] = data.get(:citiUpdateDate)
+
     ret[:created_at] = data.get(:created)
     ret[:modified_at] = data.get(:lastModified)
     ret[:indexed_at] = data.get(:timestamp, false)
