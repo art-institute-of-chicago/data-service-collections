@@ -125,6 +125,10 @@ module Collections
     self.addResource( ExhibitionPlace )
     self.addResource( ExhibitionArtwork )
 
+    # Agent-to-Foobar pivot models
+    self.addResource( AgentPlace )
+    self.addResource( AgentType )
+
     # Throw a 404 for all undefined endpoints
     route :any, '*path' do
       error!({
