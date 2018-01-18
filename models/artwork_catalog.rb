@@ -15,6 +15,10 @@ class ArtworkCatalog < BaseModel
     # TODO: The following fields are in Fedora, but not LPM Solr
     # catalogRaisonneName, number, stateEdition
 
+    ret[:number] = data.get(:number, false)
+    ret[:state_edition] = data.get(:stateEdition, false)
+    ret[:catalog_id] = data.get(:catalogRaisonne_uid)
+
     # TODO: Fedora has a link to `hasModel:CatalogRaisonne` via `catalogRaisonne` field
     # However, there's nothing in LPM Solr that we can use to retrieve its identifiers
 
