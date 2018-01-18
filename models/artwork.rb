@@ -40,6 +40,9 @@ class Artwork < BaseModel
     ret[:exhibitions] = data.get(:exhibitionHistory)
     ret[:provenance] = data.get(:provenanceText)
 
+    # This is always an array of strings
+    ret[:committees] = data.get(:objectCommittee, false)
+
     # TODO: Change this to publishCategory_citiUid once that's available
     # TODO: It's available! publishCategory and publishCategoryUid
     ret[:category_ids] = data.get(:published_category_i, false)
@@ -80,8 +83,6 @@ class Artwork < BaseModel
     # TODO: All of the fields below still need to be considered
 
     # collectionStatus
-
-    # objectCommittee - an array of strings
 
     # objectTypes
 
