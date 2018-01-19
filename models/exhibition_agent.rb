@@ -1,4 +1,7 @@
-class ExhibitionPlace < BaseModel
+# LPM Solr gives this to us as ExhibitionPlaces, but their records lump together agents and places.
+# We're interested in Agents, and we'll pull the preferred place of the Agent if needed, so we're
+# naming this class based on how we're using the data, not how it's named in the source.
+class ExhibitionAgent < BaseModel
 
   def initialize
     super
@@ -16,8 +19,8 @@ class ExhibitionPlace < BaseModel
     ret[:is_host] = data.get(:isHost, false) === "true"
     ret[:is_organizer] = data.get(:isOrganizer, false) === "true"
 
-    ret[:place] = data.get(:locationName, false)
     ret[:agent] = data.get(:agentName, false)
+    ret[:agent_id] = Lake2Citi( data.get(:agent_uid) )
 
     ret
 

@@ -122,7 +122,7 @@ module Collections
     self.addResource( Term )
 
     # Exhibition-to-Foobar pivot models
-    self.addResource( ExhibitionPlace )
+    self.addResource( ExhibitionAgent )
     self.addResource( ExhibitionArtwork )
 
     # Agent-to-Foobar pivot models
