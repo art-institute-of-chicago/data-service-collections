@@ -13,8 +13,8 @@ class ExhibitionAgent < BaseModel
     # Works have the following fields:
     # exhibitionPlace, exhibitionPlace_uri, exhibitionPlace_uid
 
-    ret[:start_date] = Time.parse(data.get(:startDate, false)).utc.iso8601
-    ret[:end_date] = Time.parse(data.get(:endDate, false)).utc.iso8601
+    ret[:start_date] = Time.parse(data.get(:startDate, false)).utc.iso8601 rescue nil
+    ret[:end_date] = Time.parse(data.get(:endDate, false)).utc.iso8601 rescue nil
 
     ret[:is_host] = data.get(:isHost, false) === "true"
     ret[:is_organizer] = data.get(:isOrganizer, false) === "true"
