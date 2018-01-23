@@ -20,7 +20,7 @@ def _Lake2Citi(value)
   end
 
   begin
-    Integer( /[0-9]+/.match(value)[0] )
+    Integer ( /-(-?[0-9]+)/.match(value)[1] )
   rescue
     nil
   end

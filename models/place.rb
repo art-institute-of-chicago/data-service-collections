@@ -1,4 +1,4 @@
-class Gallery < BaseModel
+class Place < BaseModel
 
   def initialize
     super
@@ -43,6 +43,8 @@ class Gallery < BaseModel
 
     ret[:latitude] = data.get(:latitude, false)
     ret[:longitude] = data.get(:longitude, false)
+
+    ret[:type] = data.get(:locationType)
 
     # I don't want to pass names. Waiting until we get GUIDs.
     # ret[:category] = data.get(:publishCategory)

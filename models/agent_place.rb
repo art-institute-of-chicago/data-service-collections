@@ -11,6 +11,8 @@ class AgentPlace < BaseModel
     # agentPlace, agentPlace_uri, agentPlace_uid
 
     ret[:title] = data.get(:locationName, false)
+    ret[:place_id] = Lake2Citi(data.get(:location_uid))
+    ret[:qualifier] = data.get(:qualifierText, false)
     ret[:is_preferred] = data.get(:isPreferreddd, false) === "true"
 
     ret

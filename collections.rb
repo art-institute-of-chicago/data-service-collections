@@ -92,7 +92,7 @@ module Collections
     self.addResource( Artwork )
     self.addResource( Agent )
     self.addResource( Artist )
-    self.addResource( Gallery )
+    self.addResource( Place )
     self.addResource( Exhibition )
     self.addResource( Department )
     self.addResource( Category )
