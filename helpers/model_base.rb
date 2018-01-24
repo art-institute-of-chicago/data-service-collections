@@ -199,8 +199,9 @@ class BaseModel
 
     self.transform( data, ret )
 
-    ret[:citi_created_at] = data.get(:citiCreateDate, false) # absent
-    ret[:citi_modified_at] = data.get(:citiUpdateDate, false)
+    # TODO: This date is too precise. Carbon complains about trailing data.
+    ret[:citi_created_at] = nil # data.get(:citiCreateDate, false) # absent
+    ret[:citi_modified_at] = nil # data.get(:citiUpdateDate, false)
 
     ret[:created_at] = data.get(:created)
     ret[:modified_at] = data.get(:lastModified)
