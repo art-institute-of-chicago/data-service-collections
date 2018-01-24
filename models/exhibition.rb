@@ -31,7 +31,7 @@ class Exhibition < BaseModel
 
     # exhibitionObject, exhibitionObject_uris, exhibitionObject_uids
     # TODO: There's currently no data here. Revisit this when we can see what we're getting.
-    ret[:exhibition_object_ids] = str2int( data.get(:exhibitionObject_uid, false) )
+    ret[:artwork_ids] = uid2id( data.get(:exhibitionObject_uid, false) )
 
     ret
 
