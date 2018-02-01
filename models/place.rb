@@ -1,4 +1,4 @@
-class Gallery < BaseModel
+class Place < BaseModel
 
   def initialize
     super
@@ -6,7 +6,7 @@ class Gallery < BaseModel
     # Using galleryNumber excludes 20 places, such as Terzo Piano, Modern Wing Entrance, etc.
     # https://lakesolridxweb.artic.edu/solr/lpm_prod/select?wt=json&q=hasModel%3APlace+AND+galleryFloor%3A%5B*+TO+*%5D%20AND%20-galleryNumber:[*%20TO%20*]
     # self.fq << ' AND galleryNumber:[* TO *]'
-    self.fq << ' AND galleryFloor:[* TO *]'
+    # self.fq << ' AND galleryFloor:[* TO *]'
     # Only 46 of 287 Galleries in Solr have the below condition:
     # self.fq << ' AND locationType:"AIC Gallery"'
   end
@@ -43,6 +43,8 @@ class Gallery < BaseModel
 
     ret[:latitude] = data.get(:latitude, false)
     ret[:longitude] = data.get(:longitude, false)
+
+    ret[:type] = data.get(:locationType)
 
     # I don't want to pass names. Waiting until we get GUIDs.
     # ret[:category] = data.get(:publishCategory)

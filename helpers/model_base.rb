@@ -96,7 +96,7 @@ class BaseModel
       citi_ids = citi_ids.join(' OR ')
       lake_ids = lake_ids.join(' OR ')
 
-      fq << " AND ("
+      fq << "("
 
       if citi_ids.length > 0
         fq << " citiUid:(#{citi_ids})"
@@ -198,6 +198,10 @@ class BaseModel
     ret[:lake_uri] = data.get(:uri, false)
 
     self.transform( data, ret )
+
+    # TODO: This date is too precise. Carbon complains about trailing data.
+    ret[:citi_created_at] = nil # data.get(:citiCreateDate, false) # absent
+    ret[:citi_modified_at] = nil # data.get(:citiUpdateDate, false)
 
     ret[:created_at] = data.get(:created)
     ret[:modified_at] = data.get(:lastModified)

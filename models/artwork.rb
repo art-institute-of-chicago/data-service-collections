@@ -10,8 +10,8 @@ class Artwork < BaseModel
     ret[:main_id] = data.get(:mainRefNumber) # unusual for this model
 
     ret[:date_display] = data.get(:dateDisplay)
-    ret[:date_start] = Integer( data.get(:earliestYear) ) rescue nil
-    ret[:date_end] = Integer( data.get(:latestYear) ) rescue nil
+    ret[:date_start] = Integer( data.get(:earliestYear) ) rescue nil # can be derived from dates?
+    ret[:date_end] = Integer( data.get(:latestYear) ) rescue nil # can be derived from dates?
 
     ret[:creator_id] = Lake2Citi( data.get(:artist_uid) )
     ret[:creator_display] = data.get(:creatorDisplay)
@@ -40,11 +40,60 @@ class Artwork < BaseModel
     ret[:exhibitions] = data.get(:exhibitionHistory)
     ret[:provenance] = data.get(:provenanceText)
 
+    # This is always an array of strings
+    ret[:committees] = data.get(:objectCommittee, false)
+
     # TODO: Change this to publishCategory_citiUid once that's available
+    # TODO: It's available! publishCategory and publishCategoryUid
     ret[:category_ids] = data.get(:published_category_i, false)
 
-    ret[:document_guids] = Uri2Guid( data.get(:hasDocument_uri, false) )
+    # TODO: Add this to Exhibitions as well
+    # hasDocument_uid, hasDocument_uri, hasDocument
+    ret[:document_ids] = Lake2Citi( data.get(:hasDocument_uid, false) )
 
+    # All the `:artwork_*_ids` fields below point at "pivot" objects
+    # We need to import these pivot objects, then use them to relate artworks to the "actual" linked object
+    # Most of these "pivot" objects have extra fields elaborating on the relationship
+
+    # TODO: Watch Redmine ticket #2371
+    # objectAgent, objectAgent_uri, objectAgent_uid
+    # ret[:artwork_agent_ids] = str2int( data.get(:objectAgent_uid, false) )
+
+    # TODO: Watch Redmine ticket #2406
+    # objectCatalogRaisonne, objectCatalogRaisonne_uri, objectCatalogRaisonne_uid
+    # ret[:artwork_catalog_ids] = str2int( data.get(:objectCatalogRaisonne_uid, false) )
+
+    # TODO: Watch Redmine ticket #2424
+    # ret[:copyright_representative_ids] = str2int( data.get(:objectCopyrightRepresentatives_uids, false) )
+
+    # objectDate, objectDate_uri, objectDate_uid
+    ret[:artwork_date_ids] = str2int( data.get(:objectDate_uid, false) )
+
+    # TODO: Watch Redmine ticket #2425
+    # objectPlace, objectPlace_uri, objectPlace_uid
+    # ret[:artwork_place_ids] = str2int( data.get(:objectPlace_uid, false) )
+
+    # TODO: Watch Redmine ticket #2407
+    # objectTerms, objectTerms_uris, objectTerms_uids
+    # ret[:artwork_term_ids] = str2int( data.get(:objectTerms_uids, false) )
+
+    # TODO: Watch Redmine ticket #2423
+    ret[:alt_titles] = data.get(:altLabel, false)
+
+    # TODO: All of the fields below still need to be considered
+
+    # collectionStatus
+
+    # TODO: Watch Redmine ticket #2431
+    # objectTypes
+
+    # This produces an Artwork's CITI UID
+    # constituentPart_uid, constituentPart_uri, constituentPart
+    ret[:part_ids] = Lake2Citi( data.get(:constituentPart_uid, false) )
+
+    # This produces an Artwork's CITI UID
+    # compositeWhole_uid, compositeWhole_uri, compositeWhole
+    ret[:set_ids] = Lake2Citi( data.get(:compositeWhole_uid, false) )
 
     ret
 
