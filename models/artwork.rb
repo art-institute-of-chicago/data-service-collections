@@ -112,9 +112,9 @@ class Artwork < BaseModel
 
     ret[:place_of_origin] = data.get(:placeOfOrigin)
 
-    ret[:publishing_verification_level] = data.get(:publicationVerificationLevel)
+    ret[:publishing_verification_level] = data.get(:publicationVerificationLevel, false)
 
-    ret[:collection_status] = data.get(:collectionStatus)
+    ret[:collection_status] = data.get(:collectionStatus, false)
 
     ret
 
