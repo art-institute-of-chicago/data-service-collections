@@ -1,4 +1,4 @@
-class Catalog < BaseModel
+class Catalogue < BaseModel
 
   def initialize
     super

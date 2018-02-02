@@ -59,9 +59,8 @@ class Artwork < BaseModel
     # objectAgent, objectAgent_uri, objectAgent_uid
     # ret[:artwork_agent_ids] = str2int( data.get(:objectAgent_uid, false) )
 
-    # TODO: Watch Redmine ticket #2406
     # objectCatalogRaisonne, objectCatalogRaisonne_uri, objectCatalogRaisonne_uid
-    # ret[:artwork_catalog_ids] = str2int( data.get(:objectCatalogRaisonne_uid, false) )
+    ret[:artwork_catalogue_ids] = str2int( data.get(:objectCatalogRaisonne_uid, false) )
 
     # TODO: Watch Redmine ticket #2424
     # ret[:copyright_representative_ids] = str2int( data.get(:objectCopyrightRepresentatives_uids, false) )

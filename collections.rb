@@ -110,7 +110,7 @@ module Collections
 
     # Artwork-to-Foobar pivot models
     self.addResource( ArtworkAgent )
-    self.addResource( ArtworkCatalog )
+    self.addResource( ArtworkCatalogue )
     self.addResource( ArtworkDate )
     self.addResource( ArtworkPlace )
     self.addResource( ArtworkTerm )
@@ -118,7 +118,7 @@ module Collections
     self.addResource( ArtworkDateQualifier )
     self.addResource( ArtworkPlaceQualifier )
 
-    self.addResource( Catalog )
+    self.addResource( Catalogue )
     self.addResource( Term )
 
     # Exhibition-to-Foobar pivot models
@@ -140,4 +140,3 @@ module Collections
 
   end
 end
-
