@@ -94,6 +94,22 @@ class Artwork < BaseModel
     # compositeWhole_uid, compositeWhole_uri, compositeWhole
     ret[:set_ids] = Lake2Citi( data.get(:compositeWhole_uid, false) )
 
+    ret[:is_zoomable] = data.get(:type, false).include? 'http://definitions.artic.edu/ontology/1.0/PCRightsWebEdu'
+
+    ret[:is_public_domain] = data.get(:type, false).include? 'http://definitions.artic.edu/ontology/1.0/PCRightsPublicDomain'
+
+    if ret[:is_zoomable] && !ret[:copyright]
+      ret[:max_zoom_window_size] = 1280
+    # elsif ret[:is_zoomable] && [copyright representative is ARS]
+      # ret[:max_zoom_window_size] = 1280
+    elsif ret[:is_zoomable] && ret[:is_public_domain]
+      ret[:max_zoom_window_size] = -1
+    elsif ret[:is_zoomable]
+      ret[:max_zoom_window_size] = -1
+    else
+      ret[:max_zoom_window_size] = 843
+    end
+
     ret
 
   end
