@@ -110,6 +110,12 @@ class Artwork < BaseModel
       ret[:max_zoom_window_size] = 843
     end
 
+    ret[:place_of_origin] = data.get(:placeOfOrigin)
+
+    ret[:publishing_verification_level] = data.get(:publicationVerificationLevel)
+
+    ret[:collection_status] = data.get(:collectionStatus)
+
     ret
 
   end
