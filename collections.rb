@@ -56,7 +56,8 @@ module Collections
         desc "Return all #{r[:entities]}, paginated, descending timestamp."
         params do
           optional :page, type: Integer, default: 1
-          optional :per_page, type: Integer, default: 12
+          optional :per_page, type: Integer
+          optional :limit, type: Integer
           optional :ids, type: String, default: '', regexp: /^(?:
             # match comma-separated integers or guids, disallow comma after last item
             (?:(?:[0-9]+|[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}),*)+
@@ -70,7 +71,7 @@ module Collections
           model.paginate(
             request.url,
             params.fetch(:page, 1),
-            params.fetch(:per_page, 12),
+            params.fetch(:per_page, nil) || params.fetch(:limit, 12)
           )
 
           model.find_all(

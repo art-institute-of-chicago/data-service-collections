@@ -153,15 +153,25 @@ class BaseModel
     links = {
       # self: self.url,
       # first: base + { :page => 1, :per_page => params[:per_page]}.to_query,
-      prev: can_prev ? base + { :page => self.page - 1, :per_page => self.per_page }.to_query : nil,
-      next: can_next ? base + { :page => self.page + 1, :per_page => self.per_page }.to_query : nil,
+      prev: can_prev ? base + { :page => self.page - 1, :limit => self.per_page }.to_query : nil,
+      next: can_next ? base + { :page => self.page + 1, :limit => self.per_page }.to_query : nil,
       # last:  base + { :page => pages['total'], :per_page => params[:per_page] }.to_query,
     }
 
     {
+      # Deprecate this, since it doesn't match other dataservices:
       "results": results,
       "pages": pages,
       "links": links,
+
+      # New convention:
+      "total": results[:total],
+      "limit": results[:limit],
+      "offset": results[:offset],
+      "total_pages": pages[:total],
+      "current_page": pages[:current],
+      "prev_url": links[:prev],
+      "next_url": links[:next],
     }
 
   end
