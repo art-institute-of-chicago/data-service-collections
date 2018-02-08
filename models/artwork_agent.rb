@@ -20,6 +20,9 @@ class ArtworkAgent < BaseModel
     # TODO: Import roles once they become available
     # Waiting on Redmine #2371 to resolve this issue
 
+    # role_uid, role_uri, roleText
+    ret[:role_id] = Lake2Citi( data.get(:role_uid) )
+
     ret
 
   end
