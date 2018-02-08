@@ -18,8 +18,10 @@ class Agent < BaseModel
     # agentNameResource, agentNameResource_uris, agentNameResource_uids
     # ret[:agent_name_ids] = str2int( data.get(:agentNameResource_uid, false) )
 
+    # agentType, agentType_uri, agentType_uid
+    ret[:agent_type_ids] = Lake2Citi( data.get(:agentType_uid, false) )
 
-    # agentPlace, agentPlace_uris, agentPlace_uids
+    # agentPlace, agentPlace_uri, agentPlace_uid
     ret[:agent_place_ids] = str2int( data.get(:agentPlace_uid, false) )
 
     ret
