@@ -7,6 +7,10 @@ class Artwork < BaseModel
 
   def transform( data, ret )
 
+    # Explicitly enforced in case we start using prefLabel in model_base.rb [#2423]
+    ret[:title] = data.get(:title)
+    ret[:alt_titles] = data.get(:altTitle, false)
+
     ret[:main_id] = data.get(:mainRefNumber) # unusual for this model
 
     ret[:date_display] = data.get(:dateDisplay)
@@ -76,8 +80,6 @@ class Artwork < BaseModel
     # objectTerms, objectTerms_uris, objectTerms_uids
     # ret[:artwork_term_ids] = str2int( data.get(:objectTerms_uids, false) )
 
-    # TODO: Watch Redmine ticket #2423
-    ret[:alt_titles] = data.get(:altLabel, false)
 
     # TODO: All of the fields below still need to be considered
 
