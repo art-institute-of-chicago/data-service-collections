@@ -116,6 +116,7 @@ module Collections
     self.addResource( ArtworkPlace )
     self.addResource( ArtworkTerm )
 
+    self.addResource( ArtworkAgentRole )
     self.addResource( ArtworkDateQualifier )
     self.addResource( ArtworkPlaceQualifier )
 
