@@ -8,7 +8,6 @@ class ArtworkAgentRole < BaseModel
   def transform( data, ret )
 
     # Qualifier for ArtworkAgent's role, e.g. "Engraved by"
-    # Waiting on Redmine #2371 to resolve this issue
 
     ret
 

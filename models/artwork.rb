@@ -59,9 +59,8 @@ class Artwork < BaseModel
     # We need to import these pivot objects, then use them to relate artworks to the "actual" linked object
     # Most of these "pivot" objects have extra fields elaborating on the relationship
 
-    # TODO: Watch Redmine ticket #2371
     # objectAgent, objectAgent_uri, objectAgent_uid
-    # ret[:artwork_agent_ids] = str2int( data.get(:objectAgent_uid, false) )
+    ret[:artwork_agent_ids] = str2int( data.get(:objectAgent_uid, false) )
 
     # objectCatalogRaisonne, objectCatalogRaisonne_uri, objectCatalogRaisonne_uid
     ret[:artwork_catalogue_ids] = str2int( data.get(:objectCatalogRaisonne_uid, false) )
