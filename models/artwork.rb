@@ -73,7 +73,7 @@ class Artwork < BaseModel
 
     # TODO: Watch Redmine ticket #2425
     # objectPlace, objectPlace_uri, objectPlace_uid
-    # ret[:artwork_place_ids] = str2int( data.get(:objectPlace_uid, false) )
+    ret[:artwork_place_ids] = str2int( data.get(:objectPlace_uid, false) )
 
     # TODO: Watch Redmine ticket #2407
     # objectTerms, objectTerms_uris, objectTerms_uids
