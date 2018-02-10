@@ -17,6 +17,7 @@ class Exhibition < BaseModel
     ret[:description] = data.get(:description)
 
     ret[:gallery] = data.get(:galleryLocation)
+    ret[:gallery_id] = Lake2Citi( data.get(:gallery_uid) )
 
     ret[:image_guid] = Uri2Guid( data.get(:hasPreferredRepresentation_uri) )
 
