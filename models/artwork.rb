@@ -22,8 +22,7 @@ class Artwork < BaseModel
 
     ret[:image_guid] = Uri2Guid( data.get(:hasPreferredRepresentation_uri) )
 
-    # TODO: Get coordinates from mobile app CMS
-    # https://lakesolridxweb.artic.edu/solr/lpm/select?wt=json&rows=0&facet.limit=-1&facet.field=galleryLocation
+    # TODO: Use gallery_id when it becomes available
     ret[:location] = data.get(:galleryLocation)
 
     ret[:description] = data.get(:description)
@@ -45,10 +44,10 @@ class Artwork < BaseModel
     ret[:provenance] = data.get(:provenanceText)
 
     # This is always an array of strings
+    # TODO: Parse this to get fiscal year or date of accquisition
     ret[:committees] = data.get(:objectCommittee, false)
 
     # TODO: Change this to publishCategory_citiUid once that's available
-    # TODO: It's available! publishCategory and publishCategoryUid
     ret[:category_ids] = data.get(:published_category_i, false)
 
     # TODO: Add this to Exhibitions as well
@@ -58,6 +57,9 @@ class Artwork < BaseModel
     # All the `:artwork_*_ids` fields below point at "pivot" objects
     # We need to import these pivot objects, then use them to relate artworks to the "actual" linked object
     # Most of these "pivot" objects have extra fields elaborating on the relationship
+
+    # Note that the "pivot" objects don't know what artworks link to them
+    # That info has to be gotten from the artwork side!
 
     # objectAgent, objectAgent_uri, objectAgent_uid
     ret[:artwork_agent_ids] = str2int( data.get(:objectAgent_uid, false) )
@@ -78,11 +80,6 @@ class Artwork < BaseModel
     # TODO: Watch Redmine ticket #2407
     # objectTerms, objectTerms_uris, objectTerms_uids
     # ret[:artwork_term_ids] = str2int( data.get(:objectTerms_uids, false) )
-
-
-    # TODO: All of the fields below still need to be considered
-
-    # collectionStatus
 
     # TODO: Watch Redmine ticket #2431
     # objectTypes
@@ -107,6 +104,7 @@ class Artwork < BaseModel
       ret[:max_zoom_window_size] = 843
     end
 
+    # TODO: Determine if this was obsolesced by artwork_place_ids
     ret[:place_of_origin] = data.get(:placeOfOrigin)
 
     ret[:publishing_verification_level] = data.get(:publicationVerificationLevel, false)
