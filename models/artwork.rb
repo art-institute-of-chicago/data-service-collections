@@ -53,7 +53,7 @@ class Artwork < BaseModel
 
     # TODO: Add this to Exhibitions as well
     # hasDocument_uid, hasDocument_uri, hasDocument
-    ret[:document_ids] = Lake2Citi( data.get(:hasDocument_uid, false) )
+    ret[:document_ids] = Lake2Citi( data.get(:hasDocument_uri, false) )
 
     # All the `:artwork_*_ids` fields below point at "pivot" objects
     # We need to import these pivot objects, then use them to relate artworks to the "actual" linked object
