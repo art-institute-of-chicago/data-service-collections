@@ -7,16 +7,16 @@ class Agent < BaseModel
 
   def transform( data, ret )
 
+    # prefLabel, prefSortName, altLabel, altSortName
+    ret[:title_sort] = data.get(:prefSortName)
+    ret[:alt_titles] = data.get(:altLabel, false)
+
+    # We don't care about altSortName (tbd)
+
     ret[:date_birth] = data.get(:birthDate) ? Integer( Date.parse( data.get(:birthDate) ).strftime('%Y') ) : nil
     ret[:date_death] = data.get(:deathDate) ? Integer( Date.parse( data.get(:deathDate) ).strftime('%Y') ) : nil
 
     ret[:is_licensing_restricted] = data.get(:isLicensingRestricted, false) === "true"
-
-    # TODO: Agent names are being resturctured in the LPM to be listed in-line. Wait for that change to
-    # go to produection before pulling in names
-    #
-    # agentNameResource, agentNameResource_uris, agentNameResource_uids
-    # ret[:agent_name_ids] = str2int( data.get(:agentNameResource_uid, false) )
 
     # agentType, agentType_uri, agentType_uid
     ret[:agent_type_ids] = Lake2Citi( data.get(:agentType_uid, false) )
