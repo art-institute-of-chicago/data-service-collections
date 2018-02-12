@@ -31,8 +31,10 @@ class Exhibition < BaseModel
     ret[:exhibition_agent_ids] = str2int( data.get(:exhibitionPlace_uid, false) )
 
     # exhibitionObject, exhibitionObject_uris, exhibitionObject_uids
-    # TODO: There's currently no data here. Revisit this when we can see what we're getting.
+    # These are direct links to works, not to pivot models!
     ret[:artwork_ids] = str2int( data.get(:exhibitionObject_uid, false) )
+
+    ret[:document_ids] = Uri2Guid( data.get(:hasDocument_uri, false) )
 
     ret
 

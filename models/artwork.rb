@@ -50,9 +50,8 @@ class Artwork < BaseModel
     # TODO: Change this to publishCategory_citiUid once that's available
     ret[:category_ids] = data.get(:published_category_i, false)
 
-    # TODO: Add this to Exhibitions as well
     # hasDocument_uid, hasDocument_uri, hasDocument
-    ret[:document_ids] = str2int( data.get(:hasDocument_uri, false) )
+    ret[:document_ids] = Uri2Guid( data.get(:hasDocument_uri, false) )
 
     # All the `:artwork_*_ids` fields below point at "pivot" objects
     # We need to import these pivot objects, then use them to relate artworks to the "actual" linked object
