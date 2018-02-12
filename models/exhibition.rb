@@ -17,7 +17,7 @@ class Exhibition < BaseModel
     ret[:description] = data.get(:description)
 
     ret[:gallery] = data.get(:galleryLocation)
-    ret[:gallery_id] = Lake2Citi( data.get(:gallery_uid) )
+    ret[:gallery_id] = str2int( data.get(:gallery_uid) )
 
     ret[:image_guid] = Uri2Guid( data.get(:hasPreferredRepresentation_uri) )
 
@@ -32,7 +32,7 @@ class Exhibition < BaseModel
 
     # exhibitionObject, exhibitionObject_uris, exhibitionObject_uids
     # TODO: There's currently no data here. Revisit this when we can see what we're getting.
-    ret[:artwork_ids] = uid2id( data.get(:exhibitionObject_uid, false) )
+    ret[:artwork_ids] = str2int( data.get(:exhibitionObject_uid, false) )
 
     ret
 

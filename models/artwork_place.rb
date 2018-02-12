@@ -13,10 +13,10 @@ class ArtworkPlace < BaseModel
     ret[:is_preferred] = data.get(:isPreferred, false) === "true" # isPreferred": "true"
 
     # location_uid, location_uri, locationName
-    ret[:place_id] = Lake2Citi( data.get(:location_uid) )
+    ret[:place_id] = str2int( data.get(:location_uid) )
 
     # qualifier_uid, qualifier_uri, qualifierText
-    ret[:place_qualifier_id] = Lake2Citi( data.get(:qualifier_uid) )
+    ret[:place_qualifier_id] = str2int( data.get(:qualifier_uid) )
 
     ret
 

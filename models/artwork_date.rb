@@ -18,7 +18,7 @@ class ArtworkDate < BaseModel
     # TODO: Import date qualifiers. ObjectDate has the following fields in LPM Solr:
     # qualifier_uid, qualifier_uri, qualifierText
 
-    ret[:date_qualifier_id] = Lake2Citi( data.get(:qualifier_uid) )
+    ret[:date_qualifier_id] = str2int( data.get(:qualifier_uid) )
 
     ret
 

@@ -20,7 +20,7 @@ class ExhibitionAgent < BaseModel
     ret[:is_organizer] = data.get(:isOrganizer, false) === "true"
 
     ret[:agent] = data.get(:agentName, false)
-    ret[:agent_id] = Lake2Citi( data.get(:agent_uid) )
+    ret[:agent_id] = str2int( data.get(:agent_uid) )
 
     ret
 

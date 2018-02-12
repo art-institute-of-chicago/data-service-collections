@@ -64,7 +64,7 @@ class ResourceModel < BaseModel
     # Resources report their related artist, but an artwork's
     #   relationship to a resource is reported on the artwork side
 
-    ret[:artist_id] = Lake2Citi( data.get(:artist_uid) )
+    ret[:artist_id] = str2int( data.get(:artist_uid) )
 
     ret[:category_guids] = Uri2Guid( data.get(:publishCategory, false) )
 

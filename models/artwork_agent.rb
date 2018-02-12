@@ -13,10 +13,10 @@ class ArtworkAgent < BaseModel
     ret[:is_preferred] = data.get(:isPreferred, false) === "true" # isPreferred": "true"
 
     # agent_uid, agent_uri, agentName
-    ret[:agent_id] = Lake2Citi( data.get(:agent_uid) )
+    ret[:agent_id] = str2int( data.get(:agent_uid) )
 
     # role_uid, role_uri, roleText
-    ret[:role_id] = Lake2Citi( data.get(:role_uid) )
+    ret[:role_id] = str2int( data.get(:role_uid) )
 
     ret
 

@@ -19,7 +19,7 @@ class Agent < BaseModel
     ret[:is_licensing_restricted] = data.get(:isLicensingRestricted, false) === "true"
 
     # agentType, agentType_uri, agentType_uid
-    ret[:agent_type_id] = Lake2Citi( data.get(:agentType_uid) )
+    ret[:agent_type_id] = str2int( data.get(:agentType_uid) )
 
     # agentPlace, agentPlace_uri, agentPlace_uid
     ret[:agent_place_ids] = str2int( data.get(:agentPlace_uid, false) )

@@ -17,7 +17,7 @@ class Artwork < BaseModel
     ret[:date_start] = Integer( data.get(:earliestYear) ) rescue nil # can be derived from dates?
     ret[:date_end] = Integer( data.get(:latestYear) ) rescue nil # can be derived from dates?
 
-    ret[:creator_id] = Lake2Citi( data.get(:artist_uid) )
+    ret[:creator_id] = str2int( data.get(:artist_uid) )
     ret[:creator_display] = data.get(:creatorDisplay)
 
     ret[:image_guid] = Uri2Guid( data.get(:hasPreferredRepresentation_uri) )
@@ -27,7 +27,7 @@ class Artwork < BaseModel
 
     ret[:description] = data.get(:description)
 
-    ret[:department_id] = Lake2Citi( data.get(:department_uid) )
+    ret[:department_id] = str2int( data.get(:department_uid) )
 
     ret[:dimensions] = data.get(:dimensionsDisplay)
 
@@ -52,7 +52,7 @@ class Artwork < BaseModel
 
     # TODO: Add this to Exhibitions as well
     # hasDocument_uid, hasDocument_uri, hasDocument
-    ret[:document_ids] = Lake2Citi( data.get(:hasDocument_uri, false) )
+    ret[:document_ids] = str2int( data.get(:hasDocument_uri, false) )
 
     # All the `:artwork_*_ids` fields below point at "pivot" objects
     # We need to import these pivot objects, then use them to relate artworks to the "actual" linked object
@@ -86,11 +86,11 @@ class Artwork < BaseModel
 
     # This produces an Artwork's CITI UID
     # constituentPart_uid, constituentPart_uri, constituentPart
-    ret[:part_ids] = Lake2Citi( data.get(:constituentPart_uid, false) )
+    ret[:part_ids] = str2int( data.get(:constituentPart_uid, false) )
 
     # This produces an Artwork's CITI UID
     # compositeWhole_uid, compositeWhole_uri, compositeWhole
-    ret[:set_ids] = Lake2Citi( data.get(:compositeWhole_uid, false) )
+    ret[:set_ids] = str2int( data.get(:compositeWhole_uid, false) )
 
     ret[:is_public_domain] = data.get(:type, false).include? 'http://definitions.artic.edu/ontology/1.0/PCRightsPublicDomain'
 

@@ -14,7 +14,7 @@ class ArtworkCatalogue < BaseModel
 
     ret[:number] = data.get(:number, false)
     ret[:state_edition] = data.get(:stateEdition, false)
-    ret[:catalog_id] = uid2id(data.get(:catalogRaisonneName_uid))
+    ret[:catalog_id] = str2int( data.get(:catalogRaisonneName_uid) )
 
     ret
 

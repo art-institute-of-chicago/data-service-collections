@@ -1,6 +1,8 @@
 # Casts strings to integer
 # Accepts arrays or single values
 
+# Can change namespaced LAKE UIDs to original CITI ones
+
 def str2int(value)
 
   if value.kind_of?(Array)
@@ -19,7 +21,7 @@ def _str2int(value)
   end
 
   begin
-    out = value.to_i
+    Integer ( /-?([0-9]+)/.match(value)[1] )
   rescue
     nil
   end
