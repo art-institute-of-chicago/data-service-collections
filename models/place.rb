@@ -9,40 +9,18 @@ class Place < BaseModel
     # self.fq << ' AND galleryFloor:[* TO *]'
     # Only 46 of 287 Galleries in Solr have the below condition:
     # self.fq << ' AND locationType:"AIC Gallery"'
-  end
-
-  # TODO: Abstract boolean into lake_unwrapper.rb (?)
-  # isClosed contains some irregularities that prevent it from abstraction
-  # https://lakesolridxweb.artic.edu/solr/lpm/select?wt=json&facet.field=isClosed&facet.limit=-1&rows=0
-  def isClosed( data )
-
-    # default to expectations...
-    return true if data == "<Closed>"
-
-    return false if data == "<NOT Closed>"
-    return false
-
-    # historic responses, for reference:
-    return false if data == nil
-    return true if data == "True"
-    return false if data == "False"
-    return false if data == "<NOT Closed>"
-
+    self.fq << ' AND -type:"http://definitions.artic.edu/ontology/1.0/WebMobilePublished"'
   end
 
   def transform( data, ret )
 
-    ret[:closed] = isClosed( data.get(:isClosed) )
+    if (data.get(:latitude, false) < 999)
+      ret[:latitude] = data.get(:latitude, false)
+    end
 
-    # Some galleryNumbers are NOT numbers, e.g. 297A
-    ret[:number] = data.get(:galleryNumber)
-
-    # Some galleryFloors are NOT numbers, e.g. LL
-    # https://lakesolridxweb.artic.edu/solr/lpm_prod/select?wt=json&facet.field=galleryFloor&facet.limit=-1&rows=0
-    ret[:floor] = data.get(:galleryFloor)
-
-    ret[:latitude] = data.get(:latitude, false)
-    ret[:longitude] = data.get(:longitude, false)
+    if (data.get(:longitude, false) < 999)
+      ret[:longitude] = data.get(:longitude, false)
+    end
 
     ret[:type] = data.get(:locationType)
 
