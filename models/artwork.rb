@@ -27,8 +27,6 @@ class Artwork < BaseModel
 
     ret[:description] = data.get(:description)
 
-    ret[:department_id] = str2int( data.get(:department_uid) )
-
     ret[:dimensions] = data.get(:dimensionsDisplay)
 
     ret[:medium] = data.get(:mediumDisplay)

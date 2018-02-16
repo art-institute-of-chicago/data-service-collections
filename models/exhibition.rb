@@ -11,8 +11,7 @@ class Exhibition < BaseModel
     ret[:exhibition_type] = data.get(:exhibitionType, false)
     ret[:exhibition_status] = data.get(:exhibitionStatus, false)
 
-    ret[:department] = data.get(:department)
-    ret[:department_id] = Integer( data.get(:department_citiUid) ) rescue nil
+    ret[:department_display] = data.get(:department)
 
     ret[:description] = data.get(:description)
 
