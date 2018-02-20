@@ -42,8 +42,28 @@ class Artwork < BaseModel
     ret[:provenance] = data.get(:provenanceText)
 
     # This is always an array of strings
-    # TODO: Parse this to get fiscal year or date of accquisition
     ret[:committees] = data.get(:objectCommittee, false)
+
+    # Parse committees to get fiscal year of acquisition
+    fy = nil;
+    ret[:committees].each { |c|
+      comm_re = /[a-zA-Z ]+\s\(Acquisition\)\s\((\d{2})\/\d{2}\/(\d{4})\)/
+      m = comm_re.match(c)
+      unless m
+        next
+      end
+
+      comm_fy = m[2].to_i
+      if m[1].to_i >= 7
+        comm_fy = comm_fy + 1
+      end
+
+      if fy == nil || comm_fy > fy
+        fy = comm_fy
+      end
+    }
+
+    ret[:fiscal_year] = fy
 
     # TODO: Change this to publishCategory_citiUid once that's available
     ret[:category_ids] = data.get(:published_category_i, false)
