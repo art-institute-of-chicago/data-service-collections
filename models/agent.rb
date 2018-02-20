@@ -10,6 +10,7 @@ class Agent < BaseModel
     # prefLabel, prefSortName, altLabel, altSortName
     ret[:sort_title] = data.get(:prefSortName)
     ret[:alt_titles] = data.get(:altLabel, false)
+    ret[:alt_sort_titles] = data.get(:altSortName, false)
 
     # We don't care about altSortName (tbd)
 
