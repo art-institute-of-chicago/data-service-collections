@@ -8,7 +8,7 @@ class Agent < BaseModel
   def transform( data, ret )
 
     # prefLabel, prefSortName, altLabel, altSortName
-    ret[:title_sort] = data.get(:prefSortName)
+    ret[:sort_title] = data.get(:prefSortName)
     ret[:alt_titles] = data.get(:altLabel, false)
 
     # We don't care about altSortName (tbd)
