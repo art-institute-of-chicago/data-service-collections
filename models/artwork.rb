@@ -22,8 +22,6 @@ class Artwork < BaseModel
 
     ret[:image_guid] = Uri2Guid( data.get(:hasPreferredRepresentation_uri) )
 
-    ret[:document_guids] = Uri2Guid( data.get(:hasDocument_uri) )
-
     # TODO: Use gallery_id when it becomes available
     ret[:location] = data.get(:galleryLocation)
 
