@@ -45,23 +45,33 @@ class Artwork < BaseModel
     ret[:committees] = data.get(:objectCommittee, false)
 
     # Parse committees to get fiscal year of acquisition
-    fy = nil;
-    ret[:committees].each { |c|
-      comm_re = /[a-zA-Z ]+\s\(Acquisition\)\s\((\d{2})\/\d{2}\/(\d{4})\)/
-      m = comm_re.match(c)
-      unless m
-        next
-      end
+    if ret[:committees]
+      fy = nil;
+      ret[:committees].each { |c|
+        comm_re = /([a-zA-Z\(\) ]+?)\s\(Acquisition\)\s\((\d{2})\/\d{2}\/(\d{4})\)/
+        m = comm_re.match(c)
+        unless m
+          next
+        end
 
-      comm_fy = m[2].to_i
-      if m[1].to_i >= 7
-        comm_fy = comm_fy + 1
-      end
+        if m[1] != "Board of Trustees" &&
+           m[1] != "Year End Gifts" &&
+           m[1] != "Executive Committee" &&
+           m[1] != "Executive Committee (Poll)" &&
+           m[1] != "Director's Discretion"
+          next
+        end
 
-      if fy == nil || comm_fy > fy
-        fy = comm_fy
-      end
-    }
+        comm_fy = m[3].to_i
+        if m[2].to_i >= 7
+          comm_fy = comm_fy + 1
+        end
+
+        if fy == nil || comm_fy > fy
+          fy = comm_fy
+        end
+      }
+    end
 
     ret[:fiscal_year] = fy
 
