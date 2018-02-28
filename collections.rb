@@ -115,7 +115,6 @@ module Collections
     self.addResource( ArtworkCatalogue )
     self.addResource( ArtworkDate )
     self.addResource( ArtworkPlace )
-    self.addResource( ArtworkTerm )
 
     self.addResource( ArtworkAgentRole )
     self.addResource( ArtworkDateQualifier )
@@ -124,6 +123,7 @@ module Collections
 
     self.addResource( Catalogue )
     self.addResource( Term )
+    self.addResource( TermType )
 
     # Exhibition-to-Foobar pivot models
     self.addResource( ExhibitionAgent )

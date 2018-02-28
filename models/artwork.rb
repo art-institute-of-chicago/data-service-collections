@@ -81,6 +81,12 @@ class Artwork < BaseModel
     # TODO: Change this to publishCategory_citiUid once that's available
     ret[:category_ids] = data.get(:published_category_i, false)
 
+    # prefTerm, prefTerm_uri, prefTerm_uid
+    ret[:pref_term_ids] = str2int( data.get(:prefTerm_uid, false) )
+
+    # altTerm, altTerm_uri, altTerm_uid
+    ret[:alt_term_ids] = str2int( data.get(:altTerm_uid, false) )
+
     # hasDocument_uid, hasDocument_uri, hasDocument
     ret[:document_ids] = Uri2Guid( data.get(:hasDocument_uri, false) )
 
@@ -103,10 +109,6 @@ class Artwork < BaseModel
     # TODO: Watch Redmine ticket #2425
     # objectPlace, objectPlace_uri, objectPlace_uid
     ret[:artwork_place_ids] = str2int( data.get(:objectPlace_uid, false) )
-
-    # TODO: Watch Redmine ticket #2407
-    # objectTerms, objectTerms_uris, objectTerms_uids
-    # ret[:artwork_term_ids] = str2int( data.get(:objectTerms_uids, false) )
 
     # TODO: Watch Redmine ticket #2431
     # objectTypes

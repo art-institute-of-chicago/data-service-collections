@@ -3,14 +3,13 @@ class Term < BaseModel
   def initialize
     super
     self.fq = 'hasModel:Term'
+    # TODO: Verify that we aren't importing terms of unwanted types
   end
 
   def transform( data, ret )
 
-    # We are only interested in the citiUid and the prefLabel
-
-    # TODO: Connect `hasModel:ObjectTerm` to `hasModel:Term` when fields become available
-    # TODO: Connect `hasModel:TermType` to `hasModel:Term` – see Redmine #2407
+    # termType_uri, termType_uid
+    ret[:term_type_id] = str2int( data.get(:termType_uid) )
 
     ret
 
