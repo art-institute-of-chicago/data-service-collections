@@ -20,6 +20,9 @@ class Artwork < BaseModel
     ret[:creator_id] = str2int( data.get(:artist_uid) )
     ret[:creator_display] = data.get(:creatorDisplay)
 
+    # copyrightRepresentative, copyrightRepresentative_uid, copyrightRepresentative_uri
+    ret[:copyright_representative_ids] = str2int( data.get(:copyrightRepresentative_uid, false) )
+
     ret[:image_guid] = Uri2Guid( data.get(:hasPreferredRepresentation_uri) )
 
     # TODO: Use gallery_id when it becomes available
@@ -93,9 +96,6 @@ class Artwork < BaseModel
 
     # objectCatalogRaisonne, objectCatalogRaisonne_uri, objectCatalogRaisonne_uid
     ret[:artwork_catalogue_ids] = str2int( data.get(:objectCatalogRaisonne_uid, false) )
-
-    # TODO: Watch Redmine ticket #2424
-    # ret[:copyright_representative_ids] = str2int( data.get(:objectCopyrightRepresentatives_uids, false) )
 
     # objectDate, objectDate_uri, objectDate_uid
     ret[:artwork_date_ids] = str2int( data.get(:objectDate_uid, false) )
