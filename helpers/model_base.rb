@@ -206,6 +206,7 @@ class BaseModel
     ret[:citi_id] = Integer( data.get(:citiUid) ) rescue nil
     ret[:lake_guid] = data.get(:id, false)
     ret[:lake_uri] = data.get(:uri, false)
+    ret[:lake_uid] = data.get(:uid)
 
     self.transform( data, ret )
 
