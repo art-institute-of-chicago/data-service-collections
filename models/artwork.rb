@@ -25,8 +25,10 @@ class Artwork < BaseModel
 
     ret[:image_guid] = Uri2Guid( data.get(:hasPreferredRepresentation_uri) )
 
-    # TODO: Use gallery_id when it becomes available
+    # TODO: Remove this once the DA has been modified to work w/ gallery_ud
     ret[:location] = data.get(:galleryLocation)
+
+    ret[:gallery_id] = str2int( data.get(:gallery_uid) )
 
     ret[:description] = data.get(:description)
 
