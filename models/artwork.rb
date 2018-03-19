@@ -23,7 +23,17 @@ class Artwork < BaseModel
     # copyrightRepresentative, copyrightRepresentative_uid, copyrightRepresentative_uri
     ret[:copyright_representative_ids] = str2int( data.get(:copyrightRepresentative_uid, false) )
 
+    # TODO: Rename this field to image_id
+    # TODO: Rename this field to pref_image_id?
     ret[:image_guid] = Uri2Guid( data.get(:hasPreferredRepresentation_uri) )
+
+    # TODO: Rename this field to alt_image_id?
+    ret[:alt_image_guids] = Uri2Guid( data.get(:hasRepresentation_uri, false) )
+
+    # Remove the prefImage from the altImages array
+    if ret[:alt_image_guids] && ret[:image_guid]
+      ret[:alt_image_guids].delete( ret[:image_guid] )
+    end
 
     # TODO: Remove this once the DA has been modified to work w/ gallery_ud
     ret[:location] = data.get(:galleryLocation)
