@@ -113,11 +113,12 @@ class Artwork < BaseModel
     # TODO: Watch Redmine ticket #2431
     # objectTypes
 
-    # This produces an id of a group (`hasModel:Set`)
+    # This produces an id of a `Group` (`hasModel:Set`)
+    # Sets are M2O relationships to a List in CITI
     # isMemberOfSet, isMemberOfSet_uid, isMemberOfSet_uri
     # TODO: Determine if this is many-to-one i/o many-to-many
     # TODO: Rename this to `set` after migration to Laravel
-    ret[:group_ids] = str2int( data.get(:isMemberOfSet_uid, false) )
+    ret[:group_id] = str2int( data.get(:isMemberOfSet_uid) )
 
     ret[:is_public_domain] = data.get(:type, false).include? 'http://definitions.artic.edu/ontology/1.0/PCRightsPublicDomain'
 
