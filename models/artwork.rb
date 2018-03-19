@@ -113,6 +113,14 @@ class Artwork < BaseModel
     # TODO: Watch Redmine ticket #2431
     # objectTypes
 
+    # This produces an Artwork's CITI UID
+    # constituentPart_uid, constituentPart_uri, constituentPart
+    ret[:part_ids] = str2int( data.get(:constituentPart_uid, false) )
+
+    # This produces an Artwork's CITI UID
+    # compositeWhole_uid, compositeWhole_uri, compositeWhole
+    ret[:set_ids] = str2int( data.get(:compositeWhole_uid, false) )
+
     # This produces an id of a `Group` (`hasModel:Set`)
     # Sets are M2O relationships to a List in CITI
     # isMemberOfSet, isMemberOfSet_uid, isMemberOfSet_uri
