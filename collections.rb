@@ -122,6 +122,7 @@ module Collections
     self.addResource( AgentPlaceQualifier )
 
     self.addResource( Catalogue )
+    self.addResource( Group )
     self.addResource( Term )
     self.addResource( TermType )
 
