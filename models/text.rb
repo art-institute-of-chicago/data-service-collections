@@ -2,7 +2,8 @@ class Text < ResourceModel
 
   def initialize
     super
-    self.fq = 'legacyReferenceCode:"HTML/Text as Content"'
+    # self.fq = 'legacyReferenceCode:"HTML/Text as Content"'
+    self.fq = 'type:"http://definitions.artic.edu/ontology/1.0/type/Text"'
   end
 
   def transform( data, ret )
