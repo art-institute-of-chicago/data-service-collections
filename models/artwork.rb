@@ -23,6 +23,9 @@ class Artwork < BaseModel
     # copyrightRepresentative, copyrightRepresentative_uid, copyrightRepresentative_uri
     ret[:copyright_representative_ids] = str2int( data.get(:copyrightRepresentative_uid, false) )
 
+    # hasDocument_uid, hasDocument_uri, hasDocument
+    ret[:document_ids] = Uri2Guid( data.get(:hasDocument_uri, false) )
+
     # TODO: Rename this field to image_id
     # TODO: Rename this field to pref_image_id?
     ret[:image_guid] = Uri2Guid( data.get(:hasPreferredRepresentation_uri) )
@@ -33,6 +36,12 @@ class Artwork < BaseModel
     # Remove the prefImage from the altImages array
     if ret[:alt_image_guids] && ret[:image_guid]
       ret[:alt_image_guids].delete( ret[:image_guid] )
+    end
+
+    # Remove documents from altImages
+    # "When [interpretive resources] were migrated, they were added as both representations and documentation"
+    if ret[:alt_image_guids] && ret[:document_ids]
+      ret[:alt_image_guids] = ret[:alt_image_guids] - ret[:document_ids]
     end
 
     # TODO: Remove this once the DA has been modified to work w/ gallery_ud
@@ -98,9 +107,6 @@ class Artwork < BaseModel
 
     # altTerm, altTerm_uri, altTerm_uid
     ret[:alt_term_ids] = str2int( data.get(:altTerm_uid, false) )
-
-    # hasDocument_uid, hasDocument_uri, hasDocument
-    ret[:document_ids] = Uri2Guid( data.get(:hasDocument_uri, false) )
 
     # All the `:artwork_*_ids` fields below point at "pivot" objects
     # We need to import these pivot objects, then use them to relate artworks to the "actual" linked object
