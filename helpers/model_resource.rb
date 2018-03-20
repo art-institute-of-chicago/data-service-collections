@@ -70,6 +70,8 @@ class ResourceModel < BaseModel
 
     ret[:attached_to_asset_id] = Uri2Guid( data.get(:isAttachmentOf_uri) )
 
+    ret[:copyright_representative_id] = str2int( data.get(:copyrightRepresentative_uid) )
+
     # Omitting for now, but revisit later, when they are GUIDs or URIs:
     # legacyCurriculum
     # legacyGradeLevel
