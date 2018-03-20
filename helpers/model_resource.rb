@@ -68,6 +68,8 @@ class ResourceModel < BaseModel
 
     ret[:category_guids] = Uri2Guid( data.get(:publishCategory, false) )
 
+    ret[:attached_to_asset_id] = Uri2Guid( data.get(:isAttachmentOf_uri) )
+
     # Omitting for now, but revisit later, when they are GUIDs or URIs:
     # legacyCurriculum
     # legacyGradeLevel
