@@ -14,11 +14,11 @@ class Place < BaseModel
 
   def transform( data, ret )
 
-    if (data.get(:latitude, false) < 999)
+    if (BigDecimal.new(data.get(:latitude, false)) < 999)
       ret[:latitude] = data.get(:latitude, false)
     end
 
-    if (data.get(:longitude, false) < 999)
+    if (BigDecimal.new(data.get(:longitude, false)) < 999)
       ret[:longitude] = data.get(:longitude, false)
     end
 
