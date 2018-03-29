@@ -159,12 +159,6 @@ class BaseModel
     }
 
     {
-      # Deprecate this, since it doesn't match other dataservices:
-      "results": results,
-      "pages": pages,
-      "links": links,
-
-      # New convention:
       "total": results[:total],
       "limit": results[:limit],
       "offset": results[:offset],
