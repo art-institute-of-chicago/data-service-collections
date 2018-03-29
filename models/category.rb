@@ -21,6 +21,8 @@ class Category < BaseModel
     #           Seems to be retired http://www.artic.edu/aic/collections/artwork/category/212
     # 7   (1) = Featured -> Featured Objects
 
+    ret[:id] = data.get(:uid)
+
     ret[:description] = data.get(:description)
 
     ret[:is_in_nav] = data.get(:isInNav) == "True" ? true : false;

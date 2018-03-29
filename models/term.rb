@@ -8,6 +8,8 @@ class Term < BaseModel
 
   def transform( data, ret )
 
+    ret[:id] = data.get(:uid)
+
     # termType_uri, termType_uid
     ret[:term_type_id] = str2int( data.get(:termType_uid) )
 
