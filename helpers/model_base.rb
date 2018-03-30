@@ -212,12 +212,12 @@ class BaseModel
     self.transform( data, ret )
 
     # TODO: This date is too precise. Carbon complains about trailing data.
-    ret[:citi_created_at] = nil # data.get(:citiCreateDate, false) # absent
-    ret[:citi_modified_at] = nil # data.get(:citiUpdateDate, false)
+    ret[:citi_created_at] = data.get(:citiCreateDate, false).to_time(:utc).iso8601 rescue nil
+    ret[:citi_modified_at] = data.get(:citiUpdateDate, false).to_time(:utc).iso8601 rescue nil
 
-    ret[:created_at] = data.get(:created)
-    ret[:modified_at] = data.get(:lastModified)
-    ret[:indexed_at] = data.get(:timestamp, false)
+    ret[:created_at] = data.get(:created).to_time(:utc).iso8601 rescue nil
+    ret[:modified_at] = data.get(:lastModified).to_time(:utc).iso8601 rescue nil
+    ret[:indexed_at] = data.get(:timestamp, false).to_time(:utc).iso8601 rescue nil
 
     ret
 
