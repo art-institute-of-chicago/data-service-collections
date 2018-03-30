@@ -96,10 +96,17 @@ class BaseModel
       citi_ids = citi_ids.join(' OR ')
       lake_ids = lake_ids.join(' OR ')
 
-      fq << "("
+      # Assumes the model has an existing `fq`
+      fq << " AND"
+
+      fq << " ("
 
       if citi_ids.length > 0
         fq << " citiUid:(#{citi_ids})"
+      end
+
+      if citi_ids.length > 0 and lake_ids.length > 0
+        fq << " OR"
       end
 
       if lake_ids.length > 0
