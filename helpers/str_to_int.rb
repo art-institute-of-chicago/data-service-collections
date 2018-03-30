@@ -21,7 +21,7 @@ def _str2int(value)
   end
 
   begin
-    Integer ( /-?([0-9]+)/.match(value)[1] )
+    Integer ( /(?:[A-Z]+-)*(-?[0-9]+)/.match(value)[1] )
   rescue
     nil
   end
