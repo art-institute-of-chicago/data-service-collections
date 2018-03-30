@@ -117,16 +117,20 @@ class Artwork < BaseModel
 
     # objectAgent, objectAgent_uri, objectAgent_uid
     ret[:artwork_agent_ids] = str2int( data.get(:objectAgent_uid, false) )
+    ret[:artwork_agents] = pivot( ArtworkAgent, ret[:artwork_agent_ids] )
 
     # objectCatalogRaisonne, objectCatalogRaisonne_uri, objectCatalogRaisonne_uid
     ret[:artwork_catalogue_ids] = str2int( data.get(:objectCatalogRaisonne_uid, false) )
+    ret[:artwork_catalogues] = pivot( ArtworkCatalogue, ret[:artwork_catalogue_ids] )
 
     # objectDate, objectDate_uri, objectDate_uid
     ret[:artwork_date_ids] = str2int( data.get(:objectDate_uid, false) )
+    ret[:artwork_dates] = pivot( ArtworkDate, ret[:artwork_date_ids] )
 
     # TODO: Watch Redmine ticket #2425
     # objectPlace, objectPlace_uri, objectPlace_uid
     ret[:artwork_place_ids] = str2int( data.get(:objectPlace_uid, false) )
+    ret[:artwork_places] = pivot( ArtworkPlace, ret[:artwork_place_ids] )
 
     # TODO: Watch Redmine ticket #2431
     # objectTypes
