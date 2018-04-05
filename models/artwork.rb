@@ -150,9 +150,9 @@ class Artwork < BaseModel
     # TODO: Rename this to `set` after migration to Laravel
     ret[:group_id] = str2int( data.get(:isMemberOfSet_uid) )
 
-    ret[:is_public_domain] = data.get(:type, false).include? 'http://definitions.artic.edu/ontology/1.0/PCRightsPublicDomain'
+    ret[:is_public_domain] = data.get(:type, false).include? 'http://definitions.artic.edu/ontology/1.0/PCRightsPublicDomain' rescue nil
 
-    ret[:is_zoomable] = (data.get(:type, false).include? 'http://definitions.artic.edu/ontology/1.0/PCRightsWebEdu') || ret[:is_public_domain] || ret[:copyright] || false
+    ret[:is_zoomable] = (data.get(:type, false).include? 'http://definitions.artic.edu/ontology/1.0/PCRightsWebEdu') || ret[:is_public_domain] || ret[:copyright] || false rescue nil
 
     if ret[:copyright]
       ret[:max_zoom_window_size] = 1280
