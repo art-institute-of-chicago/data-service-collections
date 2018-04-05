@@ -58,6 +58,8 @@ module Collections
           optional :page, type: Integer, default: 1
           optional :per_page, type: Integer
           optional :limit, type: Integer
+          optional :fli, type: String # inbound key filter (Solr)
+          optional :flo, type: String # outbound key fiter (to DA)
           optional :ids, type: String, default: '', regexp: /^(?:
             # match comma-separated integers or guids, disallow comma after last item
             (?:(?:[0-9]+|[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}),*)+
@@ -74,9 +76,20 @@ module Collections
             params.fetch(:per_page, nil) || params.fetch(:limit, 12)
           )
 
-          model.find_all(
+          if not params.fetch(:fli, nil).nil?
+            model.extra_params = { :fl => params.fetch(:fli) }
+          end
+
+          ret = model.find_all(
             params.fetch(:ids, ''),
           )
+
+          if not params.fetch(:flo, nil).nil?
+            fields = params.fetch(:flo).split(',')
+            ret[:data].map! { |datum| datum.delete_if { |key, value| !fields.include? key.to_s } }
+          end
+
+          ret
 
         end
         route :any do
