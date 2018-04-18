@@ -3,6 +3,8 @@ class Category < BaseModel
   def initialize
     super
     self.fq = 'hasModel:PublishCategory'
+    # Only import departments and themes
+    self.fq << ' AND pubCatType:(1 OR 3)'
   end
 
   def transform( data, ret )
