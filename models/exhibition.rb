@@ -24,9 +24,9 @@ class Exhibition < BaseModel
     ret[:start_date] = Time.parse(data.get(:startDate, false)).utc.iso8601 rescue nil
     ret[:end_date] = Time.parse(data.get(:endDate, false)).utc.iso8601 rescue nil
 
-    # TODO: Determine if a pivot() call is needed for this field
     # exhibitionPlace, exhibitionPlace_uris, exhibitionPlace_uids
     ret[:exhibition_agent_ids] = str2int( data.get(:exhibitionPlace_uid, false) )
+    ret[:exhibition_agents] = pivot( ExhibitionAgent, ret[:exhibition_agent_ids] )
 
     # exhibitionObject, exhibitionObject_uris, exhibitionObject_uids
     # These are direct links to works, not to pivot models!
