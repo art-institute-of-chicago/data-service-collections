@@ -61,9 +61,14 @@ module Collections
           optional :fli, type: String # inbound key filter (Solr)
           optional :flo, type: String # outbound key fiter (to DA)
           optional :ids, type: String, default: '', regexp: /^(?:
-            # match comma-separated integers or guids, disallow comma after last item
-            (?:(?:[0-9]+|[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}),*)+
-            (?:[0-9]+|[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12})
+            # match comma-separated integers guids or uids, disallow comma after last item
+            (?:(?:[0-9]+|[A-Z]{2}-[0-9]+|[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}),*)+
+            (?:[0-9]+|[A-Z]{2}-[0-9]+|[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12})
+          )*$/x
+          optional :fields, type: String, default: '', regexp: /^(?:
+            # match comma-separated strings, disallow comma after last item
+            (?:(?:[a-zA-Z_]+),*)+
+            (?:[a-zA-Z_]+)
           )*$/x
         end
         get do
