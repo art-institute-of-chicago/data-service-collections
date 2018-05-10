@@ -72,6 +72,8 @@ class ResourceModel < BaseModel
 
     ret[:copyright_representative_id] = str2int( data.get(:copyrightRepresentative_uid) )
 
+    ret[:alt_text] = data.get(:visualSurrogate, false)
+
     # Omitting for now, but revisit later, when they are GUIDs or URIs:
     # legacyCurriculum
     # legacyGradeLevel
