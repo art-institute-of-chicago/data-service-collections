@@ -63,7 +63,7 @@ class BaseModel
 
   def find( id )
 
-    if id.include? '-'
+    if id =~ /[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}/
       self.select( "id:#{id}", 1 )
     else
       self.select( "citiUid:#{id}", 1 )
@@ -82,10 +82,13 @@ class BaseModel
 
       citi_ids = []
       lake_ids = []
+      uid_ids = []
 
       ids.each { |id|
 
-        if id.include? '-'
+        if id =~ /[A-Z]{2}-[0-9]+/
+          uid_ids.push( id )
+        elsif id =~ /[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}/
           lake_ids.push( id )
         else
           citi_ids.push( id )
@@ -95,23 +98,38 @@ class BaseModel
 
       citi_ids = citi_ids.join(' OR ')
       lake_ids = lake_ids.join(' OR ')
+      uid_ids = uid_ids.join(' OR ')
+
+      citi_ids = citi_ids.gsub(/-/, '\-')
 
       # Assumes the model has an existing `fq`
       fq << " AND"
 
       fq << " ("
 
+      sub = ''
+
       if citi_ids.length > 0
-        fq << " citiUid:(#{citi_ids})"
+        sub << " citiUid:(#{citi_ids})"
       end
 
-      if citi_ids.length > 0 and lake_ids.length > 0
-        fq << " OR"
+      if !sub.empty? && lake_ids.length > 0
+        sub << " OR"
       end
 
       if lake_ids.length > 0
-        fq << " id:(#{lake_ids})"
+        sub << " id:(#{lake_ids})"
       end
+
+      if !sub.empty? && uid_ids.length > 0
+        sub << " OR"
+      end
+
+      if uid_ids.length > 0
+        sub << " uid:(#{uid_ids})"
+      end
+
+      fq << sub
 
       fq << " )"
 
