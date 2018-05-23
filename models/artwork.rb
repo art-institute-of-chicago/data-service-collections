@@ -1,3 +1,4 @@
+# coding: utf-8
 class Artwork < BaseModel
 
   def initialize
@@ -14,8 +15,21 @@ class Artwork < BaseModel
     ret[:main_id] = data.get(:mainRefNumber) # unusual for this model
 
     ret[:date_display] = data.get(:dateDisplay)
-    ret[:date_start] = Integer( data.get(:earliestYear) ) rescue nil # can be derived from dates?
-    ret[:date_end] = Integer( data.get(:latestYear) ) rescue nil # can be derived from dates?
+
+    # Dates in LPM are being transformed incorrectly, resulting in inaccurate date. Until
+    # they get a fix in, comment this out and use legacy dates.
+    #ret[:date_start] = Integer( data.get(:earliestYear) ) rescue nil # can be derived from dates?
+    #ret[:date_end] = Integer( data.get(:latestYear) ) rescue nil # can be derived from dates?
+
+    ret[:date_start] = Date::_parse( data.get(:legacyDateBegin, false) ).fetch(:year) # can be derived from dates?
+    ret[:date_end] =  Date::_parse( data.get(:legacyDateEnd, false) ).fetch(:year) # can be derived from dates?
+
+    # Ruby dates are astronocial dates. So B.C. dates don't behave as expected:
+    # > The year 1 BC/BCE is numbered 0, the year 2 BC is numbered −1
+    #
+    # Adjust B.C. dates so they're display-ready
+    ret[:date_start] -= 1 if ret[:date_start] && ret[:date_start] <= 0
+    ret[:date_end] -= 1 if ret[:date_end] && ret[:date_end] <= 0
 
     ret[:creator_id] = str2int( data.get(:artist_uid) )
     ret[:creator_display] = data.get(:creatorDisplay)
