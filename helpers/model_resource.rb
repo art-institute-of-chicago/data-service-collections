@@ -86,9 +86,9 @@ class ResourceModel < BaseModel
     # legacyAudienceFrom: 0, 1, 2, 3, 4, 5, 6, 7, 9
     # legacyAudienceTo: 0, 12, 13, 14, 3, 6, 8, 9,
 
-    # legacyIsEduPortalPublished
-    # legacyIsMultimediaPortalPublished
-    # legacyIsCollectionsWebPublished
+    ret[:is_educational_resource] = data.get(:publishChannel, false).include? 'http://definitions.artic.edu/publish_channel/EducationalResources' rescue nil
+    ret[:is_multimedia_resource] = data.get(:publishChannel, false).include? 'http://definitions.artic.edu/publish_channel/Multimedia' rescue nil
+    ret[:is_teacher_resource] = data.get(:publishChannel, false).include? 'http://definitions.artic.edu/publish_channel/TeacherResources' rescue nil
 
     # legacyAssetType -> e.g. Image, Text, PDF, Map (Google)
     # https://lakesolridxweb.artic.edu/solr/lpm/select?wt=json&facet.field=legacyAssetType&rows=0
