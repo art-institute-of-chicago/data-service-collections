@@ -69,7 +69,7 @@ module Collections
           (?=,|$)/xi
           optional :fields, type: String, default: '', regexp: /(?:^|,)
           (?:
-              [a-zA-Z_]+
+              [a-zA-Z_]
           )*
           (?=,|$)/xi
         end
@@ -153,6 +153,9 @@ module Collections
     # Agent-to-Foobar pivot models
     self.addResource( AgentPlace )
     self.addResource( AgentType )
+
+    # List of deleted models
+    self.addResource( Delete )
 
     # Throw a 404 for all undefined endpoints
     route :any, '*path' do
