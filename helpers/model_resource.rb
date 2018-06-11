@@ -1,3 +1,6 @@
+require "net/http"
+require "uri"
+
 class ResourceModel < BaseModel
 
   def initialize
@@ -32,8 +35,27 @@ class ResourceModel < BaseModel
 
   def getContent( data )
 
-    # TODO: Retrieve files from the LPM Repository
-    return data.get(:citiExtAsset) || data.get(:legacyContent, false) || nil
+    ret = data.get(:citiExtAsset) || nil
+
+    if ret == nil
+      ret = data.get(:legacyContent, false) || nil
+    end
+
+    if ret == nil
+      uri = URI.parse(data.get(:uri, false) + '/files/access_master/fcr:metadata')
+
+      response = nil
+      Net::HTTP.start(uri.host, 443, :use_ssl => true) {|http|
+        response = http.head(uri.path)
+      }
+
+      if response.kind_of? Net::HTTPSuccess
+        ret = data.get(:uri, false) + "/files/access_master"
+      end
+
+    end
+
+    ret
 
   end
 
