@@ -10,6 +10,8 @@ class Place < BaseModel
     # Only 46 of 287 Galleries in Solr have the below condition:
     # self.fq << ' AND locationType:"AIC Gallery"'
     self.fq << ' AND -type:"http://definitions.artic.edu/ontology/1.0/WebMobilePublished"'
+    # Adding this to help filter un-tagged galleries
+    self.fq << ' AND -locationType:"AIC Gallery"'
   end
 
   def transform( data, ret )
