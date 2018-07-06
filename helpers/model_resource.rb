@@ -41,6 +41,11 @@ class ResourceModel < BaseModel
       ret = data.get(:legacyContent, false) || nil
     end
 
+    # LAKE's "External Content" fields - this only grabs the first one
+    if ret == nil
+      ret = data.get(:externalContent) || nil
+    end
+
     if ret == nil
       uri = URI.parse(data.get(:uri, false) + '/files/access_master/fcr:metadata')
 
