@@ -21,8 +21,8 @@ class Artwork < BaseModel
     #ret[:date_start] = Integer( data.get(:earliestYear) ) rescue nil # can be derived from dates?
     #ret[:date_end] = Integer( data.get(:latestYear) ) rescue nil # can be derived from dates?
 
-    ret[:date_start] = Date::_parse( data.get(:legacyDateBegin, false) ).fetch(:year) rescue nil # can be derived from dates?
-    ret[:date_end] =  Date::_parse( data.get(:legacyDateEnd, false) ).fetch(:year) rescue nil # can be derived from dates?
+    ret[:date_start] = Date::_parse( data.get(:legacyDateBegin, false), false ).fetch(:year) rescue nil # can be derived from dates?
+    ret[:date_end] =  Date::_parse( data.get(:legacyDateEnd, false), false ).fetch(:year) rescue nil # can be derived from dates?
 
     # Ruby dates are astronocial dates. So B.C. dates don't behave as expected:
     # > The year 1 BC/BCE is numbered 0, the year 2 BC is numbered −1
