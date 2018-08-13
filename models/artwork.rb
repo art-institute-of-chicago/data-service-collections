@@ -137,13 +137,13 @@ class Artwork < BaseModel
     # There is still a mixed bag of records that use objectCatalogRaisonnesJSON vs. objectCatalogRaisonne_uid, so we'll
     # need to account for both. ntrivedi, 8.13.18
     if data.get(:objectCatalogRaisonnesJSON, false)
-      json = JSON.parse(data.get(:objectCatalogRaisonnesJSON, false))
+      json = JSON.parse(data.get(:objectCatalogRaisonnesJSON, false)) rescue {}
       json = json.each{|x|
         x["parent_lake_guid"] = ret[:lake_guid]
         x["parent_lake_uri"] = ret[:lake_uri]
       }
 
-      ret[:artwork_catalogue_ids] = json.map {|x| x[:pkey]}
+      ret[:artwork_catalogue_ids] = json.map {|x| x["pkey"]}
       ret[:artwork_catalogues] = ArtworkCatalogue.new.transform!(json)
     else
       ret[:artwork_catalogue_ids] = str2int( data.get(:objectCatalogRaisonne_uid, false) )
