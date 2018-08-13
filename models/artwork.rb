@@ -133,9 +133,22 @@ class Artwork < BaseModel
     ret[:artwork_agent_ids] = str2int( data.get(:objectAgent_uid, false) )
     ret[:artwork_agents] = pivot( ArtworkAgent, ret[:artwork_agent_ids] )
 
-    # objectCatalogRaisonne, objectCatalogRaisonne_uri, objectCatalogRaisonne_uid
-    ret[:artwork_catalogue_ids] = str2int( data.get(:objectCatalogRaisonne_uid, false) )
-    ret[:artwork_catalogues] = pivot( ArtworkCatalogue, ret[:artwork_catalogue_ids] )
+    # objectCatalogRaisonnesJSON, objectCatalogRaisonne, objectCatalogRaisonne_uri, objectCatalogRaisonne_uid
+    # There is still a mixed bag of records that use objectCatalogRaisonnesJSON vs. objectCatalogRaisonne_uid, so we'll
+    # need to account for both. ntrivedi, 8.13.18
+    if data.get(:objectCatalogRaisonnesJSON, false)
+      json = JSON.parse(data.get(:objectCatalogRaisonnesJSON, false))
+      json = json.each{|x|
+        x["parent_lake_guid"] = ret[:lake_guid]
+        x["parent_lake_uri"] = ret[:lake_uri]
+      }
+
+      ret[:artwork_catalogue_ids] = json.map {|x| x[:pkey]}
+      ret[:artwork_catalogues] = ArtworkCatalogue.new.transform!(json)
+    else
+      ret[:artwork_catalogue_ids] = str2int( data.get(:objectCatalogRaisonne_uid, false) )
+      ret[:artwork_catalogues] = pivot( ArtworkCatalogue, ret[:artwork_catalogue_ids] )
+    end
 
     # objectDate, objectDate_uri, objectDate_uid
     ret[:artwork_date_ids] = str2int( data.get(:objectDate_uid, false) )
