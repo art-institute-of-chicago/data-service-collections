@@ -151,8 +151,15 @@ class Artwork < BaseModel
     end
 
     # objectDate, objectDate_uri, objectDate_uid
-    ret[:artwork_date_ids] = str2int( data.get(:objectDate_uid, false) )
-    ret[:artwork_dates] = pivot( ArtworkDate, ret[:artwork_date_ids] )
+    if data.get(:objectDatesJSON, false)
+      json = JSON.parse(data.get(:objectDatesJSON, false)) rescue {}
+
+      ret[:artwork_date_ids] = json.map {|x| x["pkey"]}
+      ret[:artwork_dates] = ArtworkDate.new.transform!(json)
+    else
+        ret[:artwork_date_ids] = str2int( data.get(:objectDate_uid, false) )
+        ret[:artwork_dates] = pivot( ArtworkDate, ret[:artwork_date_ids] )
+    end
 
     # TODO: Watch Redmine ticket #2425
     # objectPlace, objectPlace_uri, objectPlace_uid
