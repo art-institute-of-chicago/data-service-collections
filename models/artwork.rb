@@ -130,8 +130,15 @@ class Artwork < BaseModel
     # That info has to be gotten from the artwork side!
 
     # objectAgent, objectAgent_uri, objectAgent_uid
-    ret[:artwork_agent_ids] = str2int( data.get(:objectAgent_uid, false) )
-    ret[:artwork_agents] = pivot( ArtworkAgent, ret[:artwork_agent_ids] )
+    if data.get(:objectAgentsJSON, false)
+      json = JSON.parse(data.get(:objectAgentsJSON, false)) rescue {}
+
+      ret[:artwork_agent_ids] = json.map {|x| x["pkey"]}
+      ret[:artwork_agents] = ArtworkAgent.new.transform!(json)
+    else
+      ret[:artwork_agent_ids] = str2int( data.get(:objectAgent_uid, false) )
+      ret[:artwork_agents] = pivot( ArtworkAgent, ret[:artwork_agent_ids] )
+    end
 
     # objectCatalogRaisonnesJSON, objectCatalogRaisonne, objectCatalogRaisonne_uri, objectCatalogRaisonne_uid
     # There is still a mixed bag of records that use objectCatalogRaisonnesJSON vs. objectCatalogRaisonne_uid, so we'll
