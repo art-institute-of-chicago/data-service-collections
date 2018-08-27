@@ -163,8 +163,15 @@ class Artwork < BaseModel
 
     # TODO: Watch Redmine ticket #2425
     # objectPlace, objectPlace_uri, objectPlace_uid
-    ret[:artwork_place_ids] = str2int( data.get(:objectPlace_uid, false) )
-    ret[:artwork_places] = pivot( ArtworkPlace, ret[:artwork_place_ids] )
+    if data.get(:objectPlacesJSON, false)
+      json = JSON.parse(data.get(:objectPlacesJSON, false)) rescue {}
+
+      ret[:artwork_place_ids] = json.map {|x| x["pkey"]}
+      ret[:artwork_places] = ArtworkPlace.new.transform!(json)
+    else
+      ret[:artwork_place_ids] = str2int( data.get(:objectPlace_uid, false) )
+      ret[:artwork_places] = pivot( ArtworkPlace, ret[:artwork_place_ids] )
+    end
 
     # TODO: Watch Redmine ticket #2431
     # objectTypes
