@@ -123,8 +123,8 @@ class Artwork < BaseModel
       ret[:artwork_agent_ids] = json.map {|x| x["pkey"]}
       ret[:artwork_agents] = ArtworkAgent.new.transform!(json)
     else
-      ret[:artwork_agent_ids] = str2int( data.get(:objectAgent_uid, false) )
-      ret[:artwork_agents] = pivot( ArtworkAgent, ret[:artwork_agent_ids] )
+      ret[:artwork_agent_ids] = nil
+      ret[:artwork_agents] = nil
     end
 
     # objectCatalogRaisonnesJSON, objectCatalogRaisonne, objectCatalogRaisonne_uri, objectCatalogRaisonne_uid
@@ -151,8 +151,8 @@ class Artwork < BaseModel
       ret[:artwork_date_ids] = json.map {|x| x["pkey"]}
       ret[:artwork_dates] = ArtworkDate.new.transform!(json)
     else
-      ret[:artwork_date_ids] = str2int( data.get(:objectDate_uid, false) )
-      ret[:artwork_dates] = pivot( ArtworkDate, ret[:artwork_date_ids] )
+      ret[:artwork_date_ids] = nil
+      ret[:artwork_dates] = nil
     end
 
     # TODO: Watch Redmine ticket #2425
@@ -163,8 +163,8 @@ class Artwork < BaseModel
       ret[:artwork_place_ids] = json.map {|x| x["pkey"]}
       ret[:artwork_places] = ArtworkPlace.new.transform!(json)
     else
-      ret[:artwork_place_ids] = str2int( data.get(:objectPlace_uid, false) )
-      ret[:artwork_places] = pivot( ArtworkPlace, ret[:artwork_place_ids] )
+      ret[:artwork_place_ids] = nil
+      ret[:artwork_places] = nil
     end
 
     # TODO: Watch Redmine ticket #2431
