@@ -139,7 +139,6 @@ module Collections
     self.addResource( ArtworkAgentRole )
     self.addResource( ArtworkDateQualifier )
     self.addResource( ArtworkPlaceQualifier )
-    self.addResource( AgentPlaceQualifier )
 
     self.addResource( Catalogue )
     self.addResource( Group )
@@ -151,7 +150,6 @@ module Collections
     self.addResource( ExhibitionArtwork )
 
     # Agent-to-Foobar pivot models
-    self.addResource( AgentPlace )
     self.addResource( AgentType )
 
     # List of deleted models

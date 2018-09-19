@@ -22,10 +22,6 @@ class Agent < BaseModel
     # agentType, agentType_uri, agentType_uid
     ret[:agent_type_id] = str2int( data.get(:agentType_uid) )
 
-    # agentPlace, agentPlace_uri, agentPlace_uid
-    ret[:agent_place_ids] = str2int( data.get(:agentPlace_uid, false) )
-    ret[:agent_places] = pivot( AgentPlace, ret[:agent_place_ids] )
-
     ret
 
   end
