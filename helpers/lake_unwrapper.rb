@@ -12,6 +12,7 @@ module LakeUnwrapper
   end
   def json(key)
       json = self.get(key, false)
+      json = json.gsub("\r", '') # cf. 51417
       json = JSON.parse(json) rescue {}
       json
   end
