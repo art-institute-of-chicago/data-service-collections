@@ -10,4 +10,9 @@ module LakeUnwrapper
     end
     out
   end
+  def json(key)
+      json = self.get(key, false)
+      json = JSON.parse(json) rescue {}
+      json
+  end
 end

@@ -118,7 +118,7 @@ class Artwork < BaseModel
 
     # objectAgent, objectAgent_uri, objectAgent_uid
     if data.get(:objectAgentsJSON, false)
-      json = JSON.parse(data.get(:objectAgentsJSON, false)) rescue {}
+      json = data.json(:objectAgentsJSON)
 
       ret[:artwork_agent_ids] = json.map {|x| x["pkey"]}
       ret[:artwork_agents] = ArtworkAgent.new.transform!(json)
@@ -131,7 +131,7 @@ class Artwork < BaseModel
     # There is still a mixed bag of records that use objectCatalogRaisonnesJSON vs. objectCatalogRaisonne_uid, so we'll
     # need to account for both. ntrivedi, 8.13.18
     if data.get(:objectCatalogRaisonnesJSON, false)
-      json = JSON.parse(data.get(:objectCatalogRaisonnesJSON, false)) rescue {}
+      json = data.json(:objectCatalogRaisonnesJSON)
       json = json.each{|x|
         x["parent_lake_guid"] = ret[:lake_guid]
         x["parent_lake_uri"] = ret[:lake_uri]
@@ -146,7 +146,7 @@ class Artwork < BaseModel
 
     # objectDate, objectDate_uri, objectDate_uid
     if data.get(:objectDatesJSON, false)
-      json = JSON.parse(data.get(:objectDatesJSON, false)) rescue {}
+      json = data.json(:objectDatesJSON)
 
       ret[:artwork_date_ids] = json.map {|x| x["pkey"]}
       ret[:artwork_dates] = ArtworkDate.new.transform!(json)
@@ -158,7 +158,7 @@ class Artwork < BaseModel
     # TODO: Watch Redmine ticket #2425
     # objectPlace, objectPlace_uri, objectPlace_uid
     if data.get(:objectPlacesJSON, false)
-      json = JSON.parse(data.get(:objectPlacesJSON, false)) rescue {}
+      json = data.json(:objectPlacesJSON)
 
       ret[:artwork_place_ids] = json.map {|x| x["pkey"]}
       ret[:artwork_places] = ArtworkPlace.new.transform!(json)
