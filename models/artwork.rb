@@ -128,8 +128,6 @@ class Artwork < BaseModel
     end
 
     # objectCatalogRaisonnesJSON, objectCatalogRaisonne, objectCatalogRaisonne_uri, objectCatalogRaisonne_uid
-    # There is still a mixed bag of records that use objectCatalogRaisonnesJSON vs. objectCatalogRaisonne_uid, so we'll
-    # need to account for both. ntrivedi, 8.13.18
     if data.get(:objectCatalogRaisonnesJSON, false)
       json = data.json(:objectCatalogRaisonnesJSON)
       json = json.each{|x|
@@ -140,8 +138,8 @@ class Artwork < BaseModel
       ret[:artwork_catalogue_ids] = json.map {|x| x["pkey"]}
       ret[:artwork_catalogues] = ArtworkCatalogue.new.transform!(json)
     else
-      ret[:artwork_catalogue_ids] = str2int( data.get(:objectCatalogRaisonne_uid, false) )
-      ret[:artwork_catalogues] = pivot( ArtworkCatalogue, ret[:artwork_catalogue_ids] )
+      ret[:artwork_catalogue_ids] = nil
+      ret[:artwork_catalogues] = nil
     end
 
     # objectDate, objectDate_uri, objectDate_uid
