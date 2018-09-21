@@ -35,19 +35,14 @@ class ResourceModel < BaseModel
 
   def getContent( data )
 
-    ret = data.get(:citiExtAsset) || nil
+    # We are going to assume that any pdf, mp3, or wav has
 
-    if ret == nil
-      ret = data.get(:legacyContent, false) || nil
-    end
+    # LAKE's "External Content" fields - this only grabs the first one!
+    ret = data.get(:externalContent) || nil
 
-    # LAKE's "External Content" fields - this only grabs the first one
-    if ret == nil
-      ret = data.get(:externalContent) || nil
-    end
-
-    if ret == nil
-      uri = URI.parse(data.get(:uri, false) + '/files/access_master/fcr:metadata')
+    if ret == nil && !(data.get(:type, false).include? 'http://definitions.artic.edu/ontology/1.0/type/StillImage')
+      uri_raw = 'https://lakeimagesweb.artic.edu/assets/' + data.get(:id, false)
+      uri = URI.parse(uri_raw)
 
       response = nil
       Net::HTTP.start(uri.host, 443, :use_ssl => true) {|http|
@@ -55,9 +50,8 @@ class ResourceModel < BaseModel
       }
 
       if response.kind_of? Net::HTTPSuccess
-        ret = data.get(:uri, false) + "/files/access_master"
+        ret = uri_raw
       end
-
     end
 
     ret
