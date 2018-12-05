@@ -14,6 +14,7 @@ module LakeUnwrapper
       json = self.get(key, false)
       json = json.gsub("\r", '') # cf. 51417
       json = JSON.parse(json) rescue {}
+      json = json.select{ |item| item["restricted"] == 0 }
       json
   end
 end
