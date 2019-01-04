@@ -12,6 +12,12 @@ class Place < BaseModel
     self.fq << ' AND -type:"http://definitions.artic.edu/ontology/1.0/WebMobilePublished"'
     # Adding this to help filter un-tagged galleries
     self.fq << ' AND -locationType:"AIC Gallery"'
+    # These are kruft for our purposes
+    self.fq << ' AND -locationType:"AIC Storage"'
+    self.fq << ' AND -locationType:"Non-AIC location"'
+    self.fq << ' AND -locationType:"Non-usable location"'
+    # Paradoxically, it looks like we need this one
+    # self.fq << ' AND -locationType:"No location"'
   end
 
   def transform( data, ret )
