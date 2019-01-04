@@ -22,15 +22,27 @@ class Place < BaseModel
 
   def transform( data, ret )
 
-    if (BigDecimal.new(data.get(:latitude, false)) < 999)
-      ret[:latitude] = data.get(:latitude, false)
-    end
-
-    if (BigDecimal.new(data.get(:longitude, false)) < 999)
-      ret[:longitude] = data.get(:longitude, false)
-    end
-
     ret[:type] = data.get(:locationType)
+
+    ret[:latitude] = data.get(:latitude, false)
+    ret[:longitude] = data.get(:longitude, false)
+
+    if (!ret[:latitude].nil?)
+      ret[:latitude] = ret[:latitude].to_f
+    end
+
+    if (!ret[:longitude].nil?)
+      ret[:longitude] = ret[:longitude].to_f
+    end
+
+    if (
+      !ret[:latitude].between?(-90, 90) || !ret[:longitude].between?(-180, 180)
+    ) || (
+      ret[:latitude] == 0 || ret[:longitude] == 0
+    )
+      ret[:latitude] = nil
+      ret[:longitude] = nil
+    end
 
     # I don't want to pass names. Waiting until we get GUIDs.
     # ret[:category] = data.get(:publishCategory)

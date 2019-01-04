@@ -1,4 +1,4 @@
-class Gallery < BaseModel
+class Gallery < Place
 
   def initialize
     super
@@ -268,6 +268,9 @@ class Gallery < BaseModel
 
   def transform( data, ret )
 
+    # Get latitude, longitude, and type from Place
+    ret = super(data, ret)
+
     ret[:closed] = isClosed( data.get(:isClosed) )
 
     # Some galleryNumbers are NOT numbers, e.g. 297A
@@ -276,11 +279,6 @@ class Gallery < BaseModel
     # Some galleryFloors are NOT numbers, e.g. LL
     # https://lakesolridxweb.artic.edu/solr/lpm_prod/select?wt=json&facet.field=galleryFloor&facet.limit=-1&rows=0
     ret[:floor] = data.get(:galleryFloor)
-
-    ret[:latitude] = data.get(:latitude, false)
-    ret[:longitude] = data.get(:longitude, false)
-
-    ret[:type] = data.get(:locationType)
 
     # I don't want to pass names. Waiting until we get GUIDs.
     # ret[:category] = data.get(:publishCategory)
