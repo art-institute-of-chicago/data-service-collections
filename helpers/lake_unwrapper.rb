@@ -9,8 +9,8 @@ module LakeUnwrapper
       out = nil if out.empty?
     end
     if out.kind_of?(Array)
-      out = out.map { |n| n.empty? ? nil : n }
-      out = nil if !out.any?
+      out = out.map { |n| n.kind_of?(String) && n.empty? ? nil : n }
+      out = nil if out.all? { |n| n.nil? }
     end
     out
   end
