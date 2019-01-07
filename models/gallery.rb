@@ -268,8 +268,11 @@ class Gallery < Place
 
   def transform( data, ret )
 
-    # Get latitude, longitude, and type from Place
+    # Get type from Place
     ret = super(data, ret)
+
+    # Get latitude and longitude via inherited method
+    ret = self.getLatLong(data, ret)
 
     ret[:closed] = isClosed( data.get(:isClosed) )
 

@@ -24,6 +24,20 @@ class Place < BaseModel
 
     ret[:type] = data.get(:locationType)
 
+    # Unfortunately, we were informed that this data is unmaintained
+    # ret = self.getLatLong(data, ret)
+    ret[:latitude] = nil
+    ret[:longitude] = nil
+
+    # I don't want to pass names. Waiting until we get GUIDs.
+    # ret[:category] = data.get(:publishCategory)
+
+    ret
+
+  end
+
+  def getLatLong( data, ret )
+
     ret[:latitude] = data.get(:latitude, false)
     ret[:longitude] = data.get(:longitude, false)
 
@@ -44,10 +58,8 @@ class Place < BaseModel
       ret[:longitude] = nil
     end
 
-    # I don't want to pass names. Waiting until we get GUIDs.
-    # ret[:category] = data.get(:publishCategory)
-
     ret
 
   end
+
 end
