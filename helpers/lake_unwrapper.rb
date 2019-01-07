@@ -8,6 +8,10 @@ module LakeUnwrapper
     if out.kind_of?(String)
       out = nil if out.empty?
     end
+    if out.kind_of?(Array)
+      out = out.map { |n| n.empty? ? nil : n }
+      out = nil if !out.any?
+    end
     out
   end
   def json(key)
