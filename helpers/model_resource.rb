@@ -66,7 +66,6 @@ class ResourceModel < BaseModel
     # Keep the lake_guid field too, for clarity
     # ret.delete(:lake_guid)
 
-
     # In addition to the BaseModel API fields, all interpretive resources share the following fields:
 
     ret[:description] = getDescription( data )
@@ -77,27 +76,15 @@ class ResourceModel < BaseModel
 
     ret[:content] = getContent( data )
 
-
-    # TODO: Determine if we need the other publication channels
-    ret[:published] = data.get(:legacyIsCollectionsWebPublished, false) == "True" ? true : false;
-
-    # There is no artwork_uid or anything equivallent:
-    # Resources report their related artist, but an artwork's
-    #   relationship to a resource is reported on the artwork side
-
-    ret[:artist_id] = str2int( data.get(:artist_uid) )
-
-    ret[:category_guids] = Uri2Guid( data.get(:publishCategory, false) )
-
-    ret[:attached_to_asset_id] = Uri2Guid( data.get(:isAttachmentOf_uri) )
-
-    ret[:copyright_representative_id] = str2int( data.get(:copyrightRepresentative_uid) )
-
+    # Not used widely; there's a push to move these to artworks
     ret[:alt_text] = data.get(:visualSurrogate)
 
-    # Omitting for now, but revisit later, when they are GUIDs or URIs:
-    # legacyCurriculum
-    # legacyGradeLevel
+    ret[:is_educational_resource] = (data.get(:publishChannel, false).include? 'http://definitions.artic.edu/publish_channel/EducationalResources' rescue nil) || false
+    ret[:is_multimedia_resource] = (data.get(:publishChannel, false).include? 'http://definitions.artic.edu/publish_channel/Multimedia' rescue nil) || false
+    ret[:is_teacher_resource] = (data.get(:publishChannel, false).include? 'http://definitions.artic.edu/publish_channel/TeacherResources' rescue nil) || false
+
+    ret[:is_attachment_of_ids] = Uri2Guid( data.get(:isAttachmentOf_uri) )
+
 
     # Ignore all fields below this line:
 
@@ -106,10 +93,6 @@ class ResourceModel < BaseModel
 
     # legacyAudienceFrom: 0, 1, 2, 3, 4, 5, 6, 7, 9
     # legacyAudienceTo: 0, 12, 13, 14, 3, 6, 8, 9,
-
-    ret[:is_educational_resource] = (data.get(:publishChannel, false).include? 'http://definitions.artic.edu/publish_channel/EducationalResources' rescue nil) || false
-    ret[:is_multimedia_resource] = (data.get(:publishChannel, false).include? 'http://definitions.artic.edu/publish_channel/Multimedia' rescue nil) || false
-    ret[:is_teacher_resource] = (data.get(:publishChannel, false).include? 'http://definitions.artic.edu/publish_channel/TeacherResources' rescue nil) || false
 
     # legacyAssetType -> e.g. Image, Text, PDF, Map (Google)
     # https://lakesolridxweb.artic.edu/solr/lpm/select?wt=json&facet.field=legacyAssetType&rows=0
