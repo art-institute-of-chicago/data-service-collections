@@ -33,6 +33,24 @@ class ResourceModel < BaseModel
 
   end
 
+  def getRels( relation_ids, is_preferred, is_doc )
+
+    {
+      :artworks => relation_ids.select { |i| i.start_with? 'WO-' },
+      :exhibitions => relation_ids.select { |i| i.start_with? 'EX-' }
+    }.each do |relation, ids|
+      id_key = (relation.to_s.singularize + '_id').to_sym
+      ids.map! do |id|
+        {
+          id_key => str2int(id),
+          :is_preferred => is_preferred,
+          :is_doc => is_doc,
+        }
+      end
+    end
+
+  end
+
   def getContent( data )
 
     # We are going to assume that any pdf, mp3, or wav has
@@ -88,33 +106,26 @@ class ResourceModel < BaseModel
     ret[:is_attachment_of_ids] = Uri2Guid( data.get(:isAttachmentOf_uri) )
 
     # New fields for relationship flip:
-    is_pref_rep_of_uids = data.get(:isPreferredRepresentationOfUid_uid, false) || []
-    is_rep_of_uids = data.get(:isRepresentationOfUid_uid, false) || []
-    is_doc_of_uids = data.get(:isDocumentOfUid_uid, false) || []
+    pref_rep_of_uids = data.get(:isPreferredRepresentationOfUid_uid, false) || []
+    rep_of_uids = data.get(:isRepresentationOfUid_uid, false) || []
+    doc_of_uids = data.get(:isDocumentOfUid_uid, false) || []
 
-    relations = is_pref_rep_of_uids | is_rep_of_uids | is_doc_of_uids
+    alt_rep_of_uids = rep_of_uids - pref_rep_of_uids
 
-    relations = {
-      :artworks => relations.select { |i| i.start_with? 'WO-' },
-      :exhibitions => relations.select { |i| i.start_with? 'EX-' }
-    }.each do |relation, ids|
-      id_key = (relation.to_s.singularize + '_id').to_sym
-      ids.map! do |id|
-        {
-          id_key => str2int(id),
-          :is_preferred => is_pref_rep_of_uids.include?(id),
-          :is_doc => is_doc_of_uids.include?(id),
-        }
-      end
-    end
+    pref_reps = getRels(pref_rep_of_uids, true, false)
+    alt_reps = getRels(alt_rep_of_uids, false, false)
+    docs = getRels(doc_of_uids, false, true)
 
-    ret[:artworks] = relations[:artworks]
-    ret[:exhibitions] = relations[:exhibitions]
+    ret[:rep_of_artworks] = pref_reps[:artworks] + alt_reps[:artworks]
+    ret[:doc_of_artworks] = docs[:artworks]
+
+    ret[:rep_of_exhibitions] = pref_reps[:exhibitions] + alt_reps[:exhibitions]
+    ret[:doc_of_exhibitions] = docs[:exhibitions]
 
     # Uncomment for debug:
-    # ret[:is_pref_rep_of_ids] = is_pref_rep_of_uids
-    # ret[:is_rep_of_ids] = is_rep_of_uids
-    # ret[:is_doc_of_ids] = is_doc_of_uids
+    ret[:is_pref_rep_of_ids] = pref_rep_of_uids
+    ret[:is_rep_of_ids] = rep_of_uids
+    ret[:is_doc_of_ids] = doc_of_uids
 
     # Ignore all fields below this line:
 
