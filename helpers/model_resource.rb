@@ -83,8 +83,38 @@ class ResourceModel < BaseModel
     ret[:is_multimedia_resource] = (data.get(:publishChannel, false).include? 'http://definitions.artic.edu/publish_channel/Multimedia' rescue nil) || false
     ret[:is_teacher_resource] = (data.get(:publishChannel, false).include? 'http://definitions.artic.edu/publish_channel/TeacherResources' rescue nil) || false
 
+    # ret[:is_attachment_of_ids] = str2int( data.get(:isAttachmentOfUid_uid, false) )
+    # ret[:has_attachment_of_ids] = str2int( data.get(:hasAttachmentOfUid_uid, false) )
     ret[:is_attachment_of_ids] = Uri2Guid( data.get(:isAttachmentOf_uri) )
 
+    # New fields for relationship flip:
+    is_pref_rep_of_uids = data.get(:isPreferredRepresentationOfUid_uid, false) || []
+    is_rep_of_uids = data.get(:isRepresentationOfUid_uid, false) || []
+    is_doc_of_uids = data.get(:isDocumentOfUid_uid, false) || []
+
+    relations = is_pref_rep_of_uids | is_rep_of_uids | is_doc_of_uids
+
+    relations = {
+      :artworks => relations.select { |i| i.start_with? 'WO-' },
+      :exhibitions => relations.select { |i| i.start_with? 'EX-' }
+    }.each do |relation, ids|
+      id_key = (relation.to_s.singularize + '_id').to_sym
+      ids.map! do |id|
+        {
+          id_key => str2int(id),
+          :is_preferred => is_pref_rep_of_uids.include?(id),
+          :is_doc => is_doc_of_uids.include?(id),
+        }
+      end
+    end
+
+    ret[:artworks] = relations[:artworks]
+    ret[:exhibitions] = relations[:exhibitions]
+
+    # Uncomment for debug:
+    # ret[:is_pref_rep_of_ids] = is_pref_rep_of_uids
+    # ret[:is_rep_of_ids] = is_rep_of_uids
+    # ret[:is_doc_of_ids] = is_doc_of_uids
 
     # Ignore all fields below this line:
 
