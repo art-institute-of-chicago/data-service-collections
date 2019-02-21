@@ -106,26 +106,18 @@ class ResourceModel < BaseModel
     ret[:is_attachment_of_ids] = Uri2Guid( data.get(:isAttachmentOf_uri) )
 
     # New fields for relationship flip:
-    pref_rep_of_uids = data.get(:isPreferredRepresentationOfUid_uid, false) || []
-    rep_of_uids = data.get(:isRepresentationOfUid_uid, false) || []
     doc_of_uids = data.get(:isDocumentOfUid_uid, false) || []
 
-    alt_rep_of_uids = rep_of_uids - pref_rep_of_uids
-
-    pref_reps = getRels(pref_rep_of_uids, true, false)
-    alt_reps = getRels(alt_rep_of_uids, false, false)
     docs = getRels(doc_of_uids, false, true)
 
-    ret[:rep_of_artworks] = pref_reps[:artworks] + alt_reps[:artworks]
     ret[:doc_of_artworks] = docs[:artworks]
-
-    ret[:rep_of_exhibitions] = pref_reps[:exhibitions] + alt_reps[:exhibitions]
     ret[:doc_of_exhibitions] = docs[:exhibitions]
 
+    ret[:rep_of_artworks] = []
+    ret[:rep_of_exhibitions] = []
+
     # Uncomment for debug:
-    ret[:is_pref_rep_of_ids] = pref_rep_of_uids
-    ret[:is_rep_of_ids] = rep_of_uids
-    ret[:is_doc_of_ids] = doc_of_uids
+    # ret[:is_doc_of_ids] = doc_of_uids
 
     # Ignore all fields below this line:
 
