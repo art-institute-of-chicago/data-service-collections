@@ -39,10 +39,9 @@ class ResourceModel < BaseModel
       :artworks => relation_ids.select { |i| i.start_with? 'WO-' },
       :exhibitions => relation_ids.select { |i| i.start_with? 'EX-' }
     }.each do |relation, ids|
-      id_key = (relation.to_s.singularize + '_id').to_sym
       ids.map! do |id|
         {
-          id_key => str2int(id),
+          :related_id => str2int(id),
           :is_preferred => is_preferred,
           :is_doc => is_doc,
         }
