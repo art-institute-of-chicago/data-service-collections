@@ -51,7 +51,7 @@ return [
         ],
         [
             'endpoint' => 'exhibitions',
-            'transformer' => \App\Transformers\GenericTransformer::class,
+            'transformer' => \App\Transformers\ExhibitionTransformer::class,
         ],
         [
             'endpoint' => 'galleries',
