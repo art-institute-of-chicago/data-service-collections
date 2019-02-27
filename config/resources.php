@@ -43,7 +43,7 @@ return [
         ],
         [
             'endpoint' => 'artworks',
-            'transformer' => \App\Transformers\GenericTransformer::class,
+            'transformer' => \App\Transformers\ArtworkTransformer::class,
         ],
         [
             'endpoint' => 'departments',
