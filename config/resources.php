@@ -59,7 +59,7 @@ return [
         ],
         [
             'endpoint' => 'agents',
-            'transformer' => \App\Transformers\GenericTransformer::class,
+            'transformer' => \App\Transformers\AgentTransformer::class,
         ],
         [
             'endpoint' => 'places',
