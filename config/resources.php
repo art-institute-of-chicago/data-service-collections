@@ -35,7 +35,7 @@ return [
         ],
         [
             'endpoint' => 'categories',
-            'transformer' => \App\Transformers\GenericTransformer::class,
+            'transformer' => \App\Transformers\CategoryTransformer::class,
         ],
         [
             'endpoint' => 'deletes',
