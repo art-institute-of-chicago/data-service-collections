@@ -18,7 +18,7 @@ class ExhibitionTransformer extends BaseTransformer
         ];
     }
 
-    private function getExhibitionAgent($exhibitionAgent)
+    private function getExhibitionAgent(Datum $exhibitionAgent)
     {
         $exhibitionAgent->start_date = $this->nullIso8601($exhibitionAgent->start_date);
         $exhibitionAgent->end_date = $this->nullIso8601($exhibitionAgent->end_date);

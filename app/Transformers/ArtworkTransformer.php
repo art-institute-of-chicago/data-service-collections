@@ -13,12 +13,38 @@ class ArtworkTransformer extends BaseTransformer
         return [
             'gallery_id' => $this->nullZero($datum->gallery_id),
             'creator_id' => $this->nullZero($datum->creator_id),
+
             'committees' => null,
             'fiscal_year' => $datum->fiscal_year ?? $this->getFiscalYear($datum->committees),
+
+            'artwork_agents' => array_map([$this, 'getArtworkAgent'], $this->nullArray($datum->artwork_agents)),
+            'artwork_places' => array_map([$this, 'getArtworkPlace'], $this->nullArray($datum->artwork_places)),
+            'artwork_dates' => array_map([$this, 'getArtworkDate'], $this->nullArray($datum->artwork_dates)),
         ];
     }
 
-    private function getFiscalYear($committees)
+    private function getArtworkAgent(Datum $artworkAgent)
+    {
+        $artworkAgent->role_id = $this->nullZero($artworkAgent->role_id);
+
+        return $artworkAgent;
+    }
+
+    private function getArtworkPlace(Datum $artworkPlace)
+    {
+        $artworkPlace->place_qualifier_id = $this->nullZero($artworkPlace->place_qualifier_id);
+
+        return $artworkPlace;
+    }
+
+    private function getArtworkDate(Datum $artworkDate)
+    {
+        $artworkDate->date_qualifier_id = $this->nullZero($artworkDate->date_qualifier_id);
+
+        return $artworkDate;
+    }
+
+    private function getFiscalYear(array $committees)
     {
         $fiscalYear = null;
 

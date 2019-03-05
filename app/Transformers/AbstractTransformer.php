@@ -60,4 +60,9 @@ class AbstractTransformer
     {
         return $value === 0 ? null : $value;
     }
+
+    protected function nullArray($value)
+    {
+        return empty($value) ? [] : $value;
+    }
 }

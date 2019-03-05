@@ -21,11 +21,21 @@ class Datum implements JsonSerializable
         $this->datum = $datum;
     }
 
-    public function __get($field)
+    public function __get($key)
     {
-        $value = $this->datum->$field ?? null;
+        $value = $this->datum->$key ?? null;
 
         return $this->getCleanValue($value);
+    }
+
+    public function __set($key, $value)
+    {
+        $this->datum->$key = $value;
+    }
+
+    public function __isset($key)
+    {
+        return isset($this->datum->$key);
     }
 
     /**
@@ -103,9 +113,13 @@ class Datum implements JsonSerializable
             return empty($value) ? null : $value;
         }
 
+        if (is_array($value))
+        {
+            return array_map([$this, 'getCleanValue'], $value);
+        }
+
         if (is_object($value))
         {
-            // If it's an object, return new datum
             return $this->getSubDatum($value);
         }
 
