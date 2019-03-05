@@ -38,7 +38,11 @@ class PassthroughController extends BaseController
         $endpoint = $this->getEndpoint(-1);
         $transformer = $this->getTransformer($endpoint);
 
-        $response = $this->getResponse($endpoint, $this->request->only(['limit', 'page']));
+        $response = $this->getResponse($endpoint, $this->request->only([
+            'limit',
+            'page',
+            'ids',
+        ]));
 
         return [
             'pagination' => $this->getPagination($response->pagination),
@@ -73,6 +77,7 @@ class PassthroughController extends BaseController
             $pagination->prev_url = $this->request->fullUrlWithQuery([
                 'page' => $pagination->current_page - 1,
                 'limit' => $pagination->limit,
+                'ids' => $this->request->get('ids'),
             ]);
         }
 
@@ -80,6 +85,7 @@ class PassthroughController extends BaseController
             $pagination->next_url = $this->request->fullUrlWithQuery([
                 'page' => $pagination->current_page + 1,
                 'limit' => $pagination->limit,
+                'ids' => $this->request->get('ids'),
             ]);
         }
 
