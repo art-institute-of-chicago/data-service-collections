@@ -55,7 +55,7 @@ return [
         ],
         [
             'endpoint' => 'galleries',
-            'transformer' => \App\Transformers\GenericTransformer::class,
+            'transformer' => \App\Transformers\PlaceTransformer::class,
         ],
         [
             'endpoint' => 'agents',
@@ -63,7 +63,7 @@ return [
         ],
         [
             'endpoint' => 'places',
-            'transformer' => \App\Transformers\GenericTransformer::class,
+            'transformer' => \App\Transformers\PlaceTransformer::class,
         ],
     ],
 
