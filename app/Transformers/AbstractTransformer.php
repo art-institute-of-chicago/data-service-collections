@@ -61,8 +61,13 @@ class AbstractTransformer
         return $value === 0 ? null : $value;
     }
 
-    protected function nullArray($value)
+    protected function nullToArray($value)
     {
         return empty($value) ? [] : $value;
+    }
+
+    protected function mapToArray($value, string $methodName)
+    {
+        return array_map([$this, $methodName], $this->nullToArray($value));
     }
 }
