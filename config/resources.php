@@ -11,7 +11,7 @@ return [
         ],
         [
             'endpoint' => 'terms',
-            'transformer' => \App\Transformers\GenericTransformer::class,
+            'transformer' => \App\Transformers\TermTransformer::class,
         ],
         [
             'endpoint' => 'object-types',
