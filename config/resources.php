@@ -30,6 +30,10 @@ return [
             'transformer' => \App\Transformers\GenericTransformer::class,
         ],
         [
+            'endpoint' => 'artwork-date-qualifiers',
+            'transformer' => \App\Transformers\GenericTransformer::class,
+        ],
+        [
             'endpoint' => 'artwork-place-qualifiers',
             'transformer' => \App\Transformers\GenericTransformer::class,
         ],
