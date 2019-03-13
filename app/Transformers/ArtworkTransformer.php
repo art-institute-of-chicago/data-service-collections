@@ -14,13 +14,14 @@ class ArtworkTransformer extends BaseTransformer
             'gallery_id' => $this->nullZero($datum->gallery_id),
             'creator_id' => $this->nullZero($datum->creator_id),
 
-            'committees' => null,
+            'committees' => null, // TODO: Unsetting this targets copy of $datum
             'fiscal_year' => $datum->fiscal_year ?? $this->getFiscalYear($datum->committees),
 
             // Referenced methods must be protected, not private
             'artwork_agents' => $this->mapToArray($datum->artwork_agents, 'getArtworkAgent'),
             'artwork_places' => $this->mapToArray($datum->artwork_places, 'getArtworkPlace'),
             'artwork_dates' => $this->mapToArray($datum->artwork_dates, 'getArtworkDate'),
+            'artwork_catalogues' => $this->mapToArray($datum->artwork_catalogues, 'getArtworkCatalogue'),
         ];
     }
 
@@ -43,6 +44,14 @@ class ArtworkTransformer extends BaseTransformer
         $artworkDate->date_qualifier_id = $this->nullZero($artworkDate->date_qualifier_id);
 
         return $artworkDate;
+    }
+
+    protected function getArtworkCatalogue(Datum $artworkCatalogue)
+    {
+        $artworkCatalogue->is_preferred = $artworkCatalogue->preferred;
+        unset($artworkCatalogue->preferred);
+
+        return $artworkCatalogue;
     }
 
     private function getFiscalYear(array $committees)

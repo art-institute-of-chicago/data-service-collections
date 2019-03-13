@@ -33,6 +33,11 @@ class Datum implements JsonSerializable
         $this->datum->$key = $value;
     }
 
+    public function __unset($key)
+    {
+        unset($this->datum->$key);
+    }
+
     public function __isset($key)
     {
         return isset($this->datum->$key);
