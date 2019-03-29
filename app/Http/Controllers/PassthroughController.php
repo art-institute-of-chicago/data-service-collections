@@ -28,8 +28,12 @@ class PassthroughController extends BaseController
 
         $response = $this->getResponse($endpoint . '/' . $id);
 
+        if (!isset($response)) {
+            throw new ItemNotFoundException();
+        }
+
         return [
-            'data' => $transformer->transform($response->data),
+            'data' => $transformer->transform($this->getData($response)[0]),
         ];
     }
 
@@ -45,8 +49,8 @@ class PassthroughController extends BaseController
         ]));
 
         return [
-            'pagination' => $this->getPagination($response->pagination),
-            'data' => array_map([$transformer, 'transform'], $response->data),
+            'pagination' => $this->getPagination($response),
+            'data' => array_map([$transformer, 'transform'], $this->getData($response)),
         ];
     }
 
@@ -57,7 +61,14 @@ class PassthroughController extends BaseController
 
     private function getResponse(string $path, array $query = [])
     {
-        return json_decode($this->client->request('GET', $path, ['query' => $query])->getBody());
+        try {
+            $response = $this->client->request('GET', $path, ['query' => $query]);
+        }
+        catch (\GuzzleHttp\Exception\ClientException $e) {
+            return null;
+        }
+
+        return json_decode($response->getBody());
     }
 
     private function getTransformer(string $endpoint)
@@ -71,8 +82,29 @@ class PassthroughController extends BaseController
         return new $mapping['transformer'];
     }
 
-    private function getPagination($pagination)
+    private function getData($response = null)
     {
+        $data = $response->data ?? [];
+        $data = !is_array($data) ? [$data] : $data;
+        $data = array_map(function ($datum) {
+            return is_object($datum) ? (array) $datum : $datum;
+        }, $data);
+
+        return $data;
+    }
+
+    private function getPagination($response = null)
+    {
+        $pagination = $response->pagination ?? (object) [
+            'total' => 0,
+            'limit' => 12,
+            'offset' => 0,
+            'current_page' => 1,
+            'total_pages' => 1,
+            'prev_url' => null,
+            'next_url' => null,
+        ];
+
         if (isset($pagination->prev_url)) {
             $pagination->prev_url = $this->request->fullUrlWithQuery([
                 'page' => $pagination->current_page - 1,
