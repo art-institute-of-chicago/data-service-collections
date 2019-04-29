@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/art-institute-of-chicago/data-hub-foundation.git",
-                "reference": "cbf30e3f11124d2e9421240cf31f8060c455ea9c"
+                "reference": "151b415f84d2b40511f8fa2d666ff049b5baa9f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/art-institute-of-chicago/data-hub-foundation/zipball/cbf30e3f11124d2e9421240cf31f8060c455ea9c",
-                "reference": "cbf30e3f11124d2e9421240cf31f8060c455ea9c",
+                "url": "https://api.github.com/repos/art-institute-of-chicago/data-hub-foundation/zipball/151b415f84d2b40511f8fa2d666ff049b5baa9f2",
+                "reference": "151b415f84d2b40511f8fa2d666ff049b5baa9f2",
                 "shasum": ""
             },
             "require": {
@@ -50,7 +50,7 @@
                 "source": "https://github.com/art-institute-of-chicago/data-hub-foundation/tree/master",
                 "issues": "https://github.com/art-institute-of-chicago/data-hub-foundation/issues"
             },
-            "time": "2019-04-29T20:52:26+00:00"
+            "time": "2019-04-29T21:01:16+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
