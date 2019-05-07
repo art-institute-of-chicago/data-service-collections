@@ -98,7 +98,7 @@ class ArtworkTransformer extends BaseTransformer
 
     private function getIsZoomable(Datum $datum)
     {
-        return $datum->has_rights_web_educational || $datum->is_public_domain || ($datum->copyright ?? true);
+        return $datum->has_rights_web_educational || $datum->is_public_domain || !empty($datum->copyright);
     }
 
     private function getMaxZoomWindowSize(Datum $datum)
