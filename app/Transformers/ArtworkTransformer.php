@@ -17,6 +17,10 @@ class ArtworkTransformer extends BaseTransformer
             'committees' => null, // TODO: Unsetting this targets copy of $datum
             'fiscal_year' => $datum->fiscal_year ?? $this->getFiscalYear($datum->committees),
 
+            // TODO: Redmine CITI-3395
+            'is_zoomable' => $this->getIsZoomable($datum),
+            'max_zoom_window_size' => $this->getMaxZoomWindowSize($datum),
+
             // Referenced methods must be protected, not private
             'artwork_agents' => $this->mapToArray($datum->artwork_agents, 'getArtworkAgent'),
             'artwork_places' => $this->mapToArray($datum->artwork_places, 'getArtworkPlace'),
@@ -91,5 +95,23 @@ class ArtworkTransformer extends BaseTransformer
         }
 
         return $fiscalYear;
+    }
+
+    private function getIsZoomable(Datum $datum)
+    {
+        return $datum->is_public_domain || ($datum->copyright ?? true);
+    }
+
+    private function getMaxZoomWindowSize(Datum $datum)
+    {
+        if ($datum->copyright) {
+            return 1280;
+        }
+
+        if ($this->getIsZoomable($datum)) {
+            return -1;
+        }
+
+        return 843;
     }
 }
