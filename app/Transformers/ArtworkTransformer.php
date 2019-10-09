@@ -13,6 +13,11 @@ class ArtworkTransformer extends BaseTransformer
         return [
             'gallery_id' => $this->nullZero($datum->gallery_id),
             'creator_id' => $this->nullZero($datum->creator_id),
+            'department_id' => $this->nullZero($datum->department_id),
+
+            // TODO: Maybe move these into subobjects?
+            'creator_role_id' => $this->nullZero($datum->creator_role_id),
+            'date_qualifier_id' => $this->nullZero($datum->date_qualifier_id),
 
             'committees' => null, // TODO: Unsetting this targets copy of $datum
             'fiscal_year' => $datum->fiscal_year ?? $this->getFiscalYear($datum->committees),
