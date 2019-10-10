@@ -56,7 +56,7 @@ class AbstractTransformer
         return $datetime === '0000-00-00T00:00:00.000Z' ? null : $datetime;
     }
 
-    protected function nullZero(int $value)
+    protected function nullZero(?int $value)
     {
         return $value === 0 ? null : $value;
     }

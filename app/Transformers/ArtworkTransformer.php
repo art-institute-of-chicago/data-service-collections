@@ -16,7 +16,7 @@ class ArtworkTransformer extends BaseTransformer
             'department_id' => $this->nullZero($datum->department_id),
 
             // TODO: Maybe move these into subobjects?
-            'creator_role_id' => $this->nullZero($datum->creator_role_id),
+            'creator_role_id' => $this->nullZero($datum->creator_role_id), // pre-nulled?
             'date_qualifier_id' => $this->nullZero($datum->date_qualifier_id),
 
             'committees' => null, // TODO: Unsetting this targets copy of $datum
