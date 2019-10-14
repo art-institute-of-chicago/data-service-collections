@@ -10,7 +10,7 @@ class ArtworkTransformer extends BaseTransformer
 {
     protected function getFields(Datum $datum)
     {
-        return [
+        $fields = [
             'gallery_id' => $this->nullZero($datum->gallery_id),
             'creator_id' => $this->nullZero($datum->creator_id),
             'department_id' => $this->nullZero($datum->department_id),
@@ -31,6 +31,40 @@ class ArtworkTransformer extends BaseTransformer
             'artwork_dates' => $this->mapToArray($datum->artwork_dates, 'getArtworkDate'),
             'artwork_catalogues' => $this->mapToArray($datum->artwork_catalogues, 'getArtworkCatalogue'),
         ];
+
+        // Exit early if this artwork isn't deaccessioned
+        if (is_null($datum->fiscal_year_deaccession)) {
+            return $fields;
+        }
+
+        return array_merge($fields, [
+            'has_rights_web_educational' => null,
+            'credit_line' => null,
+            'committees' => null,
+
+            'gallery_id' => null,
+            'is_on_view' => null,
+
+            'inscriptions' => null,
+            'publications' => null,
+            'exhibitions' => null,
+            'provenance' => null,
+            'inscriptions' => null,
+
+            'is_public_domain' => false,
+            'is_zoomable' => false,
+            'max_zoom_window_size' => 843,
+
+            'copyright_ids' => [],
+            'part_ids' => [],
+            'set_ids' => [],
+
+            'date_qualifier_id' => null,
+
+            'artwork_places' => [],
+            'artwork_dates' => [],
+            'artwork_catalogues' => [],
+        ]);
     }
 
     protected function getArtworkAgent(Datum $artworkAgent)
