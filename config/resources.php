@@ -26,6 +26,10 @@ return [
             'transformer' => \App\Transformers\GenericTransformer::class,
         ],
         [
+            'endpoint' => 'genders',
+            'transformer' => \App\Transformers\GenericTransformer::class,
+        ],
+        [
             'endpoint' => 'artwork-agent-roles',
             'transformer' => \App\Transformers\GenericTransformer::class,
         ],
