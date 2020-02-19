@@ -11,6 +11,7 @@ class AgentTransformer extends BaseTransformer
     {
         return [
             'agent_type_id' => $this->nullZero($datum->agent_type_id),
+            'gender_id' => $this->nullZero($datum->gender_id),
             'agent_places' => $this->mapToArray($datum->agent_places, 'getAgentPlace'),
         ];
     }
