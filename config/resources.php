@@ -42,6 +42,10 @@ return [
             'transformer' => \App\Transformers\GenericTransformer::class,
         ],
         [
+            'endpoint' => 'agent-place-qualifiers',
+            'transformer' => \App\Transformers\GenericTransformer::class,
+        ],
+        [
             'endpoint' => 'categories',
             'transformer' => \App\Transformers\CategoryTransformer::class,
         ],
