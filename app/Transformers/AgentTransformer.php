@@ -22,21 +22,6 @@ class AgentTransformer extends BaseTransformer
 
         // Null out funky dates, pending upstream fixes
         $nullPairs = [
-            // ex: 80875 (1657-1818)
-            [
-                'date_earliest' => '0000-00-00T00:00:00.000Z',
-                'date_latest' => '0000-00-00T00:00:00.000Z',
-            ],
-            // ex: 3338 (1925-)
-            [
-                'date_earliest' => '0000-00-00T00:00:00.000Z',
-                'date_latest' => null,
-            ],
-            // ex: 4448 (-1844)
-            [
-                'date_earliest' => null,
-                'date_latest' => '0000-00-00T00:00:00.000Z',
-            ],
             // ex: 116611 (1/1/4713 BCE)
             [
                 'date_earliest' => '0000-00-00T00:00:00.000Z',
@@ -57,7 +42,14 @@ class AgentTransformer extends BaseTransformer
             )) {
                 $agentPlace->date_earliest = null;
                 $agentPlace->date_latest = null;
-                break;
+
+                return $agentPlace;
+            }
+        }
+
+        foreach (['date_earliest', 'date_latest'] as $field){
+            if ($agentPlace->$field == "0000-00-00T00:00:00.000Z") {
+                $agentPlace->$field = null;
             }
         }
 
