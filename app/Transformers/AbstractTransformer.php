@@ -51,7 +51,7 @@ class AbstractTransformer
         return new Datum($datum);
     }
 
-    protected function nullIso8601(string $datetime)
+    protected function nullIso8601(?string $datetime)
     {
         return $datetime === '0000-00-00T00:00:00.000Z' ? null : $datetime;
     }

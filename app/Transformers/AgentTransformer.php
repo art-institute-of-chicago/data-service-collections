@@ -47,11 +47,8 @@ class AgentTransformer extends BaseTransformer
             }
         }
 
-        foreach (['date_earliest', 'date_latest'] as $field){
-            if ($agentPlace->$field == "0000-00-00T00:00:00.000Z") {
-                $agentPlace->$field = null;
-            }
-        }
+        $agentPlace->date_earliest = $this->nullIso8601($agentPlace->date_earliest);
+        $agentPlace->date_latest = $this->nullIso8601($agentPlace->date_latest);
 
         return $agentPlace;
     }
