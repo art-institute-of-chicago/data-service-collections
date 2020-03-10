@@ -52,11 +52,6 @@ return [
         Illuminate\View\ViewServiceProvider::class,
 
         /*
-         * Package Service Providers...
-         */
-        Laravel\Tinker\TinkerServiceProvider::class,
-
-        /*
          * Foundation Service Providers...
          */
         Aic\Hub\Foundation\DefaultConfigServiceProvider::class,
