@@ -22,6 +22,8 @@ class ArtworkTransformer extends BaseTransformer
             'committees' => null, // TODO: Unsetting this targets copy of $datum
             'fiscal_year' => $datum->fiscal_year ?? $this->getFiscalYear($datum->committees),
 
+            'on_loan_display' => $this->getOnLoanDisplay($datum),
+
             'is_zoomable' => $this->getIsZoomable($datum),
             'max_zoom_window_size' => $this->getMaxZoomWindowSize($datum),
 
@@ -133,6 +135,53 @@ class ArtworkTransformer extends BaseTransformer
         }
 
         return $fiscalYear;
+    }
+
+    private function getOnLoanDisplay(Datum $datum)
+    {
+        $schedule = $datum->on_loan_schedule;
+
+        if (!isset($schedule) || count($schedule) < 1) {
+            return null;
+        }
+
+        // if there are multiple, sort so the longest is first
+        if (count($schedule) > 0) {
+            usort($schedule, function($a, $b) {
+                $ad = Carbon::parse($a->end);
+                $bd = Carbon::parse($b->end);
+
+                if ($ad->eq($bd)) {
+                    return 0;
+                }
+
+                // descending order
+                return $ad->lt($bd) ? +1 : -1;
+            });
+        }
+
+        $current = reset($schedule);
+        $output = '<p>On loan';
+
+        if (isset($current->agent_title)) {
+            $output .= ' to ' . $current->agent_title;
+        }
+
+        if (isset($current->place_title)) {
+            $output .= ' in ' . $current->place_title;
+        }
+
+        if (isset($current->exhibition_title)) {
+            $output .= ' for <i>' . $current->exhibition_title . '</i>';
+        }
+
+        if (isset($current->end)) {
+            $output .= ' until ' . Carbon::parse($current->end)->toFormattedDateString();
+        }
+
+        $output .= '</p>';
+
+        return $output;
     }
 
     private function getIsZoomable(Datum $datum)
