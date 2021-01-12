@@ -182,10 +182,6 @@ class ArtworkTransformer extends BaseTransformer
             $output .= ' to ' . $current->agent_title;
         }
 
-        if (isset($current->place_title)) {
-            $output .= ' in ' . $current->place_title;
-        }
-
         if (isset($current->exhibition_title)) {
             $output .= ' for <i>' . $current->exhibition_title . '</i>';
         }
