@@ -175,10 +175,6 @@ class ArtworkTransformer extends BaseTransformer
             $output .= ' for <i>' . $current->exhibition_title . '</i>';
         }
 
-        if (isset($current->end)) {
-            $output .= ' until ' . Carbon::parse($current->end)->toFormattedDateString();
-        }
-
         $output .= '</p>';
 
         return $output;
