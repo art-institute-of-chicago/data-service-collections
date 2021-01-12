@@ -145,6 +145,21 @@ class ArtworkTransformer extends BaseTransformer
             return null;
         }
 
+        $now = Carbon::now();
+
+        // filter out past and future venues, just in case
+        $schedule = array_values(array_filter($schedule, function($loan) use ($now) {
+            if (isset($loan->begin) && Carbon::parse($loan->begin)->gt($now)) {
+                return false;
+            }
+
+            if (isset($loan->end) && Carbon::parse($loan->end)->lt($now)) {
+                return false;
+            }
+
+            return true;
+        }));
+
         // if there are multiple, sort so the longest is first
         if (count($schedule) > 0) {
             usort($schedule, function($a, $b) {
