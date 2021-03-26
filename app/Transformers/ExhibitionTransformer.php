@@ -2,7 +2,6 @@
 
 namespace App\Transformers;
 
-use App\Transformers\Datum;
 use App\Transformers\AbstractTransformer as BaseTransformer;
 
 class ExhibitionTransformer extends BaseTransformer

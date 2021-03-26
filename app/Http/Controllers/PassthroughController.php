@@ -79,7 +79,7 @@ class PassthroughController extends BaseController
             throw new ItemNotFoundException();
         }
 
-        return new $mapping['transformer'];
+        return new $mapping['transformer']();
     }
 
     private function getData($response = null)

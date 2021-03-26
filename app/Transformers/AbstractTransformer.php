@@ -2,8 +2,6 @@
 
 namespace App\Transformers;
 
-use App\Transformers\Datum;
-
 class AbstractTransformer
 {
 
@@ -27,7 +25,6 @@ class AbstractTransformer
     /**
      * Override this method in child classes for additional cleaning.
      *
-     * @param \App\Transformers\Datum $datum
      * @return array
      */
     protected function getFields(Datum $datum)

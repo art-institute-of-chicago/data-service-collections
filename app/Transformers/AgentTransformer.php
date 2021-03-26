@@ -2,7 +2,6 @@
 
 namespace App\Transformers;
 
-use App\Transformers\Datum;
 use App\Transformers\AbstractTransformer as BaseTransformer;
 
 class AgentTransformer extends BaseTransformer
@@ -36,9 +35,9 @@ class AgentTransformer extends BaseTransformer
 
         foreach ($nullPairs as $nullPair) {
             if ((
-                $agentPlace->date_earliest == $nullPair['date_earliest']
+                $agentPlace->date_earliest === $nullPair['date_earliest']
             ) && (
-                $agentPlace->date_latest == $nullPair['date_latest']
+                $agentPlace->date_latest === $nullPair['date_latest']
             )) {
                 $agentPlace->date_earliest = null;
                 $agentPlace->date_latest = null;

@@ -3,7 +3,6 @@
 namespace App\Transformers;
 
 use Carbon\Carbon;
-use App\Transformers\Datum;
 use App\Transformers\AbstractTransformer as BaseTransformer;
 
 class ArtworkTransformer extends BaseTransformer
@@ -148,7 +147,7 @@ class ArtworkTransformer extends BaseTransformer
         $now = Carbon::now();
 
         // filter out past and future venues, just in case
-        $schedule = array_values(array_filter($schedule, function($loan) use ($now) {
+        $schedule = array_values(array_filter($schedule, function ($loan) use ($now) {
             if (isset($loan->begin) && Carbon::parse($loan->begin)->gt($now)) {
                 return false;
             }
@@ -162,7 +161,7 @@ class ArtworkTransformer extends BaseTransformer
 
         // if there are multiple, sort so the longest is first
         if (count($schedule) > 0) {
-            usort($schedule, function($a, $b) {
+            usort($schedule, function ($a, $b) {
                 $ad = Carbon::parse($a->end);
                 $bd = Carbon::parse($b->end);
 

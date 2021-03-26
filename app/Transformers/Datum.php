@@ -23,24 +23,24 @@ class Datum implements JsonSerializable
 
     public function __get($key)
     {
-        $value = $this->datum->$key ?? null;
+        $value = $this->datum->{$key} ?? null;
 
         return $this->getCleanValue($value);
     }
 
     public function __set($key, $value)
     {
-        $this->datum->$key = $value;
+        $this->datum->{$key} = $value;
     }
 
     public function __unset($key)
     {
-        unset($this->datum->$key);
+        unset($this->datum->{$key});
     }
 
     public function __isset($key)
     {
-        return isset($this->datum->$key);
+        return isset($this->datum->{$key});
     }
 
     /**
@@ -60,7 +60,7 @@ class Datum implements JsonSerializable
         }
 
         // Note how we're getting __get() to fire here
-        return $this->$field ?? [];
+        return $this->{$field} ?? [];
     }
 
     /**
