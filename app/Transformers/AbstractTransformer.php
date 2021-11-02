@@ -2,6 +2,8 @@
 
 namespace App\Transformers;
 
+use Illuminate\Support\Str;
+
 class AbstractTransformer
 {
 
@@ -50,7 +52,11 @@ class AbstractTransformer
 
     protected function nullIso8601(?string $datetime)
     {
-        return $datetime === '0000-00-00T00:00:00.000Z' ? null : $datetime;
+        if (Str::startsWith($datetime, '0000-00-00')) {
+            return;
+        }
+
+        return $datetime;
     }
 
     protected function nullZero(?int $value)
