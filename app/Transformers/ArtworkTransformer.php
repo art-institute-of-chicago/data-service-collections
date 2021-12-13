@@ -3,6 +3,8 @@
 namespace App\Transformers;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Request;
 use App\Transformers\AbstractTransformer as BaseTransformer;
 
 class ArtworkTransformer extends BaseTransformer
@@ -13,6 +15,9 @@ class ArtworkTransformer extends BaseTransformer
             'gallery_id' => $this->nullZero($datum->gallery_id),
             'creator_id' => $this->nullZero($datum->creator_id),
             'department_id' => $this->nullZero($datum->department_id),
+
+            // API-221: Temporary normalization for object types
+            'object_type_id' => $this->getObjectTypeId($datum),
 
             // TODO: Maybe move these into subobjects?
             'creator_role_id' => $this->nullZero($datum->creator_role_id), // pre-nulled?
@@ -95,6 +100,34 @@ class ArtworkTransformer extends BaseTransformer
         unset($artworkCatalogue->preferred);
 
         return $artworkCatalogue;
+    }
+
+    private function getObjectTypeId(Datum $datum)
+    {
+        if (isset($datum->object_type_id)) {
+            return $this->nullZero($datum->object_type_id);
+        }
+
+        if (!isset($datum->object_type)) {
+            return;
+        }
+
+        $objectTypes = Cache::remember('object-types', 60 * 60, function () {
+            $request = Request::create('/api/v1/object-types?limit=100', 'GET');
+            $response = app()->handle($request)->getData();
+
+            $data = [];
+
+            foreach ($response->data as $datum) {
+                $data[$datum->title] = $datum->id;
+            }
+
+            ksort($data, SORT_STRING);
+
+            return $data;
+        });
+
+        return $objectTypes[$datum->object_type] ?? null;
     }
 
     private function getFiscalYear(array $committees)
