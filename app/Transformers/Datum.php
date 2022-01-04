@@ -120,7 +120,7 @@ class Datum implements JsonSerializable
 
         if (is_array($value))
         {
-            return array_map([$this, 'getCleanValue'], $value);
+            return array_filter(array_map([$this, 'getCleanValue'], $value));
         }
 
         if (is_object($value))
