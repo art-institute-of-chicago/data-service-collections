@@ -5,6 +5,7 @@ namespace App\Transformers;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Request;
+use App\Http\Controllers\PassthroughController;
 use App\Transformers\AbstractTransformer as BaseTransformer;
 
 class ArtworkTransformer extends BaseTransformer
@@ -18,6 +19,9 @@ class ArtworkTransformer extends BaseTransformer
 
             // API-221: Temporary normalization for object types
             'object_type_id' => $this->getObjectTypeId($datum),
+
+            // API-235: Temporary normalization for place relationships
+            'place_of_origin_id' => $this->getPlaceOfOriginId($datum),
 
             // TODO: Maybe move these into subobjects?
             'creator_role_id' => $this->nullZero($datum->creator_role_id), // pre-nulled?
@@ -104,22 +108,44 @@ class ArtworkTransformer extends BaseTransformer
 
     private function getObjectTypeId(Datum $datum)
     {
-        if (isset($datum->object_type_id)) {
-            return $this->nullZero($datum->object_type_id);
+        return $this->getIdFromTitle($datum, 'object_type_id', 'object_type', 'object-types');
+    }
+
+    private function getPlaceOfOriginId(Datum $datum)
+    {
+        return $this->getIdFromTitle($datum, 'place_of_origin_id', 'place_of_origin', 'places');
+    }
+
+    private function getIdFromTitle(Datum $datum, $idField, $titleField, $endpoint)
+    {
+        if (isset($datum->{$idField})) {
+            return $this->nullZero($datum->{$idField});
         }
 
-        if (!isset($datum->object_type)) {
+        if (!isset($datum->{$titleField})) {
             return;
         }
 
-        $objectTypes = Cache::remember('object-types', 60 * 60, function () {
-            $request = Request::create('/api/v1/object-types?limit=100', 'GET');
-            $response = app()->handle($request)->getData();
-
+        $idsKeyedByTitle = Cache::remember($endpoint, 60 * 60, function () use ($endpoint) {
             $data = [];
+            $limit = 1000;
 
-            foreach ($response->data as $datum) {
-                $data[$datum->title] = $datum->id;
+            // Failsafe to not paginate deeper than 5,000 items
+            for ($page = 1; $page * $limit <= 5000; $page++) {
+                $request = Request::create('/api/v1/' . $endpoint, 'GET', [
+                    'page' => $page,
+                    'limit' => $limit,
+                ]);
+
+                $response = app()->handle($request)->getData();
+
+                foreach ($response->data as $datum) {
+                    $data[$datum->title] = $datum->id;
+                }
+
+                if (!$response->pagination->next_url) {
+                    break;
+                }
             }
 
             ksort($data, SORT_STRING);
@@ -127,7 +153,7 @@ class ArtworkTransformer extends BaseTransformer
             return $data;
         });
 
-        return $objectTypes[$datum->object_type] ?? null;
+        return $idsKeyedByTitle[$datum->{$titleField}] ?? null;
     }
 
     private function getFiscalYear(array $committees)

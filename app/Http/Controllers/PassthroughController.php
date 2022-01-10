@@ -11,19 +11,16 @@ use Illuminate\Routing\Controller as BaseController;
 class PassthroughController extends BaseController
 {
 
-    private $request;
-
     private $client;
 
-    public function __construct(Request $request, Guzzle $client)
+    public function __construct(Guzzle $client)
     {
-        $this->request = $request;
         $this->client = $client;
     }
 
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        $endpoint = $this->getEndpoint(-2);
+        $endpoint = $this->getEndpoint($request, -2);
         $transformer = $this->getTransformer($endpoint);
 
         $response = $this->getResponse($endpoint . '/' . $id);
@@ -37,26 +34,26 @@ class PassthroughController extends BaseController
         ];
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $endpoint = $this->getEndpoint(-1);
+        $endpoint = $this->getEndpoint($request, -1);
         $transformer = $this->getTransformer($endpoint);
 
-        $response = $this->getResponse($endpoint, $this->request->only([
+        $response = $this->getResponse($endpoint, $request->only([
             'limit',
             'page',
             'ids',
         ]));
 
         return [
-            'pagination' => $this->getPagination($response),
+            'pagination' => $this->getPagination($request, $response),
             'data' => array_map([$transformer, 'transform'], $this->getData($response)),
         ];
     }
 
-    private function getEndpoint(int $offset)
+    private function getEndpoint(Request $request, int $offset)
     {
-        return array_slice($this->request->segments(), $offset, 1)[0];
+        return array_slice($request->segments(), $offset, 1)[0];
     }
 
     private function getResponse(string $path, array $query = [])
@@ -93,7 +90,7 @@ class PassthroughController extends BaseController
         return $data;
     }
 
-    private function getPagination($response = null)
+    private function getPagination(Request $request, $response = null)
     {
         $pagination = $response->pagination ?? (object) [
             'total' => 0,
@@ -106,18 +103,18 @@ class PassthroughController extends BaseController
         ];
 
         if (isset($pagination->prev_url)) {
-            $pagination->prev_url = $this->request->fullUrlWithQuery([
+            $pagination->prev_url = $request->fullUrlWithQuery([
                 'page' => $pagination->current_page - 1,
                 'limit' => $pagination->limit,
-                'ids' => $this->request->get('ids'),
+                'ids' => $request->get('ids'),
             ]);
         }
 
         if (isset($pagination->next_url)) {
-            $pagination->next_url = $this->request->fullUrlWithQuery([
+            $pagination->next_url = $request->fullUrlWithQuery([
                 'page' => $pagination->current_page + 1,
                 'limit' => $pagination->limit,
-                'ids' => $this->request->get('ids'),
+                'ids' => $request->get('ids'),
             ]);
         }
 
