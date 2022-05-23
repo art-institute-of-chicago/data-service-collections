@@ -18,9 +18,6 @@ class ArtworkTransformer extends BaseTransformer
             'department_id' => $this->nullZero($datum->department_id),
             'object_type_id' => $this->nullZero($datum->object_type_id),
 
-            // API-235: Temporary normalization for place relationships
-            'place_of_origin_id' => $this->getPlaceOfOriginId($datum),
-
             // TODO: Maybe move these into subobjects?
             'creator_role_id' => $this->nullZero($datum->creator_role_id), // pre-nulled?
             'date_qualifier_id' => $this->nullZero($datum->date_qualifier_id),
@@ -102,11 +99,6 @@ class ArtworkTransformer extends BaseTransformer
         unset($artworkCatalogue->preferred);
 
         return $artworkCatalogue;
-    }
-
-    private function getPlaceOfOriginId(Datum $datum)
-    {
-        return $this->getIdFromTitle($datum, 'place_of_origin_id', 'place_of_origin', 'places');
     }
 
     private function getIdFromTitle(Datum $datum, $idField, $titleField, $endpoint)
