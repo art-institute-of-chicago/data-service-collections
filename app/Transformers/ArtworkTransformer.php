@@ -16,9 +16,7 @@ class ArtworkTransformer extends BaseTransformer
             'gallery_id' => $this->nullZero($datum->gallery_id),
             'creator_id' => $this->nullZero($datum->creator_id),
             'department_id' => $this->nullZero($datum->department_id),
-
-            // API-221: Temporary normalization for object types
-            'object_type_id' => $this->getObjectTypeId($datum),
+            'object_type_id' => $this->nullZero($datum->object_type_id),
 
             // API-235: Temporary normalization for place relationships
             'place_of_origin_id' => $this->getPlaceOfOriginId($datum),
@@ -104,11 +102,6 @@ class ArtworkTransformer extends BaseTransformer
         unset($artworkCatalogue->preferred);
 
         return $artworkCatalogue;
-    }
-
-    private function getObjectTypeId(Datum $datum)
-    {
-        return $this->getIdFromTitle($datum, 'object_type_id', 'object_type', 'object-types');
     }
 
     private function getPlaceOfOriginId(Datum $datum)
