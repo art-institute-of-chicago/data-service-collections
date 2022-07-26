@@ -3,10 +3,13 @@
 namespace App\Transformers;
 
 use Carbon\Carbon;
+use App\Transformers\Concerns\RunsSubquery;
 use App\Transformers\AbstractTransformer as BaseTransformer;
 
 class ArtworkTransformer extends BaseTransformer
 {
+    use RunsSubquery;
+
     protected function getFields(Datum $datum)
     {
         $fields = [
@@ -26,6 +29,9 @@ class ArtworkTransformer extends BaseTransformer
 
             'is_zoomable' => $this->getIsZoomable($datum),
             'max_zoom_window_size' => $this->getMaxZoomWindowSize($datum),
+
+            // API-320: Hold off importing catalogues into aggregator
+            'catalogue_display' => $this->getCatalogueDisplay($datum),
 
             // Referenced methods must be protected, not private
             'artwork_agents' => $this->mapToArray($datum->artwork_agents, 'getArtworkAgent'),
@@ -211,5 +217,43 @@ class ArtworkTransformer extends BaseTransformer
         }
 
         return 843;
+    }
+
+    private function getCatalogueDisplay(Datum $datum)
+    {
+        if (empty($datum->artwork_catalogues)) {
+            return;
+        }
+
+        return collect($datum->artwork_catalogues)
+            ->map(function ($pivot) {
+                $catalogue = $this->getCatalogueById($pivot->catalogue_id);
+
+                if (empty($catalogue)) {
+                    return;
+                }
+
+                if (empty($catalogue->title)) {
+                    return;
+                }
+
+                return sprintf(
+                    '%s %s %s',
+                    $catalogue->title,
+                    $pivot->number,
+                    $pivot->state_edition
+                );
+            })
+            ->filter()
+            ->values()
+            ->map(function ($catalogueDisplay) {
+                return '<p>' . trim($catalogueDisplay) . '</p>';
+            })
+            ->implode('');
+    }
+
+    private function getCatalogueById($id)
+    {
+        return $this->getItemById($id, 'catalogues');
     }
 }
