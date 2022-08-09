@@ -1,28 +1,5 @@
 <?php
 
-/**
- * Laravel - A PHP Framework For Web Artisans
- *
- * @package  Laravel
- * @author   Taylor Otwell <taylor@laravel.com>
- */
-
-define('LARAVEL_START', microtime(true));
-
-/*
-|--------------------------------------------------------------------------
-| Register The Composer Auto Loader
-|--------------------------------------------------------------------------
-|
-| Composer provides a convenient, automatically generated class loader
-| for our application. We just need to utilize it! We'll require it
-| into the script here so we do not have to manually load any of
-| our application's PHP classes. It just feels great to relax.
-|
-*/
-
-require __DIR__ . '/../vendor/autoload.php';
-
 /*
 |--------------------------------------------------------------------------
 | Create The Application
@@ -35,7 +12,7 @@ require __DIR__ . '/../vendor/autoload.php';
 */
 
 $app = new Illuminate\Foundation\Application(
-    realpath(__DIR__ . '/../')
+    $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );
 
 /*

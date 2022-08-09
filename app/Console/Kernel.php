@@ -8,15 +8,6 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 class Kernel extends ConsoleKernel
 {
     /**
-     * Use this to import third-party Artisan commands.
-     *
-     * @var array
-     */
-    protected $commands = [
-        \Aic\Hub\Foundation\Commands\DatabaseReset::class,
-    ];
-
-    /**
      * Define the application's command schedule.
      *
      * @return void
