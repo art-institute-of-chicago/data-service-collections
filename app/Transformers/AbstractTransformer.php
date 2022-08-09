@@ -42,7 +42,7 @@ class AbstractTransformer
      */
     private function getDatum($datum)
     {
-        if($datum instanceof Datum)
+        if ($datum instanceof Datum)
         {
             return $datum;
         }
