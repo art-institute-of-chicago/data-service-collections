@@ -42,7 +42,11 @@ class ArtworkTransformer extends BaseTransformer
             'edition' => null,
         ];
 
-        // Exit early if this artwork isn't deaccessioned
+        /**
+         * Exit early if this artwork isn't deaccessioned. If it has been
+         * deaccessioned and we no longer have the artwork, null out the fields
+         * that are no longer relevant.
+         */
         if (is_null($datum->fiscal_year_deaccession)) {
             return $fields;
         }
