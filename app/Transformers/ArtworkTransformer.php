@@ -39,7 +39,7 @@ class ArtworkTransformer extends BaseTransformer
             'artwork_dates' => $this->mapToArray($datum->artwork_dates, 'getArtworkDate'),
             'artwork_catalogues' => $this->mapToArray($datum->artwork_catalogues, 'getArtworkCatalogue'),
 
-            'edition' => null,
+            'edition' => $datum->edition,
         ];
 
         /**
