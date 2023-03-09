@@ -38,9 +38,15 @@ class ArtworkTransformer extends BaseTransformer
             'artwork_places' => $this->mapToArray($datum->artwork_places, 'getArtworkPlace'),
             'artwork_dates' => $this->mapToArray($datum->artwork_dates, 'getArtworkDate'),
             'artwork_catalogues' => $this->mapToArray($datum->artwork_catalogues, 'getArtworkCatalogue'),
+
+            'edition' => $datum->edition,
         ];
 
-        // Exit early if this artwork isn't deaccessioned
+        /**
+         * Exit early if this artwork isn't deaccessioned. If it has been
+         * deaccessioned and we no longer have the artwork, null out the fields
+         * that are no longer relevant.
+         */
         if (is_null($datum->fiscal_year_deaccession)) {
             return $fields;
         }
