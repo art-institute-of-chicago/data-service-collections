@@ -39,7 +39,7 @@ class ArtworkTransformer extends BaseTransformer
             'artwork_dates' => $this->mapToArray($datum->artwork_dates, 'getArtworkDate'),
             'artwork_catalogues' => $this->mapToArray($datum->artwork_catalogues, 'getArtworkCatalogue'),
 
-            'dimensions_detail' => $datum->dimensions_detail,
+            'dimensions_detail' => $this->mapToArray($datum->dimensions_detail,'getDimensionDetail'),
         ];
 
         /**
@@ -108,6 +108,22 @@ class ArtworkTransformer extends BaseTransformer
         unset($artworkCatalogue->preferred);
 
         return $artworkCatalogue;
+    }
+
+    /**
+     * The dimensions details contain measurements in centimeters and inches,
+     * but we only want to return the metric values. Also, any zero values need
+     * to be nulled out.
+     */
+    protected function getDimensionDetail(Datum $dimensionDetail): Datum
+    {
+        return  new Datum([
+            'clarification' => $dimensionDetail->clarification,
+            'diameter' => $this->nullZero($dimensionDetail->diameter_cm),
+            'depth' => $this->nullZero($dimensionDetail->depth_cm),
+            'height' => $this->nullZero($dimensionDetail->height_cm),
+            'width' => $this->nullZero($dimensionDetail->width_cm),
+        ]);
     }
 
     private function getFiscalYear(array $committees)
