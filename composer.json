@@ -12,7 +12,7 @@
     ],
     "require": {
         "php": "^8.1",
-        "aic/data-hub-foundation": "dev-laravel-8-support",
+        "aic/data-hub-foundation": "^1.0",
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.5",
         "guzzlehttp/guzzle": "~6.0",
@@ -22,7 +22,6 @@
     "require-dev": {
         "brianium/paratest": "^6.4",
         "fakerphp/faker": "^1.9.1",
-        "friendsofphp/php-cs-fixer": "^3.5",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^5.10",
         "phpunit/phpunit": "^9.5.10"
@@ -63,7 +62,8 @@
         "sort-packages": true,
         "optimize-autoloader": true,
         "allow-plugins": {
-            "netresearch/composer-patches-plugin": true
+            "netresearch/composer-patches-plugin": true,
+            "php-http/discovery": true
         }
     },
     "minimum-stability": "dev",
