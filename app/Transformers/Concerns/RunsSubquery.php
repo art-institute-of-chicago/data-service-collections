@@ -11,7 +11,7 @@ trait RunsSubquery
     {
         $items = $this->getAllItems($endpoint);
 
-        if (!isset($items[$id])) {
+        if (!isset($items[$id]) && $id != 0) {
             Cache::forget($endpoint);
 
             $items = $this->getAllItems($endpoint);
