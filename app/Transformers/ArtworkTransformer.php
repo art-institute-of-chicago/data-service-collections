@@ -52,32 +52,13 @@ class ArtworkTransformer extends BaseTransformer
         }
 
         return array_merge($fields, [
-            'has_rights_web_educational' => null,
             'credit_line' => null,
             'committees' => null,
 
             'gallery_id' => null,
             'is_on_view' => null,
 
-            'inscriptions' => null,
-            'publications' => null,
-            'exhibitions' => null,
-            'provenance' => null,
-            'inscriptions' => null,
-
             'is_public_domain' => false,
-            'is_zoomable' => false,
-            'max_zoom_window_size' => 843,
-
-            'copyright_ids' => [],
-            'part_ids' => [],
-            'set_ids' => [],
-
-            'date_qualifier_id' => null,
-
-            'artwork_places' => [],
-            'artwork_dates' => [],
-            'artwork_catalogues' => [],
         ]);
     }
 
