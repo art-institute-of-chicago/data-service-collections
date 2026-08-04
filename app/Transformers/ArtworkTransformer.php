@@ -53,12 +53,6 @@ class ArtworkTransformer extends BaseTransformer
 
         return array_merge($fields, [
             'credit_line' => null,
-            'committees' => null,
-
-            'gallery_id' => null,
-            'is_on_view' => null,
-
-            'is_public_domain' => false,
         ]);
     }
 
